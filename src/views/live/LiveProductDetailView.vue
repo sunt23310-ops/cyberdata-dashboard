@@ -3,7 +3,7 @@ import { useRoute, useRouter } from 'vue-router'
 import { ArrowLeft, Play, Timer } from 'lucide-vue-next'
 import PageHeader from '@/components/layout/PageHeader.vue'
 import { formatPrice, formatDuration } from '@/utils/format'
-import type { LiveProductDetail } from '@/types/live'
+import { getLiveProductDetail } from '@/mock'
 
 const route = useRoute()
 const router = useRouter()
@@ -27,49 +27,8 @@ const breadcrumbs = fromLive
       { label: '直播表现' }
     ]
 
-// Mock data
-const detail: LiveProductDetail = {
-  liveId,
-  anchor: '李佳琦',
-  liveStartTime: '2024-02-05 19:00',
-  totalDuration: 16320,
-  itemCode,
-  productName: '兰蔻小黑瓶精华肌底液 100ml',
-  brand: '兰蔻',
-  category: '护肤品 > 精华',
-  originalPrice: 1080,
-  couponPrice: 899,
-  discountInfo: '直播间专享优惠',
-  status: 'on_sale',
-  startTime: '04:44',
-  endTime: '09:59',
-  duration: 315,
-  mentions: 2,
-  confidence: 100,
-  keywords: ['小黑瓶', '精华', '修护', '抗老', '肌底液', '二裂酵母'],
-  videoSegments: [
-    { name: '首次介绍', startTime: '04:44', endTime: '07:21', duration: 157 },
-    { name: '再次推荐', startTime: '07:22', endTime: '09:59', duration: 158 }
-  ],
-  transcripts: [
-    {
-      speaker: '高声',
-      startTime: '04:44',
-      endTime: '07:21',
-      text: '接下来给大家介绍的这款兰蔻小黑瓶精华肌底液，是我们今天力推的一款产品。它采用了二裂酵母精粹配方，能够深层修护肌肤屏障，改善肤质细腻毛孔。100ml大容量，全球畅销明星产品，年销量超千万瓶。适合各种肤质，温和不刺激，敏感肌也可以放心使用。'
-    },
-    {
-      speaker: '明谦',
-      startTime: '07:22',
-      endTime: '09:59',
-      text: '刚才高声给大家详细介绍了这款小黑瓶，我再补充一下价格方面的信息。原价1080元，今天直播间专享价只要899元，直降181元！而且我们还额外赠送同品牌的洁面小样和面霜中样。这个价格真的是全网最低了，错过今天就没有了。'
-    }
-  ],
-  speakers: [
-    { name: '高声', ratio: 52.9 },
-    { name: '明谦', ratio: 47.1 }
-  ]
-}
+// 从 mock 获取直播商品详情
+const detail = getLiveProductDetail(liveId, itemCode)
 
 const goBack = () => {
   if (fromLive) {

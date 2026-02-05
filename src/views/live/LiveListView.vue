@@ -5,7 +5,7 @@ import { Search, Calendar, ArrowUpDown, ArrowUp, ArrowDown } from 'lucide-vue-ne
 import PageHeader from '@/components/layout/PageHeader.vue'
 import Pagination from '@/components/ui/Pagination.vue'
 import { formatDuration, formatLargeNumber, formatDateTime, formatAmount } from '@/utils/format'
-import type { LiveListItem } from '@/types/live'
+import { mockLives } from '@/mock'
 
 const router = useRouter()
 
@@ -25,24 +25,6 @@ type SortField = 'anchor' | 'viewCount' | 'salesCount' | 'gmv' | 'duration' | 'd
 type SortOrder = 'asc' | 'desc'
 const sortField = ref<SortField>(null)
 const sortOrder = ref<SortOrder>('desc')
-
-const mockLives: LiveListItem[] = [
-  { liveId: 'LIVE001', anchor: '李佳琦', viewCount: 12300000, salesCount: 85600, gmv: 45600000, duration: 14520, date: '2024-01-15T20:00:00Z' },
-  { liveId: 'LIVE002', anchor: '薇娅', viewCount: 8900000, salesCount: 62300, gmv: 32100000, duration: 10800, date: '2024-01-14T19:30:00Z' },
-  { liveId: 'LIVE003', anchor: '罗永浩', viewCount: 5600000, salesCount: 41200, gmv: 18900000, duration: 7200, date: '2024-01-13T20:00:00Z' },
-  { liveId: 'LIVE004', anchor: '董宇辉', viewCount: 9800000, salesCount: 55400, gmv: 28700000, duration: 12600, date: '2024-01-12T18:00:00Z' },
-  { liveId: 'LIVE005', anchor: '小杨哥', viewCount: 7200000, salesCount: 48900, gmv: 21500000, duration: 9000, date: '2024-01-11T19:00:00Z' },
-  { liveId: 'LIVE006', anchor: '辛巴', viewCount: 6800000, salesCount: 52100, gmv: 24300000, duration: 11400, date: '2024-01-10T20:30:00Z' },
-  { liveId: 'LIVE007', anchor: '雪梨', viewCount: 4500000, salesCount: 38700, gmv: 15800000, duration: 8100, date: '2024-01-09T19:00:00Z' },
-  { liveId: 'LIVE008', anchor: '烈儿宝贝', viewCount: 3900000, salesCount: 31200, gmv: 12600000, duration: 7800, date: '2024-01-08T20:00:00Z' },
-  { liveId: 'LIVE009', anchor: '陈洁kiki', viewCount: 2800000, salesCount: 24500, gmv: 9800000, duration: 6300, date: '2024-01-07T19:30:00Z' },
-  { liveId: 'LIVE010', anchor: '刘媛媛', viewCount: 3200000, salesCount: 27800, gmv: 11200000, duration: 7200, date: '2024-01-06T18:00:00Z' },
-  { liveId: 'LIVE011', anchor: '李佳琦', viewCount: 11500000, salesCount: 79200, gmv: 42100000, duration: 13800, date: '2024-01-05T20:00:00Z' },
-  { liveId: 'LIVE012', anchor: '董宇辉', viewCount: 8700000, salesCount: 48600, gmv: 25400000, duration: 11100, date: '2024-01-04T19:00:00Z' },
-  { liveId: 'LIVE013', anchor: '贾乃亮', viewCount: 4100000, salesCount: 33500, gmv: 14200000, duration: 6600, date: '2024-01-03T20:30:00Z' },
-  { liveId: 'LIVE014', anchor: '朱梓骁', viewCount: 3600000, salesCount: 29100, gmv: 11800000, duration: 5400, date: '2024-01-02T19:00:00Z' },
-  { liveId: 'LIVE015', anchor: '张庭', viewCount: 2500000, salesCount: 21300, gmv: 8700000, duration: 5100, date: '2024-01-01T18:00:00Z' }
-]
 
 // 筛选后的数据
 const filteredLives = computed(() => {

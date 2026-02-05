@@ -5,6 +5,7 @@ import PageHeader from '@/components/layout/PageHeader.vue'
 import MetricCard from '@/components/ui/MetricCard.vue'
 import { formatDuration, formatLargeNumber, formatAmount } from '@/utils/format'
 import type { LiveProductItem } from '@/types/live'
+import { getLiveDetail, getLiveProducts } from '@/mock'
 
 const route = useRoute()
 const router = useRouter()
@@ -16,121 +17,21 @@ const breadcrumbs = [
   { label: '直播详情' }
 ]
 
-// Mock live data (不变数据使用 const)
+// 从 mock 获取直播详情
+const liveDetail = getLiveDetail(liveId)
 const live = {
-  liveId: liveId,
-  anchor: '李佳琦',
-  startTime: '2024-01-15 20:00:00',
-  totalDuration: 14520,
-  viewCount: { value: 12300000, change: 8.5 },
-  salesCount: { value: 85600, change: 12.3 },
-  gmv: { value: 45600000, change: 15.7 },
-  interaction: { value: 2580000, change: 6.2 }
+  liveId: liveDetail.liveId,
+  anchor: liveDetail.anchor,
+  startTime: liveDetail.startTime,
+  totalDuration: liveDetail.totalDuration,
+  viewCount: liveDetail.viewCount,
+  salesCount: liveDetail.salesCount,
+  gmv: liveDetail.gmv,
+  interaction: liveDetail.interaction
 }
 
-// Mock products in this live (不变数据使用 const)
-const liveProducts: LiveProductItem[] = [
-  {
-    itemCode: 'SKU001',
-    productName: '兰蔻小黑瓶精华肌底液 100ml',
-    brand: '兰蔻',
-    startTime: '04:44',
-    endTime: '09:59',
-    duration: 315,
-    mentions: 12,
-    keywords: ['小黑瓶', '精华', '修护', '抗老']
-  },
-  {
-    itemCode: 'SKU002',
-    productName: '欧莱雅复颜玻尿酸水光充盈导入精华液',
-    brand: '欧莱雅',
-    startTime: '12:30',
-    endTime: '18:45',
-    duration: 375,
-    mentions: 8,
-    keywords: ['玻尿酸', '补水', '精华']
-  },
-  {
-    itemCode: 'SKU003',
-    productName: '雅诗兰黛特润修护肌透精华露 50ml',
-    brand: '雅诗兰黛',
-    startTime: '22:00',
-    endTime: '28:30',
-    duration: 390,
-    mentions: 15,
-    keywords: ['小棕瓶', '修护', '抗皱']
-  },
-  {
-    itemCode: 'SKU004',
-    productName: '安耐晒金瓶防晒霜 SPF50+ PA++++',
-    brand: '安耐晒',
-    startTime: '35:00',
-    endTime: '42:15',
-    duration: 435,
-    mentions: 10,
-    keywords: ['防晒', 'SPF50', '金瓶']
-  },
-  {
-    itemCode: 'SKU005',
-    productName: '潘婷3分钟奇迹护发素 深层滋养型',
-    brand: '潘婷',
-    startTime: '48:20',
-    endTime: '54:10',
-    duration: 350,
-    mentions: 7,
-    keywords: ['护发素', '深层滋养', '修护']
-  },
-  {
-    itemCode: 'SKU006',
-    productName: '欧莱雅清润葡萄籽膜力水',
-    brand: '欧莱雅',
-    startTime: '58:00',
-    endTime: '65:30',
-    duration: 450,
-    mentions: 11,
-    keywords: ['葡萄籽', '膜力水', '保湿']
-  },
-  {
-    itemCode: 'SKU007',
-    productName: '兰蔻清滢柔肤水 粉水 400ml',
-    brand: '兰蔻',
-    startTime: '70:15',
-    endTime: '78:40',
-    duration: 505,
-    mentions: 14,
-    keywords: ['粉水', '柔肤', '清爽']
-  },
-  {
-    itemCode: 'SKU008',
-    productName: '雅诗兰黛红石榴鲜活亮采洁面乳',
-    brand: '雅诗兰黛',
-    startTime: '82:00',
-    endTime: '88:20',
-    duration: 380,
-    mentions: 9,
-    keywords: ['红石榴', '洁面', '提亮']
-  },
-  {
-    itemCode: 'SKU009',
-    productName: '欧莱雅玻尿酸安瓶精华面膜 5片装',
-    brand: '欧莱雅',
-    startTime: '92:30',
-    endTime: '98:50',
-    duration: 380,
-    mentions: 13,
-    keywords: ['面膜', '安瓶', '补水']
-  },
-  {
-    itemCode: 'SKU010',
-    productName: '兰蔻极光水精华 30ml',
-    brand: '兰蔻',
-    startTime: '102:00',
-    endTime: '110:15',
-    duration: 495,
-    mentions: 16,
-    keywords: ['极光水', '美白', '精华']
-  }
-]
+// 从 mock 获取直播商品
+const liveProducts: LiveProductItem[] = getLiveProducts(liveId)
 
 const goBack = () => {
   router.push('/lives')

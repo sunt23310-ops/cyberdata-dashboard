@@ -6,7 +6,13 @@ import MetricCard from '@/components/ui/MetricCard.vue'
 import BarChart from '@/components/charts/BarChart.vue'
 import PieChart from '@/components/charts/PieChart.vue'
 import { formatAmount, formatDurationMinutes, formatLargeNumber } from '@/utils/format'
-import type { LiveSession } from '@/types/live'
+import {
+  chartDataByMetric,
+  metricsData,
+  pieChartData,
+  categoryData,
+  recentLives
+} from '@/mock'
 
 const router = useRouter()
 
@@ -25,58 +31,6 @@ const timeRangeOptions: { key: TimeRange; label: string }[] = [
   { key: 'all', label: '全部' }
 ]
 
-// Mock metrics data
-const metricsData = {
-  products: { value: 32580, change: 5.2, label: '覆盖商品数量' },
-  lives: { value: 1856, change: 12.8, label: '覆盖直播数量' },
-  sales: { value: 256800000, change: 8.5, label: '销售总额' },
-  volume: { value: 3285600, change: -2.3, label: '总销量' }
-}
-
-// 不同指标对应的柱状图数据（含 rawDate 用于日期筛选）
-const chartDataByMetric: Record<MetricType, { date: string; rawDate: string; value: number }[]> = {
-  sales: [
-    { date: '1月1日', rawDate: '2024-01-01', value: 28500000 },
-    { date: '1月3日', rawDate: '2024-01-03', value: 32100000 },
-    { date: '1月5日', rawDate: '2024-01-05', value: 29800000 },
-    { date: '1月7日', rawDate: '2024-01-07', value: 35600000 },
-    { date: '1月9日', rawDate: '2024-01-09', value: 41200000 },
-    { date: '1月11日', rawDate: '2024-01-11', value: 38900000 },
-    { date: '1月13日', rawDate: '2024-01-13', value: 42300000 },
-    { date: '1月15日', rawDate: '2024-01-15', value: 45700000 }
-  ],
-  volume: [
-    { date: '1月1日', rawDate: '2024-01-01', value: 385600 },
-    { date: '1月3日', rawDate: '2024-01-03', value: 421000 },
-    { date: '1月5日', rawDate: '2024-01-05', value: 398000 },
-    { date: '1月7日', rawDate: '2024-01-07', value: 456000 },
-    { date: '1月9日', rawDate: '2024-01-09', value: 512000 },
-    { date: '1月11日', rawDate: '2024-01-11', value: 489000 },
-    { date: '1月13日', rawDate: '2024-01-13', value: 498000 },
-    { date: '1月15日', rawDate: '2024-01-15', value: 523600 }
-  ],
-  products: [
-    { date: '1月1日', rawDate: '2024-01-01', value: 28500 },
-    { date: '1月3日', rawDate: '2024-01-03', value: 29100 },
-    { date: '1月5日', rawDate: '2024-01-05', value: 29800 },
-    { date: '1月7日', rawDate: '2024-01-07', value: 30600 },
-    { date: '1月9日', rawDate: '2024-01-09', value: 31200 },
-    { date: '1月11日', rawDate: '2024-01-11', value: 31900 },
-    { date: '1月13日', rawDate: '2024-01-13', value: 32200 },
-    { date: '1月15日', rawDate: '2024-01-15', value: 32580 }
-  ],
-  lives: [
-    { date: '1月1日', rawDate: '2024-01-01', value: 1580 },
-    { date: '1月3日', rawDate: '2024-01-03', value: 1620 },
-    { date: '1月5日', rawDate: '2024-01-05', value: 1680 },
-    { date: '1月7日', rawDate: '2024-01-07', value: 1720 },
-    { date: '1月9日', rawDate: '2024-01-09', value: 1780 },
-    { date: '1月11日', rawDate: '2024-01-11', value: 1820 },
-    { date: '1月13日', rawDate: '2024-01-13', value: 1840 },
-    { date: '1月15日', rawDate: '2024-01-15', value: 1856 }
-  ]
-}
-
 // 根据时间范围筛选后的图表数据
 const currentChartData = computed(() => {
   const allData = chartDataByMetric[selectedMetric.value]
@@ -84,8 +38,8 @@ const currentChartData = computed(() => {
     return allData.map(d => ({ date: d.date, value: d.value }))
   }
   const days = { '7d': 7, '15d': 15, '30d': 30 }[selectedTimeRange.value]
-  // 基于 mock 数据最新日期 2024-01-15 往前推
-  const latestDate = new Date('2024-01-15')
+  // 基于 mock 数据最新日期 2024-01-30 往前推
+  const latestDate = new Date('2024-01-30')
   const cutoff = new Date(latestDate)
   cutoff.setDate(cutoff.getDate() - days)
   const cutoffStr = cutoff.toISOString().slice(0, 10)
@@ -104,33 +58,6 @@ const chartTitle = computed(() => {
   }
   return titles[selectedMetric.value]
 })
-
-// 类目分布数据
-const pieChartData = [
-  { category: '美妆', value: 35, percentage: 35 },
-  { category: '服饰', value: 25, percentage: 25 },
-  { category: '食品', value: 20, percentage: 20 },
-  { category: '数码', value: 12, percentage: 12 },
-  { category: '家居', value: 8, percentage: 8 }
-]
-
-// 商品类目数据
-const categoryData = [
-  { name: '美妆', count: 11403, percentage: 35, color: '#FF3B30' },
-  { name: '服饰', count: 8145, percentage: 25, color: '#0A0A0A' },
-  { name: '食品', count: 6516, percentage: 20, color: '#666666' },
-  { name: '数码', count: 3910, percentage: 12, color: '#999999' },
-  { name: '家居', count: 2606, percentage: 8, color: '#CCCCCC' }
-]
-
-// Mock recent lives data
-const recentLives: LiveSession[] = [
-  { id: 'LIVE001', anchor: '李佳琦', duration: 242, gmv: 45600000, date: '2024-01-15' },
-  { id: 'LIVE002', anchor: '薇娅', duration: 180, gmv: 32100000, date: '2024-01-14' },
-  { id: 'LIVE003', anchor: '罗永浩', duration: 120, gmv: 18900000, date: '2024-01-13' },
-  { id: 'LIVE004', anchor: '董宇辉', duration: 210, gmv: 28700000, date: '2024-01-12' },
-  { id: 'LIVE005', anchor: '小杨哥', duration: 150, gmv: 21500000, date: '2024-01-11' }
-]
 
 // 选择指标卡片
 function selectMetric(metric: MetricType) {
