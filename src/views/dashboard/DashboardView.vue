@@ -1,7 +1,6 @@
 <script setup lang="ts">
 import { ref, computed } from 'vue'
 import { RouterLink, useRouter } from 'vue-router'
-import { Calendar } from 'lucide-vue-next'
 import PageHeader from '@/components/layout/PageHeader.vue'
 import MetricCard from '@/components/ui/MetricCard.vue'
 import BarChart from '@/components/charts/BarChart.vue'
@@ -15,12 +14,16 @@ const router = useRouter()
 type MetricType = 'sales' | 'volume' | 'products' | 'lives'
 const selectedMetric = ref<MetricType>('sales')
 
-// 日期区间（用户正在选择的值）
-const dateRange = ref('2024-01-01 ~ 2024-01-15')
+// 时间范围快捷选项
+type TimeRange = '7d' | '15d' | '30d' | 'all'
+const selectedTimeRange = ref<TimeRange>('all')
 
-// 已应用的日期区间（点击确定后生效）
-const appliedStart = ref('2024-01-01')
-const appliedEnd = ref('2024-01-15')
+const timeRangeOptions: { key: TimeRange; label: string }[] = [
+  { key: '7d', label: '近7天' },
+  { key: '15d', label: '近15天' },
+  { key: '30d', label: '近30天' },
+  { key: 'all', label: '全部' }
+]
 
 // Mock metrics data
 const metricsData = {
@@ -74,33 +77,22 @@ const chartDataByMetric: Record<MetricType, { date: string; rawDate: string; val
   ]
 }
 
-// 解析日期范围字符串
-function parseDateRange(range: string): { start: string; end: string } {
-  const parts = range.split('~').map(s => s.trim())
-  return { start: parts[0] || '', end: parts[1] || '' }
-}
-
-// 根据日期范围筛选后的图表数据
+// 根据时间范围筛选后的图表数据
 const currentChartData = computed(() => {
   const allData = chartDataByMetric[selectedMetric.value]
-  const start = appliedStart.value
-  const end = appliedEnd.value
-  if (!start && !end) return allData.map(d => ({ date: d.date, value: d.value }))
+  if (selectedTimeRange.value === 'all') {
+    return allData.map(d => ({ date: d.date, value: d.value }))
+  }
+  const days = { '7d': 7, '15d': 15, '30d': 30 }[selectedTimeRange.value]
+  // 基于 mock 数据最新日期 2024-01-15 往前推
+  const latestDate = new Date('2024-01-15')
+  const cutoff = new Date(latestDate)
+  cutoff.setDate(cutoff.getDate() - days)
+  const cutoffStr = cutoff.toISOString().slice(0, 10)
   return allData
-    .filter(d => {
-      if (start && d.rawDate < start) return false
-      if (end && d.rawDate > end) return false
-      return true
-    })
+    .filter(d => d.rawDate > cutoffStr)
     .map(d => ({ date: d.date, value: d.value }))
 })
-
-// 应用日期范围
-function applyDateRange() {
-  const { start, end } = parseDateRange(dateRange.value)
-  appliedStart.value = start
-  appliedEnd.value = end
-}
 
 // 图表标题
 const chartTitle = computed(() => {
@@ -185,22 +177,18 @@ function goToLiveDetail(liveId: string) {
       <div class="bg-white rounded-sm shadow-sm border border-gray-200 p-6 mb-8">
         <div class="flex items-center justify-between mb-4">
           <h3 class="text-lg font-semibold text-gray-900">{{ chartTitle }}</h3>
-          <!-- 日期范围选择器 -->
-          <div class="flex items-center gap-3">
-            <div class="relative flex items-center">
-              <Calendar class="absolute left-3 w-4 h-4 text-gray-400 pointer-events-none z-10" />
-              <input
-                v-model="dateRange"
-                type="text"
-                placeholder="开始日期 ~ 结束日期"
-                class="pl-9 pr-4 py-1.5 w-64 border border-gray-200 bg-white text-sm rounded-sm focus:outline-none focus:border-[#FF3B30] focus:ring-1 focus:ring-[#FF3B30]/20"
-              />
-            </div>
+          <!-- 时间范围快捷按钮 -->
+          <div class="flex items-center gap-1">
             <button
-              @click="applyDateRange"
-              class="px-4 py-1.5 bg-[#FF3B30] text-white text-sm font-medium rounded-sm hover:bg-[#E0352B] transition-colors"
+              v-for="option in timeRangeOptions"
+              :key="option.key"
+              @click="selectedTimeRange = option.key"
+              class="px-3 py-1 text-xs font-medium rounded-sm transition-colors"
+              :class="selectedTimeRange === option.key
+                ? 'bg-[#FF3B30] text-white'
+                : 'text-gray-500 hover:text-gray-900 hover:bg-gray-100'"
             >
-              确定
+              {{ option.label }}
             </button>
           </div>
         </div>
