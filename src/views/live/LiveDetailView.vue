@@ -156,8 +156,8 @@ const goBack = () => {
       <div class="bg-white rounded-sm border border-gray-200 p-6 mb-6">
         <div class="flex items-start justify-between">
           <div>
-            <h2 class="text-2xl font-bold text-gray-900 mb-2">{{ live.anchor }} 直播间</h2>
-            <div class="flex items-center gap-6 text-sm text-gray-500">
+            <h2 class="text-4xl font-bold text-gray-900 mb-2">{{ live.anchor }} 直播间</h2>
+            <div class="flex items-center gap-6 text-[13px] text-gray-500">
               <span>直播ID: <span class="font-mono text-gray-700">{{ live.liveId }}</span></span>
               <span>开播时间: {{ live.startTime }}</span>
               <span>总时长: {{ formatDuration(live.totalDuration) }}</span>
@@ -175,25 +175,25 @@ const goBack = () => {
           title="观看量"
           :value="formatLargeNumber(live.viewCount.value)"
           :change="live.viewCount.change"
-          variant="light"
+          size="small"
         />
         <MetricCard
           title="销量"
           :value="formatLargeNumber(live.salesCount.value)"
           :change="live.salesCount.change"
-          variant="light"
+          size="small"
         />
         <MetricCard
           title="GMV"
           :value="formatAmount(live.gmv.value)"
           :change="live.gmv.change"
-          variant="dark"
+          size="small"
         />
         <MetricCard
           title="互动量"
           :value="formatLargeNumber(live.interaction.value)"
           :change="live.interaction.change"
-          variant="light"
+          size="small"
         />
       </div>
 
@@ -204,17 +204,17 @@ const goBack = () => {
           <span class="text-sm text-gray-500">共 {{ liveProducts.length }} 个商品</span>
         </div>
 
-        <table class="w-full text-sm">
-          <thead class="bg-gray-50">
+        <table class="w-full">
+          <thead class="bg-[#0A0A0A]">
             <tr>
-              <th class="px-4 py-3 text-left text-gray-600 font-medium">商品编码</th>
-              <th class="px-4 py-3 text-left text-gray-600 font-medium">商品名称</th>
-              <th class="px-4 py-3 text-left text-gray-600 font-medium">品牌</th>
-              <th class="px-4 py-3 text-left text-gray-600 font-medium">出现时间</th>
-              <th class="px-4 py-3 text-left text-gray-600 font-medium">时长(秒)</th>
-              <th class="px-4 py-3 text-left text-gray-600 font-medium">提及次数</th>
-              <th class="px-4 py-3 text-left text-gray-600 font-medium">关键词</th>
-              <th class="px-4 py-3 text-left text-gray-600 font-medium">操作</th>
+              <th class="px-4 py-3 text-left text-[11px] font-medium text-white tracking-wide" style="width: 60px">图片</th>
+              <th class="px-4 py-3 text-left text-[11px] font-medium text-white tracking-wide">商品名称</th>
+              <th class="px-4 py-3 text-left text-[11px] font-medium text-white tracking-wide">品牌</th>
+              <th class="px-4 py-3 text-left text-[11px] font-medium text-white tracking-wide">出现时间</th>
+              <th class="px-4 py-3 text-left text-[11px] font-medium text-white tracking-wide">时长(秒)</th>
+              <th class="px-4 py-3 text-left text-[11px] font-medium text-white tracking-wide">提及次数</th>
+              <th class="px-4 py-3 text-left text-[11px] font-medium text-white tracking-wide">关键词</th>
+              <th class="px-4 py-3 text-left text-[11px] font-medium text-white tracking-wide">操作</th>
             </tr>
           </thead>
           <tbody>
@@ -224,12 +224,17 @@ const goBack = () => {
               @click="router.push(`/lives/${liveId}/products/${product.itemCode}?from=live`)"
               class="border-b border-gray-100 hover:bg-gray-50 transition-colors cursor-pointer"
             >
-              <td class="px-4 py-3 font-mono text-gray-900">{{ product.itemCode }}</td>
-              <td class="px-4 py-3 text-gray-900 font-medium">{{ product.productName }}</td>
-              <td class="px-4 py-3 text-gray-700">{{ product.brand }}</td>
-              <td class="px-4 py-3 text-gray-700">{{ product.startTime }} - {{ product.endTime }}</td>
-              <td class="px-4 py-3 text-gray-700">{{ product.duration }}秒</td>
-              <td class="px-4 py-3 text-gray-700">{{ product.mentions }}次</td>
+              <td class="px-4 py-3">
+                <div class="w-10 h-10 bg-gray-200 rounded-sm"></div>
+              </td>
+              <td class="px-4 py-3">
+                <div class="text-[13px] font-medium text-gray-900">{{ product.productName }}</div>
+                <div class="text-[11px] text-gray-500 mt-0.5">{{ product.itemCode }}</div>
+              </td>
+              <td class="px-4 py-3 text-[13px] text-gray-700">{{ product.brand }}</td>
+              <td class="px-4 py-3 text-[13px] text-gray-700">{{ product.startTime }} - {{ product.endTime }}</td>
+              <td class="px-4 py-3 text-[13px] text-gray-700">{{ product.duration }}秒</td>
+              <td class="px-4 py-3 text-[13px] text-gray-700">{{ product.mentions }}次</td>
               <td class="px-4 py-3">
                 <div class="flex flex-wrap gap-1">
                   <span

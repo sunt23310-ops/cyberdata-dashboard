@@ -128,6 +128,7 @@ function goToLiveDetail(liveId: string) {
         { label: 'Dashboard' }
       ]"
       title="Dashboard"
+      title-class="text-5xl font-semibold text-gray-900"
     />
 
     <!-- Content Area -->
@@ -139,13 +140,12 @@ function goToLiveDetail(liveId: string) {
           :key="key"
           @click="selectMetric(key as MetricType)"
           class="cursor-pointer transition-all"
-          :class="selectedMetric === key ? 'ring-2 ring-[#FF3B30] ring-offset-2' : ''"
         >
           <MetricCard
             :title="data.label"
             :value="key === 'sales' ? formatAmount(data.value) : formatLargeNumber(data.value)"
             :change="data.change"
-            :variant="key === 'products' || key === 'lives' ? 'dark' : 'light'"
+            :selected="selectedMetric === key"
           />
         </div>
       </div>
@@ -175,6 +175,11 @@ function goToLiveDetail(liveId: string) {
                 />
                 <Calendar class="absolute left-2.5 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400 pointer-events-none" />
               </div>
+              <button
+                class="px-4 py-1.5 bg-[#FF3B30] text-white text-sm font-medium rounded-sm hover:bg-[#E0352B] transition-colors"
+              >
+                确定
+              </button>
             </div>
           </div>
           <BarChart :data="currentChartData" />
@@ -193,7 +198,7 @@ function goToLiveDetail(liveId: string) {
         <div class="col-span-2 bg-white rounded-sm shadow-sm border border-gray-200 p-6">
           <div class="flex items-center justify-between mb-4">
             <h3 class="text-lg font-semibold text-gray-900">商品类目</h3>
-            <RouterLink to="/products" class="text-sm text-[#FF3B30] hover:underline">
+            <RouterLink to="/products" class="text-xs text-[#FF3B30] hover:underline">
               查看全部
             </RouterLink>
           </div>
@@ -224,20 +229,20 @@ function goToLiveDetail(liveId: string) {
         <div class="col-span-3 bg-white rounded-sm shadow-sm border border-gray-200">
           <div class="flex items-center justify-between p-6 border-b border-gray-200">
             <h3 class="text-lg font-semibold text-gray-900">最近直播</h3>
-            <RouterLink to="/lives" class="text-sm text-[#FF3B30] hover:underline">
+            <RouterLink to="/lives" class="text-xs text-[#FF3B30] hover:underline">
               查看全部
             </RouterLink>
           </div>
 
           <div class="overflow-x-auto">
-            <table class="w-full text-sm">
+            <table class="w-full">
               <thead>
-                <tr class="bg-gray-50">
-                  <th class="px-6 py-3 text-left font-medium text-gray-500">直播ID</th>
-                  <th class="px-6 py-3 text-left font-medium text-gray-500">主播</th>
-                  <th class="px-6 py-3 text-left font-medium text-gray-500">时长</th>
-                  <th class="px-6 py-3 text-left font-medium text-gray-500">GMV</th>
-                  <th class="px-6 py-3 text-left font-medium text-gray-500">日期</th>
+                <tr class="bg-[#0A0A0A]">
+                  <th class="px-6 py-3 text-left text-[11px] font-medium text-white tracking-wide">直播ID</th>
+                  <th class="px-6 py-3 text-left text-[11px] font-medium text-white tracking-wide">主播</th>
+                  <th class="px-6 py-3 text-left text-[11px] font-medium text-white tracking-wide">时长</th>
+                  <th class="px-6 py-3 text-left text-[11px] font-medium text-white tracking-wide">GMV</th>
+                  <th class="px-6 py-3 text-left text-[11px] font-medium text-white tracking-wide">日期</th>
                 </tr>
               </thead>
               <tbody>
@@ -247,11 +252,11 @@ function goToLiveDetail(liveId: string) {
                   @click="goToLiveDetail(live.id)"
                   class="border-b border-gray-100 hover:bg-gray-50 transition-colors cursor-pointer"
                 >
-                  <td class="px-6 py-4 text-gray-900 font-mono">{{ live.id }}</td>
-                  <td class="px-6 py-4 text-gray-900">{{ live.anchor }}</td>
-                  <td class="px-6 py-4 text-gray-600">{{ formatDurationMinutes(live.duration) }}</td>
-                  <td class="px-6 py-4 text-gray-900 font-medium">{{ formatAmount(live.gmv) }}</td>
-                  <td class="px-6 py-4 text-gray-600">{{ live.date }}</td>
+                  <td class="px-6 py-4 text-[13px] text-gray-900 font-mono">{{ live.id }}</td>
+                  <td class="px-6 py-4 text-[13px] text-gray-900">{{ live.anchor }}</td>
+                  <td class="px-6 py-4 text-[13px] text-gray-600">{{ formatDurationMinutes(live.duration) }}</td>
+                  <td class="px-6 py-4 text-[13px] text-gray-900 font-medium">{{ formatAmount(live.gmv) }}</td>
+                  <td class="px-6 py-4 text-[13px] text-gray-600">{{ live.date }}</td>
                 </tr>
               </tbody>
             </table>

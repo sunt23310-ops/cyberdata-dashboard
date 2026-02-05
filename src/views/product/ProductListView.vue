@@ -178,7 +178,7 @@ function goToDetail(itemCode: string) {
 
 <template>
   <div class="min-h-screen bg-gray-50">
-    <PageHeader :breadcrumbs="breadcrumbs" title="商品库" />
+    <PageHeader :breadcrumbs="breadcrumbs" title="商品库" title-class="text-5xl font-semibold text-gray-900" />
 
     <div class="p-6">
       <!-- Filter Row -->
@@ -220,62 +220,62 @@ function goToDetail(itemCode: string) {
 
       <!-- Table -->
       <div class="bg-white rounded-sm border border-gray-200">
-        <table class="w-full text-sm">
-          <thead class="bg-gray-50 text-gray-600">
+        <table class="w-full">
+          <thead class="bg-[#0A0A0A] text-white">
             <tr>
-              <th class="px-4 py-3 text-left font-medium" style="width: 60px">图片</th>
+              <th class="px-4 py-3 text-left text-[11px] font-medium tracking-wide" style="width: 60px">图片</th>
               <th
-                class="px-4 py-3 text-left font-medium cursor-pointer hover:text-[#FF3B30] select-none"
+                class="px-4 py-3 text-left text-[11px] font-medium tracking-wide cursor-pointer hover:text-gray-300 select-none"
                 @click="toggleSort('productName')"
               >
                 <span class="inline-flex items-center gap-1">
                   商品名称
-                  <component :is="getSortIcon('productName')" class="w-4 h-4" />
+                  <component :is="getSortIcon('productName')" class="w-3 h-3" />
                 </span>
               </th>
               <th
-                class="px-4 py-3 text-left font-medium cursor-pointer hover:text-[#FF3B30] select-none"
+                class="px-4 py-3 text-left text-[11px] font-medium tracking-wide cursor-pointer hover:text-gray-300 select-none"
                 @click="toggleSort('brand')"
               >
                 <span class="inline-flex items-center gap-1">
                   品牌
-                  <component :is="getSortIcon('brand')" class="w-4 h-4" />
+                  <component :is="getSortIcon('brand')" class="w-3 h-3" />
                 </span>
               </th>
               <th
-                class="px-4 py-3 text-left font-medium cursor-pointer hover:text-[#FF3B30] select-none"
+                class="px-4 py-3 text-left text-[11px] font-medium tracking-wide cursor-pointer hover:text-gray-300 select-none"
                 @click="toggleSort('category')"
               >
                 <span class="inline-flex items-center gap-1">
                   类目
-                  <component :is="getSortIcon('category')" class="w-4 h-4" />
+                  <component :is="getSortIcon('category')" class="w-3 h-3" />
                 </span>
               </th>
               <th
-                class="px-4 py-3 text-left font-medium cursor-pointer hover:text-[#FF3B30] select-none"
+                class="px-4 py-3 text-left text-[11px] font-medium tracking-wide cursor-pointer hover:text-gray-300 select-none"
                 @click="toggleSort('couponPrice')"
               >
                 <span class="inline-flex items-center gap-1">
                   价格
-                  <component :is="getSortIcon('couponPrice')" class="w-4 h-4" />
+                  <component :is="getSortIcon('couponPrice')" class="w-3 h-3" />
                 </span>
               </th>
               <th
-                class="px-4 py-3 text-left font-medium cursor-pointer hover:text-[#FF3B30] select-none"
+                class="px-4 py-3 text-left text-[11px] font-medium tracking-wide cursor-pointer hover:text-gray-300 select-none"
                 @click="toggleSort('sales')"
               >
                 <span class="inline-flex items-center gap-1">
                   销量
-                  <component :is="getSortIcon('sales')" class="w-4 h-4" />
+                  <component :is="getSortIcon('sales')" class="w-3 h-3" />
                 </span>
               </th>
               <th
-                class="px-4 py-3 text-left font-medium cursor-pointer hover:text-[#FF3B30] select-none"
+                class="px-4 py-3 text-left text-[11px] font-medium tracking-wide cursor-pointer hover:text-gray-300 select-none"
                 @click="toggleSort('gmv')"
               >
                 <span class="inline-flex items-center gap-1">
                   GMV
-                  <component :is="getSortIcon('gmv')" class="w-4 h-4" />
+                  <component :is="getSortIcon('gmv')" class="w-3 h-3" />
                 </span>
               </th>
             </tr>
@@ -288,20 +288,20 @@ function goToDetail(itemCode: string) {
               class="border-b border-gray-100 hover:bg-gray-50 transition-colors cursor-pointer"
             >
               <td class="px-4 py-3">
-                <div class="w-12 h-12 bg-gray-200 rounded-sm"></div>
+                <div class="w-10 h-10 bg-gray-200 rounded-sm"></div>
               </td>
               <td class="px-4 py-3">
-                <div class="font-medium text-gray-900">{{ product.productName }}</div>
-                <div class="text-gray-500 text-xs mt-1">{{ product.itemCode }}</div>
+                <div class="text-[13px] font-medium text-gray-900">{{ product.productName }}</div>
+                <div class="text-[11px] text-gray-500 mt-1">{{ product.itemCode }}</div>
               </td>
-              <td class="px-4 py-3 text-gray-700">{{ product.brand }}</td>
-              <td class="px-4 py-3 text-gray-700">{{ product.category }}</td>
+              <td class="px-4 py-3 text-[13px] text-gray-700">{{ product.brand }}</td>
+              <td class="px-4 py-3 text-[13px] text-gray-700">{{ product.category }}</td>
               <td class="px-4 py-3">
-                <div class="line-through text-gray-400 text-xs">{{ formatPrice(product.originalPrice) }}</div>
-                <div class="text-[#FF3B30] font-medium">{{ formatPrice(product.couponPrice) }}</div>
+                <div class="line-through text-gray-400 text-[11px]">{{ formatPrice(product.originalPrice) }}</div>
+                <div class="text-[13px] text-[#FF3B30] font-medium">{{ formatPrice(product.couponPrice) }}</div>
               </td>
-              <td class="px-4 py-3 text-gray-700">{{ formatLargeNumber(product.sales) }}</td>
-              <td class="px-4 py-3 text-gray-700">{{ formatAmount(product.gmv) }}</td>
+              <td class="px-4 py-3 text-[13px] text-gray-700">{{ formatLargeNumber(product.sales) }}</td>
+              <td class="px-4 py-3 text-[13px] text-[#FF3B30] font-semibold">{{ formatAmount(product.gmv) }}</td>
             </tr>
             <tr v-if="paginatedProducts.length === 0">
               <td colspan="7" class="px-4 py-12 text-center text-gray-500">

@@ -96,7 +96,7 @@ const goBack = () => {
 
     <div class="p-6">
       <!-- Live Info Bar -->
-      <div class="bg-gray-50 rounded-sm border border-gray-200 px-6 py-4 mb-6 flex items-center gap-8 text-sm">
+      <div class="bg-gray-50 rounded-sm border border-gray-200 px-6 py-4 mb-6 flex items-center gap-8 text-[13px]">
         <div class="flex items-center gap-2">
           <span class="text-gray-500">直播ID:</span>
           <span class="font-mono font-medium text-gray-900">{{ detail.liveId }}</span>
@@ -126,7 +126,7 @@ const goBack = () => {
           <!-- Product Details -->
           <div class="flex-1">
             <div class="flex items-start gap-3 mb-4">
-              <h2 class="text-xl font-bold text-gray-900">{{ detail.productName }}</h2>
+              <h2 class="text-4xl font-bold text-gray-900">{{ detail.productName }}</h2>
               <span
                 class="px-3 py-0.5 text-xs font-medium rounded-full flex-shrink-0"
                 :class="detail.status === 'on_sale' ? 'bg-green-100 text-green-700' : 'bg-gray-100 text-gray-600'"
@@ -135,7 +135,7 @@ const goBack = () => {
               </span>
             </div>
 
-            <div class="grid grid-cols-3 gap-4 mb-4 text-sm">
+            <div class="grid grid-cols-3 gap-4 mb-4 text-[13px]">
               <div>
                 <span class="text-gray-500">品牌</span>
                 <p class="font-medium text-gray-900 mt-1">{{ detail.brand }}</p>

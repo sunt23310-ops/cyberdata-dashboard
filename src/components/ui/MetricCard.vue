@@ -7,12 +7,14 @@ interface Props {
   value: string | number
   change: number
   changeType?: 'percent' | 'count'
-  variant?: 'dark' | 'light'
+  selected?: boolean
+  size?: 'default' | 'small'
 }
 
 const props = withDefaults(defineProps<Props>(), {
   changeType: 'percent',
-  variant: 'light',
+  selected: false,
+  size: 'default',
 })
 
 const isPositive = computed(() => props.change >= 0)
@@ -26,18 +28,28 @@ const formattedChange = computed(() => {
 })
 
 const containerClasses = computed(() => {
-  const base = 'rounded-sm p-5 transition-shadow hover:shadow-md'
-  if (props.variant === 'dark') {
-    return `${base} bg-[#0A0A0A] text-white`
+  const base = 'rounded-lg p-7 transition-shadow hover:shadow-md'
+  if (props.selected) {
+    return `${base} bg-[#3D1A1C] text-white border-l-4 border-l-[#FF3B30]`
   }
   return `${base} bg-white border border-gray-200 text-gray-900`
 })
 
 const titleClasses = computed(() => {
-  if (props.variant === 'dark') {
-    return 'text-sm text-gray-400 tracking-wide'
+  if (props.selected) {
+    return 'text-xs text-[#888888]'
   }
-  return 'text-sm text-gray-500 tracking-wide'
+  return 'text-xs text-gray-500'
+})
+
+const valueClasses = computed(() => {
+  if (props.selected) {
+    return 'mt-3 text-5xl font-bold font-heading leading-tight tracking-tight'
+  }
+  if (props.size === 'small') {
+    return 'mt-3 text-[28px] font-bold font-heading leading-tight'
+  }
+  return 'mt-3 text-[32px] font-bold font-heading leading-tight'
 })
 </script>
 
@@ -45,22 +57,23 @@ const titleClasses = computed(() => {
   <div :class="containerClasses">
     <p :class="titleClasses">{{ title }}</p>
 
-    <p class="mt-2 text-2xl font-bold font-heading leading-tight">
+    <p :class="valueClasses">
       {{ value }}
     </p>
 
-    <div class="mt-3 flex items-center gap-1.5 text-sm font-medium">
+    <div class="mt-3 flex items-center gap-2 text-xs font-medium">
       <span
         v-if="isPositive"
         class="inline-flex items-center gap-1 text-green-500"
       >
-        <TrendingUp :size="16" :stroke-width="2.5" />
+        <TrendingUp :size="14" :stroke-width="2.5" />
         {{ formattedChange }}
       </span>
       <span v-else class="inline-flex items-center gap-1 text-red-500">
-        <TrendingDown :size="16" :stroke-width="2.5" />
+        <TrendingDown :size="14" :stroke-width="2.5" />
         {{ formattedChange }}
       </span>
+      <span :class="selected ? 'text-[#888888]' : 'text-gray-400'">较上期</span>
     </div>
   </div>
 </template>

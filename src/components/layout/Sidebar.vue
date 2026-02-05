@@ -27,13 +27,14 @@ function handleLogout() {
 <template>
   <aside class="w-[280px] min-w-[280px] h-screen bg-[#0A0A0A] flex flex-col">
     <!-- Logo Section -->
-    <div class="flex items-center gap-3 px-6 py-6">
-      <div class="w-9 h-9 bg-[#FF3B30] rounded-lg flex flex-col items-center justify-center gap-[3px]">
-        <span class="block w-4 h-[2px] bg-white rounded-full"></span>
-        <span class="block w-4 h-[2px] bg-white rounded-full"></span>
-        <span class="block w-4 h-[2px] bg-white rounded-full"></span>
+    <div class="flex items-center gap-3.5 px-8 py-12">
+      <div class="w-9 h-9 bg-[#FF3B30] rounded-lg relative">
+        <!-- Bar chart icon - 3 vertical bars -->
+        <span class="absolute w-1 h-2.5 bg-white rounded-sm" style="left: 7px; top: 19px;"></span>
+        <span class="absolute w-1 h-[18px] bg-white rounded-sm" style="left: 16px; top: 11px;"></span>
+        <span class="absolute w-1 h-3.5 bg-white rounded-sm" style="left: 25px; top: 15px;"></span>
       </div>
-      <span class="text-white text-lg font-semibold tracking-wide">赛博数据</span>
+      <span class="text-white text-base font-bold tracking-widest">赛博数据</span>
     </div>
 
     <!-- Navigation -->

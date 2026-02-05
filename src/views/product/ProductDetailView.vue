@@ -124,7 +124,7 @@ const goBack = () => {
           <div class="flex-1">
             <div class="flex items-start justify-between mb-4">
               <div>
-                <h2 class="text-2xl font-bold text-gray-900 mb-2">{{ product.productName }}</h2>
+                <h2 class="text-4xl font-bold text-gray-900 mb-2">{{ product.productName }}</h2>
                 <p class="text-sm text-gray-500">商品编码: {{ product.itemCode }}</p>
               </div>
               <span class="px-3 py-1 text-xs font-medium bg-green-100 text-green-700 rounded-full">
@@ -209,16 +209,16 @@ const goBack = () => {
           <h3 class="text-lg font-semibold text-gray-900">关联直播</h3>
         </div>
 
-        <table class="w-full text-sm">
-          <thead class="bg-gray-50">
+        <table class="w-full">
+          <thead class="bg-[#0A0A0A]">
             <tr>
-              <th class="px-4 py-3 text-left text-gray-600 font-medium">直播ID</th>
-              <th class="px-4 py-3 text-left text-gray-600 font-medium">主播</th>
-              <th class="px-4 py-3 text-left text-gray-600 font-medium">播出时间</th>
-              <th class="px-4 py-3 text-left text-gray-600 font-medium">时长(秒)</th>
-              <th class="px-4 py-3 text-left text-gray-600 font-medium">提及次数</th>
-              <th class="px-4 py-3 text-left text-gray-600 font-medium">关键词</th>
-              <th class="px-4 py-3 text-left text-gray-600 font-medium">操作</th>
+              <th class="px-4 py-3 text-left text-[11px] font-medium text-white tracking-wide">直播ID</th>
+              <th class="px-4 py-3 text-left text-[11px] font-medium text-white tracking-wide">主播</th>
+              <th class="px-4 py-3 text-left text-[11px] font-medium text-white tracking-wide">播出时间</th>
+              <th class="px-4 py-3 text-left text-[11px] font-medium text-white tracking-wide">时长(秒)</th>
+              <th class="px-4 py-3 text-left text-[11px] font-medium text-white tracking-wide">提及次数</th>
+              <th class="px-4 py-3 text-left text-[11px] font-medium text-white tracking-wide">关键词</th>
+              <th class="px-4 py-3 text-left text-[11px] font-medium text-white tracking-wide">操作</th>
             </tr>
           </thead>
           <tbody>
@@ -228,11 +228,11 @@ const goBack = () => {
               @click="router.push(`/lives/${live.liveId}/products/${productId}`)"
               class="border-b border-gray-100 hover:bg-gray-50 transition-colors cursor-pointer"
             >
-              <td class="px-4 py-3 font-mono text-gray-900">{{ live.liveId }}</td>
-              <td class="px-4 py-3 text-gray-900">{{ live.anchor }}</td>
-              <td class="px-4 py-3 text-gray-700">{{ live.startTime }} - {{ live.endTime }}</td>
-              <td class="px-4 py-3 text-gray-700">{{ live.duration }}秒</td>
-              <td class="px-4 py-3 text-gray-700">{{ live.mentions }}次</td>
+              <td class="px-4 py-3 text-[13px] font-mono text-gray-900">{{ live.liveId }}</td>
+              <td class="px-4 py-3 text-[13px] text-gray-900">{{ live.anchor }}</td>
+              <td class="px-4 py-3 text-[13px] text-gray-700">{{ live.startTime }} - {{ live.endTime }}</td>
+              <td class="px-4 py-3 text-[13px] text-gray-700">{{ live.duration }}秒</td>
+              <td class="px-4 py-3 text-[13px] text-gray-700">{{ live.mentions }}次</td>
               <td class="px-4 py-3">
                 <div class="flex flex-wrap gap-1">
                   <span

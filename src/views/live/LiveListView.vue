@@ -185,62 +185,62 @@ function goToDetail(liveId: string) {
 
       <!-- Table -->
       <div class="bg-white rounded-sm border border-gray-200 overflow-hidden">
-        <table class="w-full text-sm">
-          <thead class="bg-gray-50">
+        <table class="w-full">
+          <thead class="bg-[#0A0A0A]">
             <tr>
-              <th class="px-4 py-3 text-left text-gray-600 font-medium">直播ID</th>
+              <th class="px-4 py-3 text-left text-[11px] font-medium text-white tracking-wide">直播ID</th>
               <th
-                class="px-4 py-3 text-left text-gray-600 font-medium cursor-pointer hover:text-[#FF3B30] select-none"
+                class="px-4 py-3 text-left text-[11px] font-medium text-white tracking-wide cursor-pointer hover:text-gray-300 select-none"
                 @click="toggleSort('anchor')"
               >
                 <span class="inline-flex items-center gap-1">
                   主播
-                  <component :is="getSortIcon('anchor')" class="w-4 h-4" />
+                  <component :is="getSortIcon('anchor')" class="w-3 h-3" />
                 </span>
               </th>
               <th
-                class="px-4 py-3 text-left text-gray-600 font-medium cursor-pointer hover:text-[#FF3B30] select-none"
+                class="px-4 py-3 text-left text-[11px] font-medium text-white tracking-wide cursor-pointer hover:text-gray-300 select-none"
                 @click="toggleSort('viewCount')"
               >
                 <span class="inline-flex items-center gap-1">
                   观看量
-                  <component :is="getSortIcon('viewCount')" class="w-4 h-4" />
+                  <component :is="getSortIcon('viewCount')" class="w-3 h-3" />
                 </span>
               </th>
               <th
-                class="px-4 py-3 text-left text-gray-600 font-medium cursor-pointer hover:text-[#FF3B30] select-none"
+                class="px-4 py-3 text-left text-[11px] font-medium text-white tracking-wide cursor-pointer hover:text-gray-300 select-none"
                 @click="toggleSort('salesCount')"
               >
                 <span class="inline-flex items-center gap-1">
                   销量
-                  <component :is="getSortIcon('salesCount')" class="w-4 h-4" />
+                  <component :is="getSortIcon('salesCount')" class="w-3 h-3" />
                 </span>
               </th>
               <th
-                class="px-4 py-3 text-left text-gray-600 font-medium cursor-pointer hover:text-[#FF3B30] select-none"
+                class="px-4 py-3 text-left text-[11px] font-medium text-white tracking-wide cursor-pointer hover:text-gray-300 select-none"
                 @click="toggleSort('gmv')"
               >
                 <span class="inline-flex items-center gap-1">
                   GMV
-                  <component :is="getSortIcon('gmv')" class="w-4 h-4" />
+                  <component :is="getSortIcon('gmv')" class="w-3 h-3" />
                 </span>
               </th>
               <th
-                class="px-4 py-3 text-left text-gray-600 font-medium cursor-pointer hover:text-[#FF3B30] select-none"
+                class="px-4 py-3 text-left text-[11px] font-medium text-white tracking-wide cursor-pointer hover:text-gray-300 select-none"
                 @click="toggleSort('duration')"
               >
                 <span class="inline-flex items-center gap-1">
                   时长
-                  <component :is="getSortIcon('duration')" class="w-4 h-4" />
+                  <component :is="getSortIcon('duration')" class="w-3 h-3" />
                 </span>
               </th>
               <th
-                class="px-4 py-3 text-left text-gray-600 font-medium cursor-pointer hover:text-[#FF3B30] select-none"
+                class="px-4 py-3 text-left text-[11px] font-medium text-white tracking-wide cursor-pointer hover:text-gray-300 select-none"
                 @click="toggleSort('date')"
               >
                 <span class="inline-flex items-center gap-1">
                   日期
-                  <component :is="getSortIcon('date')" class="w-4 h-4" />
+                  <component :is="getSortIcon('date')" class="w-3 h-3" />
                 </span>
               </th>
             </tr>
@@ -252,13 +252,13 @@ function goToDetail(liveId: string) {
               @click="goToDetail(live.liveId)"
               class="border-b border-gray-100 hover:bg-gray-50 transition-colors cursor-pointer"
             >
-              <td class="px-4 py-3 font-mono text-gray-900">{{ live.liveId }}</td>
-              <td class="px-4 py-3 text-gray-900">{{ live.anchor }}</td>
-              <td class="px-4 py-3 text-gray-700">{{ formatLargeNumber(live.viewCount) }}</td>
-              <td class="px-4 py-3 text-gray-700">{{ formatLargeNumber(live.salesCount) }}</td>
-              <td class="px-4 py-3 text-gray-900 font-medium">{{ formatAmount(live.gmv) }}</td>
-              <td class="px-4 py-3 text-gray-700">{{ formatDuration(live.duration) }}</td>
-              <td class="px-4 py-3 text-gray-600">{{ formatDateTime(live.date) }}</td>
+              <td class="px-4 py-3 text-[13px] font-mono text-gray-900">{{ live.liveId }}</td>
+              <td class="px-4 py-3 text-[13px] text-gray-900">{{ live.anchor }}</td>
+              <td class="px-4 py-3 text-[13px] text-gray-700">{{ formatLargeNumber(live.viewCount) }}</td>
+              <td class="px-4 py-3 text-[13px] text-gray-700">{{ formatLargeNumber(live.salesCount) }}</td>
+              <td class="px-4 py-3 text-[13px] text-[#FF3B30] font-semibold">{{ formatAmount(live.gmv) }}</td>
+              <td class="px-4 py-3 text-[13px] text-gray-700">{{ formatDuration(live.duration) }}</td>
+              <td class="px-4 py-3 text-[13px] text-gray-600">{{ formatDateTime(live.date) }}</td>
             </tr>
             <tr v-if="paginatedLives.length === 0">
               <td colspan="7" class="px-4 py-12 text-center text-gray-500">
