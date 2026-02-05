@@ -178,7 +178,7 @@ function goToDetail(itemCode: string) {
 
 <template>
   <div class="min-h-screen bg-gray-50">
-    <PageHeader :breadcrumbs="breadcrumbs" title="商品库" title-class="text-5xl font-semibold text-gray-900" />
+    <PageHeader :breadcrumbs="breadcrumbs" title="商品库" />
 
     <div class="p-6">
       <!-- Filter Row -->

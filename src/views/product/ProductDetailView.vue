@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import { ref } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import { ArrowLeft } from 'lucide-vue-next'
 import PageHeader from '@/components/layout/PageHeader.vue'
@@ -15,6 +16,9 @@ const breadcrumbs = [
   { label: '商品详情' }
 ]
 
+// 当前选中的图片索引
+const selectedImageIndex = ref(0)
+
 // Mock product data (不变数据使用 const)
 const product = {
   itemCode: productId,
@@ -26,7 +30,14 @@ const product = {
   couponPrice: 899,
   sales: 156780,
   gmv: 140944220,
-  imageUrl: '',
+  images: [
+    { id: 1, url: '', alt: '商品主图' },
+    { id: 2, url: '', alt: '商品细节图1' },
+    { id: 3, url: '', alt: '商品细节图2' },
+    { id: 4, url: '', alt: '使用效果图' },
+    { id: 5, url: '', alt: '成分说明图' }
+  ],
+  keywords: ['小黑瓶', '精华', '修护', '抗老', '肌底液', '二裂酵母'],
   highlights: [
     '小黑瓶精华，全球畅销明星产品，年销量超千万瓶',
     '二裂酵母精粹，强韧肌肤屏障，改善肤质细腻毛孔',
@@ -115,9 +126,24 @@ const goBack = () => {
       <!-- Product Info Section -->
       <div class="bg-white rounded-sm border border-gray-200 p-6 mb-6">
         <div class="flex gap-8">
-          <!-- Product Image -->
-          <div class="w-80 h-80 bg-gray-100 rounded-sm flex-shrink-0 flex items-center justify-center text-gray-400">
-            <span class="text-sm">商品图片</span>
+          <!-- Product Images -->
+          <div class="flex-shrink-0">
+            <!-- Main Image -->
+            <div class="w-80 h-80 bg-gray-100 rounded-sm flex items-center justify-center text-gray-400 mb-3">
+              <span class="text-sm">{{ product.images[selectedImageIndex]?.alt || '商品图片' }}</span>
+            </div>
+            <!-- Thumbnails -->
+            <div class="flex gap-2">
+              <div
+                v-for="(image, index) in product.images"
+                :key="image.id"
+                @click="selectedImageIndex = index"
+                class="w-14 h-14 bg-gray-100 rounded-sm flex items-center justify-center cursor-pointer transition-all"
+                :class="selectedImageIndex === index ? 'ring-2 ring-[#FF3B30]' : 'hover:ring-1 hover:ring-gray-300'"
+              >
+                <span class="text-[10px] text-gray-400">{{ index + 1 }}</span>
+              </div>
+            </div>
           </div>
 
           <!-- Product Details -->
@@ -176,6 +202,19 @@ const goBack = () => {
       <!-- Product Highlights -->
       <div class="bg-white rounded-sm border border-gray-200 p-6 mb-6">
         <h3 class="text-lg font-semibold text-gray-900 mb-4">产品卖点</h3>
+
+        <!-- Keywords -->
+        <div class="flex flex-wrap gap-2 mb-4">
+          <span
+            v-for="keyword in product.keywords"
+            :key="keyword"
+            class="px-3 py-1.5 text-sm font-medium text-[#FF3B30] bg-red-50 border border-[#FF3B30]/20 rounded-sm"
+          >
+            {{ keyword }}
+          </span>
+        </div>
+
+        <!-- Highlights List -->
         <ul class="space-y-2">
           <li
             v-for="(highlight, index) in product.highlights"
