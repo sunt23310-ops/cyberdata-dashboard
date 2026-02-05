@@ -4,7 +4,7 @@ import { Eye, Calendar } from 'lucide-vue-next'
 import PageHeader from '@/components/layout/PageHeader.vue'
 import SearchInput from '@/components/ui/SearchInput.vue'
 import Pagination from '@/components/ui/Pagination.vue'
-import { formatDuration, formatLargeNumber, formatDateTime } from '@/utils/format'
+import { formatDuration, formatLargeNumber, formatDateTime, formatAmount } from '@/utils/format'
 import type { LiveListItem } from '@/types/live'
 
 const breadcrumbs = [
@@ -132,7 +132,7 @@ const handlePageChange = (page: number) => {
               <td class="px-4 py-3 text-gray-900">{{ live.anchor }}</td>
               <td class="px-4 py-3 text-gray-700">{{ formatLargeNumber(live.viewCount) }}</td>
               <td class="px-4 py-3 text-gray-700">{{ formatLargeNumber(live.salesCount) }}</td>
-              <td class="px-4 py-3 text-gray-900 font-medium">¥{{ formatLargeNumber(live.gmv) }}</td>
+              <td class="px-4 py-3 text-gray-900 font-medium">{{ formatAmount(live.gmv) }}</td>
               <td class="px-4 py-3 text-gray-700">{{ formatDuration(live.duration) }}</td>
               <td class="px-4 py-3 text-gray-600">{{ formatDateTime(live.date) }}</td>
               <td class="px-4 py-3">

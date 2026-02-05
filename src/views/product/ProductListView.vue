@@ -5,7 +5,7 @@ import PageHeader from '@/components/layout/PageHeader.vue'
 import SearchInput from '@/components/ui/SearchInput.vue'
 import FilterButton from '@/components/ui/FilterButton.vue'
 import Pagination from '@/components/ui/Pagination.vue'
-import { formatPrice, formatLargeNumber } from '@/utils/format'
+import { formatPrice, formatLargeNumber, formatAmount } from '@/utils/format'
 import type { ProductListItem } from '@/types/product'
 
 const breadcrumbs = [
@@ -173,7 +173,7 @@ const handlePageChange = (page: number) => {
                 <div class="text-[#FF3B30] font-medium">{{ formatPrice(product.couponPrice) }}</div>
               </td>
               <td class="px-4 py-3 text-gray-700">{{ formatLargeNumber(product.sales) }}</td>
-              <td class="px-4 py-3 text-gray-700">{{ formatPrice(product.gmv) }}</td>
+              <td class="px-4 py-3 text-gray-700">{{ formatAmount(product.gmv) }}</td>
               <td class="px-4 py-3">
                 <router-link
                   :to="'/products/' + product.itemCode"

@@ -16,7 +16,7 @@ function isActive(path: string): boolean {
   if (path === '/') {
     return route.path === '/'
   }
-  return route.path.startsWith(path)
+  return route.path === path || route.path.startsWith(path + '/')
 }
 
 function handleLogout() {

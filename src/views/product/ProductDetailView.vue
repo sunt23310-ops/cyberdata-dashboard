@@ -2,7 +2,7 @@
 import { useRoute, useRouter } from 'vue-router'
 import { ArrowLeft, Eye } from 'lucide-vue-next'
 import PageHeader from '@/components/layout/PageHeader.vue'
-import { formatPrice, formatLargeNumber } from '@/utils/format'
+import { formatPrice, formatLargeNumber, formatAmount } from '@/utils/format'
 import type { ProductLiveItem } from '@/types/product'
 
 const route = useRoute()
@@ -136,7 +136,7 @@ const goBack = () => {
                 </div>
                 <div>
                   <p class="text-sm text-gray-500 mb-1">GMV</p>
-                  <p class="text-gray-900 font-medium">{{ formatPrice(product.gmv) }}</p>
+                  <p class="text-gray-900 font-medium">{{ formatAmount(product.gmv) }}</p>
                 </div>
               </div>
             </div>
