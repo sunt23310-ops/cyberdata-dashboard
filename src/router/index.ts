@@ -40,6 +40,12 @@ const router = createRouter({
       component: () => import('@/views/live/LiveDetailView.vue'),
       meta: { requiresAuth: true },
     },
+    {
+      path: '/lives/:liveId/products/:itemCode',
+      name: 'LiveProductDetail',
+      component: () => import('@/views/live/LiveProductDetailView.vue'),
+      meta: { requiresAuth: true },
+    },
   ],
 })
 

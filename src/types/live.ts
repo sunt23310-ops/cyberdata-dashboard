@@ -74,3 +74,44 @@ export interface LiveProductItem {
   mentions: number
   keywords: string[]
 }
+
+// 视频切片
+export interface VideoSegment {
+  name: string
+  startTime: string
+  endTime: string
+  duration: number
+}
+
+// 转录片段
+export interface TranscriptSegment {
+  speaker: string
+  startTime: string
+  endTime: string
+  text: string
+}
+
+// 直播商品详情（直播中某商品的完整表现）
+export interface LiveProductDetail {
+  liveId: string
+  anchor: string
+  liveStartTime: string
+  totalDuration: number
+  itemCode: string
+  productName: string
+  brand: string
+  category: string
+  originalPrice: number
+  couponPrice: number
+  discountInfo?: string
+  status: 'on_sale' | 'off_sale'
+  startTime: string
+  endTime: string
+  duration: number
+  mentions: number
+  confidence: number
+  keywords: string[]
+  videoSegments: VideoSegment[]
+  transcripts: TranscriptSegment[]
+  speakers: { name: string; ratio: number }[]
+}

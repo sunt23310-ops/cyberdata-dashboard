@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { useRoute, useRouter } from 'vue-router'
-import { ArrowLeft, Eye } from 'lucide-vue-next'
+import { ArrowLeft } from 'lucide-vue-next'
 import PageHeader from '@/components/layout/PageHeader.vue'
 import { formatPrice, formatLargeNumber, formatAmount } from '@/utils/format'
 import type { ProductLiveItem } from '@/types/product'
@@ -225,7 +225,8 @@ const goBack = () => {
             <tr
               v-for="live in relatedLives"
               :key="live.liveId"
-              class="border-b border-gray-100 hover:bg-gray-50 transition-colors"
+              @click="router.push(`/lives/${live.liveId}/products/${productId}`)"
+              class="border-b border-gray-100 hover:bg-gray-50 transition-colors cursor-pointer"
             >
               <td class="px-4 py-3 font-mono text-gray-900">{{ live.liveId }}</td>
               <td class="px-4 py-3 text-gray-900">{{ live.anchor }}</td>
@@ -244,12 +245,7 @@ const goBack = () => {
                 </div>
               </td>
               <td class="px-4 py-3">
-                <router-link
-                  :to="'/lives/' + live.liveId"
-                  class="text-gray-500 hover:text-[#FF3B30] transition-colors"
-                >
-                  <Eye class="w-5 h-5" />
-                </router-link>
+                <span class="text-[#FF3B30] text-xs font-medium">查看详情 →</span>
               </td>
             </tr>
           </tbody>

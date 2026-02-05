@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { useRoute, useRouter } from 'vue-router'
-import { ArrowLeft, Eye } from 'lucide-vue-next'
+import { ArrowLeft } from 'lucide-vue-next'
 import PageHeader from '@/components/layout/PageHeader.vue'
 import MetricCard from '@/components/ui/MetricCard.vue'
 import { formatDuration, formatLargeNumber, formatAmount } from '@/utils/format'
@@ -221,7 +221,8 @@ const goBack = () => {
             <tr
               v-for="product in liveProducts"
               :key="product.itemCode"
-              class="border-b border-gray-100 hover:bg-gray-50 transition-colors"
+              @click="router.push(`/lives/${liveId}/products/${product.itemCode}?from=live`)"
+              class="border-b border-gray-100 hover:bg-gray-50 transition-colors cursor-pointer"
             >
               <td class="px-4 py-3 font-mono text-gray-900">{{ product.itemCode }}</td>
               <td class="px-4 py-3 text-gray-900 font-medium">{{ product.productName }}</td>
@@ -241,12 +242,7 @@ const goBack = () => {
                 </div>
               </td>
               <td class="px-4 py-3">
-                <router-link
-                  :to="'/products/' + product.itemCode"
-                  class="text-gray-500 hover:text-[#FF3B30] transition-colors"
-                >
-                  <Eye class="w-5 h-5" />
-                </router-link>
+                <span class="text-[#FF3B30] text-xs font-medium">查看详情 →</span>
               </td>
             </tr>
           </tbody>
