@@ -11,6 +11,26 @@ export interface Live {
   createdAt: string
 }
 
+// 直播列表项（视图使用）
+export interface LiveListItem {
+  liveId: string
+  anchor: string
+  viewCount: number
+  salesCount: number
+  gmv: number
+  duration: number
+  date: string
+}
+
+// 最近直播会话（Dashboard 使用）
+export interface LiveSession {
+  id: string
+  anchor: string
+  duration: number
+  gmv: number
+  date: string
+}
+
 // 互动量明细
 export interface InteractionDetail {
   likeCount: number
@@ -46,11 +66,11 @@ export interface LiveDetail {
 export interface LiveProductItem {
   itemCode: string
   productName: string
+  brand: string
   mainImage?: string
   startTime: string
   endTime: string
   duration: number
-  price?: number
-  mentionCount?: number
-  keyPhrases?: string[]
+  mentions: number
+  keywords: string[]
 }

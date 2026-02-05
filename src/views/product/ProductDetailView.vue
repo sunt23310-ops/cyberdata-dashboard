@@ -1,8 +1,9 @@
 <script setup lang="ts">
-import { ref } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import { ArrowLeft, Eye } from 'lucide-vue-next'
 import PageHeader from '@/components/layout/PageHeader.vue'
+import { formatPrice, formatLargeNumber } from '@/utils/format'
+import type { ProductLiveItem } from '@/types/product'
 
 const route = useRoute()
 const router = useRouter()
@@ -14,8 +15,8 @@ const breadcrumbs = [
   { label: '商品详情' }
 ]
 
-// Mock product data
-const product = ref({
+// Mock product data (不变数据使用 const)
+const product = {
   itemCode: productId,
   productName: '高端护肤精华液',
   brand: '兰蔻',
@@ -38,10 +39,10 @@ const product = ref({
     { label: '保质期', value: '36个月' },
     { label: '适用肤质', value: '所有肤质' }
   ]
-})
+}
 
-// Mock related lives
-const relatedLives = ref([
+// Mock related lives (不变数据使用 const)
+const relatedLives: ProductLiveItem[] = [
   {
     liveId: 'LIVE001',
     anchor: '李佳琦',
@@ -60,18 +61,7 @@ const relatedLives = ref([
     mentions: 8,
     keywords: ['护肤', '精华液', '保湿']
   }
-])
-
-const formatPrice = (price: number): string => {
-  return '¥' + price.toFixed(2)
-}
-
-const formatNumber = (num: number): string => {
-  if (num >= 10000) {
-    return (num / 10000).toFixed(1) + '万'
-  }
-  return num.toLocaleString()
-}
+]
 
 const goBack = () => {
   router.push('/products')
@@ -129,7 +119,7 @@ const goBack = () => {
               </div>
               <div>
                 <p class="text-sm text-gray-500 mb-1">销量</p>
-                <p class="text-gray-900 font-medium">{{ formatNumber(product.sales) }}</p>
+                <p class="text-gray-900 font-medium">{{ formatLargeNumber(product.sales) }}</p>
               </div>
             </div>
 

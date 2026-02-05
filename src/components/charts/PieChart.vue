@@ -102,8 +102,7 @@ watch(
   () => props.data,
   () => {
     setOptions(buildOptions(), true)
-  },
-  { deep: true }
+  }
 )
 </script>
 

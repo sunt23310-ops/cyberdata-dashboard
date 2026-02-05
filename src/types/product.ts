@@ -11,6 +11,19 @@ export interface Product {
   gmv: number
 }
 
+// 商品列表项（视图使用，包含额外字段）
+export interface ProductListItem {
+  itemCode: string
+  productName: string
+  brand: string
+  category: string
+  originalPrice: number
+  couponPrice: number
+  sales: number
+  gmv: number
+  imageUrl?: string
+}
+
 // 价格信息
 export interface PricingInfo {
   originalPrice: number
@@ -47,12 +60,10 @@ export interface ProductDetail {
 // 商品关联直播项
 export interface ProductLiveItem {
   liveId: string
-  influencerId: string
+  anchor: string
   startTime: string
   endTime: string
   duration: number
-  keyPhrases?: string[]
-  speakers?: Speaker[]
-  mentionCount?: number
-  liveDate: string
+  mentions: number
+  keywords: string[]
 }

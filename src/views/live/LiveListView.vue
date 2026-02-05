@@ -4,16 +4,8 @@ import { Eye, Calendar } from 'lucide-vue-next'
 import PageHeader from '@/components/layout/PageHeader.vue'
 import SearchInput from '@/components/ui/SearchInput.vue'
 import Pagination from '@/components/ui/Pagination.vue'
-
-interface Live {
-  liveId: string
-  anchor: string
-  viewCount: number
-  salesCount: number
-  gmv: number
-  duration: number
-  date: string
-}
+import { formatDuration, formatLargeNumber, formatDateTime } from '@/utils/format'
+import type { LiveListItem } from '@/types/live'
 
 const breadcrumbs = [
   { label: 'Home', path: '/' },
@@ -26,7 +18,7 @@ const endDate = ref('')
 const currentPage = ref(1)
 const pageSize = ref(10)
 
-const mockLives: Live[] = [
+const mockLives: LiveListItem[] = [
   {
     liveId: 'LIVE001',
     anchor: '李佳琦',
@@ -75,29 +67,6 @@ const mockLives: Live[] = [
 ]
 
 const total = computed(() => mockLives.length)
-
-const formatDuration = (seconds: number): string => {
-  const hours = Math.floor(seconds / 3600)
-  const minutes = Math.floor((seconds % 3600) / 60)
-  return hours + '小时' + minutes + '分'
-}
-
-const formatLargeNumber = (num: number): string => {
-  if (num >= 10000) {
-    return (num / 10000).toFixed(0) + '万'
-  }
-  return num.toString()
-}
-
-const formatDate = (isoString: string): string => {
-  const date = new Date(isoString)
-  const year = date.getFullYear()
-  const month = String(date.getMonth() + 1).padStart(2, '0')
-  const day = String(date.getDate()).padStart(2, '0')
-  const hours = String(date.getHours()).padStart(2, '0')
-  const minutes = String(date.getMinutes()).padStart(2, '0')
-  return year + '-' + month + '-' + day + ' ' + hours + ':' + minutes
-}
 
 const handlePageChange = (page: number) => {
   currentPage.value = page
@@ -165,7 +134,7 @@ const handlePageChange = (page: number) => {
               <td class="px-4 py-3 text-gray-700">{{ formatLargeNumber(live.salesCount) }}</td>
               <td class="px-4 py-3 text-gray-900 font-medium">¥{{ formatLargeNumber(live.gmv) }}</td>
               <td class="px-4 py-3 text-gray-700">{{ formatDuration(live.duration) }}</td>
-              <td class="px-4 py-3 text-gray-600">{{ formatDate(live.date) }}</td>
+              <td class="px-4 py-3 text-gray-600">{{ formatDateTime(live.date) }}</td>
               <td class="px-4 py-3">
                 <router-link
                   :to="'/lives/' + live.liveId"

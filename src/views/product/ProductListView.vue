@@ -5,18 +5,8 @@ import PageHeader from '@/components/layout/PageHeader.vue'
 import SearchInput from '@/components/ui/SearchInput.vue'
 import FilterButton from '@/components/ui/FilterButton.vue'
 import Pagination from '@/components/ui/Pagination.vue'
-
-interface Product {
-  itemCode: string
-  productName: string
-  brand: string
-  category: string
-  originalPrice: number
-  couponPrice: number
-  sales: number
-  gmv: number
-  imageUrl: string
-}
+import { formatPrice, formatLargeNumber } from '@/utils/format'
+import type { ProductListItem } from '@/types/product'
 
 const breadcrumbs = [
   { label: 'Home', path: '/' },
@@ -58,7 +48,8 @@ const priceOptions = [
   { label: '1000以上', value: '1000+' }
 ]
 
-const mockProducts: Product[] = [
+// Mock data (不变数据使用 const)
+const mockProducts: ProductListItem[] = [
   {
     itemCode: 'SKU001',
     productName: '高端护肤精华液',
@@ -67,8 +58,7 @@ const mockProducts: Product[] = [
     originalPrice: 899,
     couponPrice: 699,
     sales: 12345,
-    gmv: 8623155,
-    imageUrl: ''
+    gmv: 8623155
   },
   {
     itemCode: 'SKU002',
@@ -78,8 +68,7 @@ const mockProducts: Product[] = [
     originalPrice: 129,
     couponPrice: 89,
     sales: 45678,
-    gmv: 4065342,
-    imageUrl: ''
+    gmv: 4065342
   },
   {
     itemCode: 'SKU003',
@@ -89,8 +78,7 @@ const mockProducts: Product[] = [
     originalPrice: 1280,
     couponPrice: 980,
     sales: 8765,
-    gmv: 8589700,
-    imageUrl: ''
+    gmv: 8589700
   },
   {
     itemCode: 'SKU004',
@@ -100,8 +88,7 @@ const mockProducts: Product[] = [
     originalPrice: 79,
     couponPrice: 59,
     sales: 23456,
-    gmv: 1383904,
-    imageUrl: ''
+    gmv: 1383904
   },
   {
     itemCode: 'SKU005',
@@ -111,23 +98,11 @@ const mockProducts: Product[] = [
     originalPrice: 298,
     couponPrice: 248,
     sales: 34567,
-    gmv: 8572616,
-    imageUrl: ''
+    gmv: 8572616
   }
 ]
 
 const total = computed(() => mockProducts.length)
-
-const formatPrice = (price: number): string => {
-  return '¥' + price.toFixed(2)
-}
-
-const formatNumber = (num: number): string => {
-  if (num >= 10000) {
-    return (num / 10000).toFixed(1) + '万'
-  }
-  return num.toLocaleString()
-}
 
 const handlePageChange = (page: number) => {
   currentPage.value = page
@@ -197,7 +172,7 @@ const handlePageChange = (page: number) => {
                 <div class="line-through text-gray-400 text-xs">{{ formatPrice(product.originalPrice) }}</div>
                 <div class="text-[#FF3B30] font-medium">{{ formatPrice(product.couponPrice) }}</div>
               </td>
-              <td class="px-4 py-3 text-gray-700">{{ formatNumber(product.sales) }}</td>
+              <td class="px-4 py-3 text-gray-700">{{ formatLargeNumber(product.sales) }}</td>
               <td class="px-4 py-3 text-gray-700">{{ formatPrice(product.gmv) }}</td>
               <td class="px-4 py-3">
                 <router-link

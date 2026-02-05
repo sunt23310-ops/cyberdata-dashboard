@@ -1,4 +1,4 @@
-import { ref, onUnmounted, unref, type Ref, shallowRef } from 'vue'
+import { onUnmounted, unref, type Ref, shallowRef } from 'vue'
 import * as echarts from 'echarts'
 import type { EChartsOption, ECharts } from 'echarts'
 

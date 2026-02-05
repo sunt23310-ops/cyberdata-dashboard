@@ -1,9 +1,10 @@
 <script setup lang="ts">
-import { ref } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import { ArrowLeft, Eye } from 'lucide-vue-next'
 import PageHeader from '@/components/layout/PageHeader.vue'
 import MetricCard from '@/components/ui/MetricCard.vue'
+import { formatDuration, formatLargeNumber, formatAmount } from '@/utils/format'
+import type { LiveProductItem } from '@/types/live'
 
 const route = useRoute()
 const router = useRouter()
@@ -15,8 +16,8 @@ const breadcrumbs = [
   { label: '直播详情' }
 ]
 
-// Mock live data
-const live = ref({
+// Mock live data (不变数据使用 const)
+const live = {
   liveId: liveId,
   anchor: '李佳琦',
   startTime: '2024-01-15 20:00:00',
@@ -25,10 +26,10 @@ const live = ref({
   salesCount: { value: 85600, change: 12.3 },
   gmv: { value: 45600000, change: 15.7 },
   interaction: { value: 2580000, change: 6.2 }
-})
+}
 
-// Mock products in this live
-const liveProducts = ref([
+// Mock products in this live (不变数据使用 const)
+const liveProducts: LiveProductItem[] = [
   {
     itemCode: 'SKU001',
     productName: '高端护肤精华液',
@@ -69,29 +70,7 @@ const liveProducts = ref([
     mentions: 10,
     keywords: ['防晒', 'SPF50', '隔离']
   }
-])
-
-const formatDuration = (seconds: number): string => {
-  const hours = Math.floor(seconds / 3600)
-  const minutes = Math.floor((seconds % 3600) / 60)
-  return hours + '小时' + minutes + '分'
-}
-
-const formatLargeNumber = (num: number): string => {
-  if (num >= 10000) {
-    return (num / 10000).toFixed(0) + '万'
-  }
-  return num.toString()
-}
-
-const formatGMV = (value: number): string => {
-  if (value >= 100000000) {
-    return '¥' + (value / 100000000).toFixed(2) + '亿'
-  } else if (value >= 10000) {
-    return '¥' + (value / 10000).toFixed(2) + '万'
-  }
-  return '¥' + value.toLocaleString()
-}
+]
 
 const goBack = () => {
   router.push('/lives')
@@ -146,7 +125,7 @@ const goBack = () => {
         />
         <MetricCard
           title="GMV"
-          :value="formatGMV(live.gmv.value)"
+          :value="formatAmount(live.gmv.value)"
           :change="live.gmv.change"
           variant="dark"
         />

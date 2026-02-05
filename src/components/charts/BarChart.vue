@@ -133,8 +133,7 @@ watch(
   () => [props.data, props.color],
   () => {
     setOptions(buildOptions(), true)
-  },
-  { deep: true }
+  }
 )
 </script>
 

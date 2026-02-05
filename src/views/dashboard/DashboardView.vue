@@ -5,6 +5,8 @@ import PageHeader from '@/components/layout/PageHeader.vue'
 import MetricCard from '@/components/ui/MetricCard.vue'
 import BarChart from '@/components/charts/BarChart.vue'
 import PieChart from '@/components/charts/PieChart.vue'
+import { formatAmount, formatDurationMinutes } from '@/utils/format'
+import type { LiveSession } from '@/types/live'
 
 // Time period selection
 const selectedPeriod = ref('7天')
@@ -14,26 +16,16 @@ const selectPeriod = (period: string) => {
   selectedPeriod.value = period
 }
 
-// Mock metrics data with change values
-const metrics = ref({
+// Mock metrics data with change values (不变数据使用 const)
+const metrics = {
   productCount: { value: 12580, change: 5.2 },
   liveCount: { value: 856, change: 12.8 },
   totalSales: { value: 15680000, change: 8.5 },
   totalVolume: { value: 285600, change: -2.3 }
-})
-
-// Format sales amount with abbreviation
-const formatSales = (value: number): string => {
-  if (value >= 100000000) {
-    return '¥' + (value / 100000000).toFixed(2) + '亿'
-  } else if (value >= 10000) {
-    return '¥' + (value / 10000).toFixed(2) + '万'
-  }
-  return '¥' + value.toLocaleString()
 }
 
-// Mock bar chart data - format expected by BarChart component
-const barChartData = ref([
+// Mock bar chart data - format expected by BarChart component (不变数据使用 const)
+const barChartData = [
   { date: '1月', value: 1200000 },
   { date: '2月', value: 1900000 },
   { date: '3月', value: 1500000 },
@@ -41,27 +33,19 @@ const barChartData = ref([
   { date: '5月', value: 1800000 },
   { date: '6月', value: 2500000 },
   { date: '7月', value: 2100000 }
-])
+]
 
-// Mock pie chart data - format expected by PieChart component
-const pieChartData = ref([
+// Mock pie chart data - format expected by PieChart component (不变数据使用 const)
+const pieChartData = [
   { category: '美妆', value: 35, percentage: 35 },
   { category: '服饰', value: 25, percentage: 25 },
   { category: '食品', value: 20, percentage: 20 },
   { category: '数码', value: 12, percentage: 12 },
   { category: '家居', value: 8, percentage: 8 }
-])
+]
 
-// Mock recent lives data
-interface LiveSession {
-  id: string
-  anchor: string
-  duration: number
-  gmv: number
-  date: string
-}
-
-const recentLives = ref<LiveSession[]>([
+// Mock recent lives data (不变数据使用 const)
+const recentLives: LiveSession[] = [
   {
     id: 'LIVE001',
     anchor: '小美直播间',
@@ -97,22 +81,7 @@ const recentLives = ref<LiveSession[]>([
     gmv: 312000,
     date: '2024-01-13'
   }
-])
-
-// Format duration in minutes to hours:minutes
-const formatDuration = (minutes: number): string => {
-  const hours = Math.floor(minutes / 60)
-  const mins = minutes % 60
-  return hours > 0 ? `${hours}h ${mins}m` : `${mins}m`
-}
-
-// Format GMV
-const formatGMV = (value: number): string => {
-  if (value >= 10000) {
-    return '¥' + (value / 10000).toFixed(1) + '万'
-  }
-  return '¥' + value.toLocaleString()
-}
+]
 </script>
 
 <template>
@@ -162,7 +131,7 @@ const formatGMV = (value: number): string => {
         />
         <MetricCard
           title="销售总额"
-          :value="formatSales(metrics.totalSales.value)"
+          :value="formatAmount(metrics.totalSales.value)"
           :change="metrics.totalSales.change"
           variant="light"
         />
@@ -220,8 +189,8 @@ const formatGMV = (value: number): string => {
               >
                 <td class="px-6 py-4 text-gray-900 font-mono">{{ live.id }}</td>
                 <td class="px-6 py-4 text-gray-900">{{ live.anchor }}</td>
-                <td class="px-6 py-4 text-gray-600">{{ formatDuration(live.duration) }}</td>
-                <td class="px-6 py-4 text-gray-900 font-medium">{{ formatGMV(live.gmv) }}</td>
+                <td class="px-6 py-4 text-gray-600">{{ formatDurationMinutes(live.duration) }}</td>
+                <td class="px-6 py-4 text-gray-900 font-medium">{{ formatAmount(live.gmv) }}</td>
                 <td class="px-6 py-4 text-gray-600">{{ live.date }}</td>
               </tr>
             </tbody>

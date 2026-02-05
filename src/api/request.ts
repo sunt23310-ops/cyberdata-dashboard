@@ -1,6 +1,7 @@
-import axios from 'axios'
+import axios, { type AxiosResponse } from 'axios'
 import type { ApiResponse } from '@/types'
 import router from '@/router'
+import { getStorageItem, setStorageItem, STORAGE_KEYS, clearAuthStorage } from '@/utils/storage'
 
 const request = axios.create({
   baseURL: import.meta.env.VITE_API_BASE_URL || '/eden',
@@ -13,16 +14,16 @@ let pendingRequests: Array<(token: string) => void> = []
 
 // 请求拦截器
 request.interceptors.request.use((config) => {
-  const token = localStorage.getItem('token')
+  const token = getStorageItem(STORAGE_KEYS.TOKEN)
   if (token) {
     config.headers['token'] = token
   }
   return config
 })
 
-// 响应拦截器
+// 响应拦截器 - 返回解包后的 ApiResponse 数据
 request.interceptors.response.use(
-  (response) => {
+  (response): Promise<AxiosResponse> | AxiosResponse => {
     const data = response.data as ApiResponse
 
     // Token 过期
@@ -31,7 +32,7 @@ request.interceptors.response.use(
 
       if (!isRefreshing) {
         isRefreshing = true
-        const refreshToken = localStorage.getItem('refreshToken')
+        const refreshToken = getStorageItem(STORAGE_KEYS.REFRESH_TOKEN)
 
         return axios
           .post(`${originalConfig.baseURL}/eden/public/v1/auth/refresh`, {
@@ -39,8 +40,8 @@ request.interceptors.response.use(
           })
           .then((res) => {
             const { token, refreshToken: newRefreshToken } = res.data.data
-            localStorage.setItem('token', token)
-            localStorage.setItem('refreshToken', newRefreshToken)
+            setStorageItem(STORAGE_KEYS.TOKEN, token)
+            setStorageItem(STORAGE_KEYS.REFRESH_TOKEN, newRefreshToken)
 
             pendingRequests.forEach((cb) => cb(token))
             pendingRequests = []
@@ -49,7 +50,7 @@ request.interceptors.response.use(
             return request(originalConfig)
           })
           .catch(() => {
-            localStorage.clear()
+            clearAuthStorage()
             router.push('/login')
             return Promise.reject(new Error('登录已失效'))
           })
@@ -68,7 +69,7 @@ request.interceptors.response.use(
 
     // 登录失效
     if (data.code === 5101) {
-      localStorage.clear()
+      clearAuthStorage()
       router.push('/login')
       return Promise.reject(new Error('登录已失效，请重新登录'))
     }
@@ -78,7 +79,8 @@ request.interceptors.response.use(
       return Promise.reject(new Error(data.message || '请求失败'))
     }
 
-    return data
+    // 返回解包后的数据，使用类型断言
+    return data as unknown as AxiosResponse
   },
   (error) => {
     return Promise.reject(error)
