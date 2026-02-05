@@ -18,21 +18,21 @@ const selectPeriod = (period: string) => {
 
 // Mock metrics data with change values (不变数据使用 const)
 const metrics = {
-  productCount: { value: 12580, change: 5.2 },
-  liveCount: { value: 856, change: 12.8 },
-  totalSales: { value: 15680000, change: 8.5 },
-  totalVolume: { value: 285600, change: -2.3 }
+  productCount: { value: 32580, change: 5.2 },
+  liveCount: { value: 1856, change: 12.8 },
+  totalSales: { value: 256800000, change: 8.5 },
+  totalVolume: { value: 3285600, change: -2.3 }
 }
 
 // Mock bar chart data - format expected by BarChart component (不变数据使用 const)
 const barChartData = [
-  { date: '1月', value: 1200000 },
-  { date: '2月', value: 1900000 },
-  { date: '3月', value: 1500000 },
-  { date: '4月', value: 2200000 },
-  { date: '5月', value: 1800000 },
-  { date: '6月', value: 2500000 },
-  { date: '7月', value: 2100000 }
+  { date: '1月', value: 28500000 },
+  { date: '2月', value: 32100000 },
+  { date: '3月', value: 29800000 },
+  { date: '4月', value: 35600000 },
+  { date: '5月', value: 41200000 },
+  { date: '6月', value: 38900000 },
+  { date: '7月', value: 45700000 }
 ]
 
 // Mock pie chart data - format expected by PieChart component (不变数据使用 const)
@@ -48,38 +48,59 @@ const pieChartData = [
 const recentLives: LiveSession[] = [
   {
     id: 'LIVE001',
-    anchor: '小美直播间',
-    duration: 180,
-    gmv: 158000,
+    anchor: '李佳琦',
+    duration: 242,
+    gmv: 45600000,
     date: '2024-01-15'
   },
   {
     id: 'LIVE002',
-    anchor: '时尚潮流',
-    duration: 240,
-    gmv: 235000,
+    anchor: '薇娅',
+    duration: 180,
+    gmv: 32100000,
     date: '2024-01-14'
   },
   {
     id: 'LIVE003',
-    anchor: '好物推荐',
+    anchor: '罗永浩',
     duration: 120,
-    gmv: 89000,
-    date: '2024-01-14'
+    gmv: 18900000,
+    date: '2024-01-13'
   },
   {
     id: 'LIVE004',
-    anchor: '美食天地',
-    duration: 200,
-    gmv: 176000,
-    date: '2024-01-13'
+    anchor: '董宇辉',
+    duration: 210,
+    gmv: 28700000,
+    date: '2024-01-12'
   },
   {
     id: 'LIVE005',
-    anchor: '数码科技',
+    anchor: '小杨哥',
     duration: 150,
-    gmv: 312000,
-    date: '2024-01-13'
+    gmv: 21500000,
+    date: '2024-01-11'
+  },
+  {
+    id: 'LIVE006',
+    anchor: '辛巴',
+    duration: 190,
+    gmv: 24300000,
+    date: '2024-01-10'
+  },
+  {
+    id: 'LIVE007',
+    anchor: '雪梨',
+    duration: 135,
+    gmv: 15800000,
+    date: '2024-01-09'
+  },
+  {
+    id: 'LIVE008',
+    anchor: '烈儿宝贝',
+    duration: 130,
+    gmv: 12600000,
+    date: '2024-01-08'
   }
 ]
 </script>

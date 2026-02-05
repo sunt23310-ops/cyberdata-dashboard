@@ -63,6 +63,96 @@ const mockLives: LiveListItem[] = [
     gmv: 21500000,
     duration: 9000,
     date: '2024-01-11T19:00:00Z'
+  },
+  {
+    liveId: 'LIVE006',
+    anchor: '辛巴',
+    viewCount: 6800000,
+    salesCount: 52100,
+    gmv: 24300000,
+    duration: 11400,
+    date: '2024-01-10T20:30:00Z'
+  },
+  {
+    liveId: 'LIVE007',
+    anchor: '雪梨',
+    viewCount: 4500000,
+    salesCount: 38700,
+    gmv: 15800000,
+    duration: 8100,
+    date: '2024-01-09T19:00:00Z'
+  },
+  {
+    liveId: 'LIVE008',
+    anchor: '烈儿宝贝',
+    viewCount: 3900000,
+    salesCount: 31200,
+    gmv: 12600000,
+    duration: 7800,
+    date: '2024-01-08T20:00:00Z'
+  },
+  {
+    liveId: 'LIVE009',
+    anchor: '陈洁kiki',
+    viewCount: 2800000,
+    salesCount: 24500,
+    gmv: 9800000,
+    duration: 6300,
+    date: '2024-01-07T19:30:00Z'
+  },
+  {
+    liveId: 'LIVE010',
+    anchor: '刘媛媛',
+    viewCount: 3200000,
+    salesCount: 27800,
+    gmv: 11200000,
+    duration: 7200,
+    date: '2024-01-06T18:00:00Z'
+  },
+  {
+    liveId: 'LIVE011',
+    anchor: '李佳琦',
+    viewCount: 11500000,
+    salesCount: 79200,
+    gmv: 42100000,
+    duration: 13800,
+    date: '2024-01-05T20:00:00Z'
+  },
+  {
+    liveId: 'LIVE012',
+    anchor: '董宇辉',
+    viewCount: 8700000,
+    salesCount: 48600,
+    gmv: 25400000,
+    duration: 11100,
+    date: '2024-01-04T19:00:00Z'
+  },
+  {
+    liveId: 'LIVE013',
+    anchor: '贾乃亮',
+    viewCount: 4100000,
+    salesCount: 33500,
+    gmv: 14200000,
+    duration: 6600,
+    date: '2024-01-03T20:30:00Z'
+  },
+  {
+    liveId: 'LIVE014',
+    anchor: '朱梓骁',
+    viewCount: 3600000,
+    salesCount: 29100,
+    gmv: 11800000,
+    duration: 5400,
+    date: '2024-01-02T19:00:00Z'
+  },
+  {
+    liveId: 'LIVE015',
+    anchor: '张庭',
+    viewCount: 2500000,
+    salesCount: 21300,
+    gmv: 8700000,
+    duration: 5100,
+    date: '2024-01-01T18:00:00Z'
   }
 ]
 

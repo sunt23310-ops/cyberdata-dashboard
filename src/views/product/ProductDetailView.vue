@@ -18,26 +18,28 @@ const breadcrumbs = [
 // Mock product data (不变数据使用 const)
 const product = {
   itemCode: productId,
-  productName: '高端护肤精华液',
+  productName: '兰蔻小黑瓶精华肌底液 100ml',
   brand: '兰蔻',
   category: '护肤品 > 精华',
   shopName: '兰蔻官方旗舰店',
-  originalPrice: 899,
-  couponPrice: 699,
-  sales: 12345,
-  gmv: 8623155,
+  originalPrice: 1080,
+  couponPrice: 899,
+  sales: 156780,
+  gmv: 140944220,
   imageUrl: '',
   highlights: [
-    '小黑瓶精华，全球畅销明星产品',
-    '肌底修护，细腻毛孔，改善肤质',
-    '二裂酵母精粹，强韧肌肤屏障',
-    '适合各种肤质，温和不刺激'
+    '小黑瓶精华，全球畅销明星产品，年销量超千万瓶',
+    '二裂酵母精粹，强韧肌肤屏障，改善肤质细腻毛孔',
+    '适合各种肤质，温和不刺激，敏感肌也可使用',
+    '独特肌底修护科技，层层渗透直达肌底'
   ],
   specs: [
-    { label: '规格', value: '50ml/瓶' },
+    { label: '规格', value: '100ml/瓶' },
     { label: '产地', value: '法国' },
     { label: '保质期', value: '36个月' },
-    { label: '适用肤质', value: '所有肤质' }
+    { label: '适用肤质', value: '所有肤质' },
+    { label: '功效', value: '修护、保湿、抗老' },
+    { label: '主要成分', value: '二裂酵母发酵产物溶胞物' }
   ]
 }
 
@@ -60,6 +62,33 @@ const relatedLives: ProductLiveItem[] = [
     duration: 375,
     mentions: 8,
     keywords: ['护肤', '精华液', '保湿']
+  },
+  {
+    liveId: 'LIVE004',
+    anchor: '董宇辉',
+    startTime: '25:10',
+    endTime: '32:40',
+    duration: 450,
+    mentions: 15,
+    keywords: ['小黑瓶', '兰蔻', '肌底液']
+  },
+  {
+    liveId: 'LIVE006',
+    anchor: '辛巴',
+    startTime: '08:20',
+    endTime: '15:55',
+    duration: 455,
+    mentions: 10,
+    keywords: ['精华', '护肤', '修护']
+  },
+  {
+    liveId: 'LIVE011',
+    anchor: '李佳琦',
+    startTime: '38:00',
+    endTime: '45:30',
+    duration: 450,
+    mentions: 18,
+    keywords: ['小黑瓶', '明星产品', '抗老']
   }
 ]
 
