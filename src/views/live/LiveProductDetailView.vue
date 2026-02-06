@@ -5,7 +5,6 @@ import { ArrowLeft, Play, ChevronLeft, ChevronRight } from 'lucide-vue-next'
 import PageHeader from '@/components/layout/PageHeader.vue'
 import { formatDuration, formatSeconds } from '@/utils/format'
 import { getLiveProductDetail } from '@/mock'
-import type { Segment } from '@/types/live'
 
 const route = useRoute()
 const router = useRouter()
@@ -38,11 +37,8 @@ const goBack = () => {
   }
 }
 
-// 每个切片的当前截图索引
-const currentScreenshotIndex = ref<Record<string, number>>({})
-detail.segments.forEach((seg: Segment) => {
-  currentScreenshotIndex.value[seg.segmentId] = 0
-})
+// 截图轮播索引（独立媒体区）
+const currentScreenshotIndex = ref(0)
 
 // 每个切片的转录展开状态
 const expandedTranscripts = ref<Record<string, boolean>>({})
@@ -50,19 +46,14 @@ const expandedTranscripts = ref<Record<string, boolean>>({})
 // 产品信息 Tab 状态
 const activeProductTab = ref<'highlights' | 'ingredients'>('highlights')
 
-function prevScreenshot(segId: string, total: number) {
-  const current = currentScreenshotIndex.value[segId] ?? 0
-  currentScreenshotIndex.value[segId] = current > 0 ? current - 1 : total - 1
+function prevScreenshot() {
+  const total = detail.screenshots.length
+  currentScreenshotIndex.value = currentScreenshotIndex.value > 0 ? currentScreenshotIndex.value - 1 : total - 1
 }
 
-function nextScreenshot(segId: string, total: number) {
-  const current = currentScreenshotIndex.value[segId] ?? 0
-  currentScreenshotIndex.value[segId] = current < total - 1 ? current + 1 : 0
-}
-
-function getCurrentScreenshot(seg: Segment) {
-  const idx = currentScreenshotIndex.value[seg.segmentId] ?? 0
-  return seg.screenshots[idx]
+function nextScreenshot() {
+  const total = detail.screenshots.length
+  currentScreenshotIndex.value = currentScreenshotIndex.value < total - 1 ? currentScreenshotIndex.value + 1 : 0
 }
 
 function getTranscriptPreview(text: string) {
@@ -232,6 +223,55 @@ function getTranscriptPreview(text: string) {
         </div>
       </div>
 
+      <!-- Screenshots & Video Section -->
+      <div>
+        <h3 class="text-lg font-semibold text-foreground mb-4">直播截图与视频</h3>
+        <div class="bg-white border border-gray-200 rounded-lg p-6">
+          <div class="flex items-center justify-between mb-3">
+            <span class="text-sm font-semibold text-foreground font-[Noto_Sans_SC]">直播截图</span>
+          </div>
+          <div class="flex gap-4">
+            <!-- Left: Image Carousel -->
+            <div class="w-[520px] flex-shrink-0 space-y-2">
+              <div class="flex items-center">
+                <button
+                  @click="prevScreenshot()"
+                  class="w-9 h-[390px] flex items-center justify-center bg-gray-100 rounded-l-lg text-gray-500 hover:bg-gray-200 transition-colors text-xl font-semibold flex-shrink-0"
+                >
+                  <ChevronLeft class="w-5 h-5" />
+                </button>
+                <div class="flex-1 h-[390px] bg-gray-100 flex items-center justify-center">
+                  <span class="text-xs text-gray-400">{{ detail.screenshots[currentScreenshotIndex]?.path }}</span>
+                </div>
+                <button
+                  @click="nextScreenshot()"
+                  class="w-9 h-[390px] flex items-center justify-center bg-gray-100 rounded-r-lg text-gray-500 hover:bg-gray-200 transition-colors text-xl font-semibold flex-shrink-0"
+                >
+                  <ChevronRight class="w-5 h-5" />
+                </button>
+              </div>
+              <div class="flex items-center justify-between">
+                <span class="text-xs text-muted-foreground">{{ detail.screenshots[currentScreenshotIndex]?.description }}</span>
+                <span class="text-xs text-muted-foreground">{{ currentScreenshotIndex + 1 }} / {{ detail.screenshots.length }}</span>
+              </div>
+            </div>
+
+            <!-- Right: Video -->
+            <div class="flex-1 space-y-2" v-if="detail.video">
+              <div class="w-full h-[390px] bg-gray-900 rounded-lg flex items-center justify-center cursor-pointer group">
+                <div class="w-10 h-10 rounded-full bg-white/20 flex items-center justify-center group-hover:bg-white/30 transition-colors">
+                  <Play class="w-5 h-5 text-white ml-0.5" />
+                </div>
+              </div>
+              <div>
+                <p class="text-[13px] font-medium text-foreground">{{ detail.video.path }}</p>
+                <p class="text-xs text-muted-foreground">时长 {{ detail.video.duration }}秒</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
       <!-- Segments Section -->
       <div>
         <div class="flex items-center justify-between mb-5">
@@ -275,52 +315,6 @@ function getTranscriptPreview(text: string) {
             </div>
 
             <div class="h-px bg-gray-200"></div>
-
-            <!-- Media: Screenshots Carousel + Video -->
-            <div>
-              <div class="flex items-center justify-between mb-3">
-                <span class="text-sm font-semibold text-foreground font-[Noto_Sans_SC]">直播截图</span>
-              </div>
-              <div class="flex gap-4">
-                <!-- Left: Image Carousel -->
-                <div class="w-[520px] flex-shrink-0 space-y-2">
-                  <div class="flex items-center">
-                    <button
-                      @click="prevScreenshot(seg.segmentId, seg.screenshots.length)"
-                      class="w-9 h-[390px] flex items-center justify-center bg-gray-100 rounded-l-lg text-gray-500 hover:bg-gray-200 transition-colors text-xl font-semibold flex-shrink-0"
-                    >
-                      <ChevronLeft class="w-5 h-5" />
-                    </button>
-                    <div class="flex-1 h-[390px] bg-gray-100 flex items-center justify-center">
-                      <span class="text-xs text-gray-400">{{ getCurrentScreenshot(seg)?.path }}</span>
-                    </div>
-                    <button
-                      @click="nextScreenshot(seg.segmentId, seg.screenshots.length)"
-                      class="w-9 h-[390px] flex items-center justify-center bg-gray-100 rounded-r-lg text-gray-500 hover:bg-gray-200 transition-colors text-xl font-semibold flex-shrink-0"
-                    >
-                      <ChevronRight class="w-5 h-5" />
-                    </button>
-                  </div>
-                  <div class="flex items-center justify-between">
-                    <span class="text-xs text-muted-foreground">{{ getCurrentScreenshot(seg)?.description }}</span>
-                    <span class="text-xs text-muted-foreground">{{ (currentScreenshotIndex[seg.segmentId] ?? 0) + 1 }} / {{ seg.screenshots.length }}</span>
-                  </div>
-                </div>
-
-                <!-- Right: Video -->
-                <div class="flex-1 space-y-2" v-if="seg.video">
-                  <div class="w-full h-[390px] bg-gray-900 rounded-lg flex items-center justify-center cursor-pointer group">
-                    <div class="w-10 h-10 rounded-full bg-white/20 flex items-center justify-center group-hover:bg-white/30 transition-colors">
-                      <Play class="w-5 h-5 text-white ml-0.5" />
-                    </div>
-                  </div>
-                  <div>
-                    <p class="text-[13px] font-medium text-foreground">{{ seg.video.path }}</p>
-                    <p class="text-xs text-muted-foreground">时长 {{ seg.video.duration }}秒</p>
-                  </div>
-                </div>
-              </div>
-            </div>
 
             <!-- Transcript Section -->
             <div class="space-y-2">

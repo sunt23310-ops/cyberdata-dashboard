@@ -374,11 +374,12 @@ export function getLiveProductDetail(liveId: string, itemCode: string) {
   const seg1Text = seg1Template(productName, brand)
   const seg1Lines = seg1Text.split('\n').length
 
-  const seg1ScreenshotCount = 3 + (seed % 4) // 3-6张
-  const seg1Screenshots = Array.from({ length: seg1ScreenshotCount }, (_, i) => ({
-    path: `screenshot_seg1_${String(i + 1).padStart(2, '0')}.jpg`,
+  // 直播截图（独立于切片）
+  const screenshotCount = 3 + (seed % 4) // 3-6张
+  const screenshots = Array.from({ length: screenshotCount }, (_, i) => ({
+    path: `screenshot_${String(i + 1).padStart(3, '0')}.jpg`,
     description: descs[i % descs.length]!,
-    timestamp: seg1Start + Math.floor((seg1Duration / seg1ScreenshotCount) * i)
+    timestamp: seg1Start + Math.floor((seg1Duration / screenshotCount) * i)
   }))
 
   const segment1 = {
@@ -396,8 +397,6 @@ export function getLiveProductDetail(liveId: string, itemCode: string) {
     transcriptText: seg1Text,
     transcriptLines: seg1Lines,
     keyPhrases: keywords,
-    screenshots: seg1Screenshots,
-    video: { path: 'video_main.mp4', duration: seg1Duration },
     returnMentions: [] as ReturnMention[]
   }
 
@@ -415,13 +414,6 @@ export function getLiveProductDetail(liveId: string, itemCode: string) {
     const rmTemplate = returnTranscriptTemplates[seed % returnTranscriptTemplates.length]!
     const rmText = rmTemplate(productName)
     const rmLines = rmText.split('\n').length
-
-    const seg2ScreenshotCount = 2 + (seed % 3) // 2-4张
-    const seg2Screenshots = Array.from({ length: seg2ScreenshotCount }, (_, i) => ({
-      path: `screenshot_seg2_${String(i + 1).padStart(2, '0')}.jpg`,
-      description: descs[(i + 2) % descs.length]!,
-      timestamp: seg2Start + Math.floor((seg2Duration / seg2ScreenshotCount) * i)
-    }))
 
     const returnMention: ReturnMention = {
       mentionId: `mention_${seed}`,
@@ -455,8 +447,6 @@ export function getLiveProductDetail(liveId: string, itemCode: string) {
       transcriptText: rmText,
       transcriptLines: rmLines,
       keyPhrases: keywords.slice(0, 2),
-      screenshots: seg2Screenshots,
-      video: { path: 'video_return.mp4', duration: seg2Duration },
       returnMentions: [returnMention]
     })
     totalSegDuration += seg2Duration
@@ -485,6 +475,8 @@ export function getLiveProductDetail(liveId: string, itemCode: string) {
     totalSegmentDuration: totalSegDuration,
     highlights,
     ingredients,
+    screenshots,
+    video: { path: 'video_main.mp4', duration: seg1Duration },
     segments
   }
 }

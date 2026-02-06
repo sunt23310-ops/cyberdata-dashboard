@@ -159,8 +159,6 @@ export interface Segment {
   transcriptText: string
   transcriptLines: number     // 转录总行数
   keyPhrases: string[]
-  screenshots: SegmentScreenshot[]
-  video: SegmentVideo | null
   returnMentions: ReturnMention[]
 }
 
@@ -204,6 +202,9 @@ export interface LiveProductDetail {
   // 产品亮点和参数
   highlights: ProductHighlight[]
   ingredients: ProductIngredient[]
+  // 直播截图与视频
+  screenshots: SegmentScreenshot[]
+  video: SegmentVideo | null
   // 切片列表
   segments: Segment[]
 }
