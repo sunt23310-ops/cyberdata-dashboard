@@ -3,7 +3,7 @@ import { useRoute, useRouter } from 'vue-router'
 import { ArrowLeft } from 'lucide-vue-next'
 import PageHeader from '@/components/layout/PageHeader.vue'
 import MetricCard from '@/components/ui/MetricCard.vue'
-import { formatDuration, formatLargeNumber, formatAmount } from '@/utils/format'
+import { formatDuration, formatLargeNumber, formatAmount, formatSeconds, formatDateTime } from '@/utils/format'
 import type { LiveProductItem } from '@/types/live'
 import { getLiveDetail, getLiveProducts } from '@/mock'
 
@@ -17,16 +17,28 @@ const breadcrumbs = [
   { label: '直播详情' }
 ]
 
-// 从 mock 获取直播详情
+// 从 mock 获取直播详情 - 对齐 live_overview 字段
 const liveDetail = getLiveDetail(liveId)
 const live = {
   liveId: liveDetail.liveId,
+  influencerId: liveDetail.influencerId,
   anchor: liveDetail.anchor,
-  startTime: liveDetail.startTime,
+  createdAt: liveDetail.createdAt,
+  totalProducts: liveDetail.totalProducts,
   totalDuration: liveDetail.totalDuration,
+  // 所有指标带变化率
+  totalJoinCount: liveDetail.totalJoinCount,
   viewCount: liveDetail.viewCount,
-  salesCount: liveDetail.salesCount,
-  gmv: liveDetail.gmv,
+  avgPrice: liveDetail.avgPrice,
+  sales: liveDetail.sales,
+  saleAmount: liveDetail.saleAmount,
+  goBuyUv: liveDetail.goBuyUv,
+  goBuyCount: liveDetail.goBuyCount,
+  likeCount: liveDetail.likeCount,
+  commentCount: liveDetail.commentCount,
+  fansGrowth: liveDetail.fansGrowth,
+  itemCount: liveDetail.itemCount,
+  gmvItemCountRatio: liveDetail.gmvItemCountRatio,
   interaction: liveDetail.interaction
 }
 
@@ -60,8 +72,9 @@ const goBack = () => {
             <h2 class="text-4xl font-bold text-gray-900 mb-2">{{ live.anchor }} 直播间</h2>
             <div class="flex items-center gap-6 text-[13px] text-gray-500">
               <span>直播ID: <span class="font-mono text-gray-700">{{ live.liveId }}</span></span>
-              <span>开播时间: {{ live.startTime }}</span>
+              <span>开播时间: {{ formatDateTime(live.createdAt) }}</span>
               <span>总时长: {{ formatDuration(live.totalDuration) }}</span>
+              <span>商品数: {{ live.totalProducts }}</span>
             </div>
           </div>
           <span class="px-3 py-1 text-xs font-medium bg-gray-100 text-gray-700 rounded-full">
@@ -70,7 +83,7 @@ const goBack = () => {
         </div>
       </div>
 
-      <!-- Metrics Cards -->
+      <!-- Metrics Cards - 主要指标 -->
       <div class="grid grid-cols-4 gap-6 mb-6">
         <MetricCard
           title="观看量"
@@ -80,20 +93,76 @@ const goBack = () => {
         />
         <MetricCard
           title="销量"
-          :value="formatLargeNumber(live.salesCount.value)"
-          :change="live.salesCount.change"
+          :value="formatLargeNumber(live.sales.value)"
+          :change="live.sales.change"
           size="small"
         />
         <MetricCard
           title="GMV"
-          :value="formatAmount(live.gmv.value)"
-          :change="live.gmv.change"
+          :value="formatAmount(live.saleAmount.value)"
+          :change="live.saleAmount.change"
           size="small"
         />
         <MetricCard
           title="互动量"
           :value="formatLargeNumber(live.interaction.value)"
           :change="live.interaction.change"
+          size="small"
+        />
+      </div>
+
+      <!-- Metrics Cards - 次要指标 -->
+      <div class="grid grid-cols-4 gap-6 mb-6">
+        <MetricCard
+          title="总参与人数"
+          :value="formatLargeNumber(live.totalJoinCount.value)"
+          :change="live.totalJoinCount.change"
+          size="small"
+        />
+        <MetricCard
+          title="购买UV"
+          :value="formatLargeNumber(live.goBuyUv.value)"
+          :change="live.goBuyUv.change"
+          size="small"
+        />
+        <MetricCard
+          title="购买次数"
+          :value="formatLargeNumber(live.goBuyCount.value)"
+          :change="live.goBuyCount.change"
+          size="small"
+        />
+        <MetricCard
+          title="平均价格"
+          :value="formatAmount(live.avgPrice.value)"
+          :change="live.avgPrice.change"
+          size="small"
+        />
+      </div>
+
+      <!-- Metrics Cards - 用户增长指标 -->
+      <div class="grid grid-cols-4 gap-6 mb-6">
+        <MetricCard
+          title="点赞数"
+          :value="formatLargeNumber(live.likeCount.value)"
+          :change="live.likeCount.change"
+          size="small"
+        />
+        <MetricCard
+          title="评论数"
+          :value="formatLargeNumber(live.commentCount.value)"
+          :change="live.commentCount.change"
+          size="small"
+        />
+        <MetricCard
+          title="粉丝增长"
+          :value="formatLargeNumber(live.fansGrowth.value)"
+          :change="live.fansGrowth.change"
+          size="small"
+        />
+        <MetricCard
+          title="GMV/商品比"
+          :value="formatAmount(live.gmvItemCountRatio.value)"
+          :change="live.gmvItemCountRatio.change"
           size="small"
         />
       </div>
@@ -133,7 +202,7 @@ const goBack = () => {
                 <div class="text-[11px] text-gray-500 mt-0.5">{{ product.itemCode }}</div>
               </td>
               <td class="px-4 py-3 text-[13px] text-gray-700">{{ product.brand }}</td>
-              <td class="px-4 py-3 text-[13px] text-gray-700">{{ product.startTime }} - {{ product.endTime }}</td>
+              <td class="px-4 py-3 text-[13px] text-gray-700">{{ formatSeconds(product.startTime) }} - {{ formatSeconds(product.endTime) }}</td>
               <td class="px-4 py-3 text-[13px] text-gray-700">{{ product.duration }}秒</td>
               <td class="px-4 py-3 text-[13px] text-gray-700">{{ product.mentions }}次</td>
               <td class="px-4 py-3">

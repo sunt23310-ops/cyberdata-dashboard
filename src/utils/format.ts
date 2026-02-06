@@ -109,3 +109,19 @@ export function formatDate(isoString: string): string {
   const day = String(date.getDate()).padStart(2, '0')
   return `${year}-${month}-${day}`
 }
+
+/**
+ * 格式化秒数为 MM:SS 格式
+ * @param seconds 秒数
+ * @returns 格式化后的字符串，如 "04:44" 或 "1:30:00"
+ */
+export function formatSeconds(seconds: number): string {
+  const hours = Math.floor(seconds / 3600)
+  const minutes = Math.floor((seconds % 3600) / 60)
+  const secs = Math.floor(seconds % 60)
+
+  if (hours > 0) {
+    return `${hours}:${String(minutes).padStart(2, '0')}:${String(secs).padStart(2, '0')}`
+  }
+  return `${String(minutes).padStart(2, '0')}:${String(secs).padStart(2, '0')}`
+}

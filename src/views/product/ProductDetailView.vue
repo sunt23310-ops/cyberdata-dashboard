@@ -1,9 +1,9 @@
 <script setup lang="ts">
-import { ref } from 'vue'
+import { ref, computed } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import { ArrowLeft } from 'lucide-vue-next'
 import PageHeader from '@/components/layout/PageHeader.vue'
-import { formatPrice, formatLargeNumber, formatAmount } from '@/utils/format'
+import { formatLargeNumber, formatAmount, formatSeconds } from '@/utils/format'
 import type { ProductLiveItem } from '@/types/product'
 import { getProductDetail, getProductRelatedLives } from '@/mock'
 
@@ -20,11 +20,25 @@ const breadcrumbs = [
 // 当前选中的图片索引
 const selectedImageIndex = ref(0)
 
-// 从 mock 获取商品详情
+// 从 mock 获取商品详情 - 对齐 ProductDetail 类型
 const product = getProductDetail(productId)
 
 // 从 mock 获取关联直播
 const relatedLives: ProductLiveItem[] = getProductRelatedLives(productId)
+
+// 按类别分组的卖点
+const highlightsByCategory = computed(() => {
+  const grouped: Record<string, string[]> = {}
+  if (product?.highlights) {
+    product.highlights.forEach(h => {
+      if (!grouped[h.category]) {
+        grouped[h.category] = []
+      }
+      grouped[h.category]!.push(h.description)
+    })
+  }
+  return grouped
+})
 
 const goBack = () => {
   router.push('/products')
@@ -53,18 +67,18 @@ const goBack = () => {
           <div class="flex-shrink-0">
             <!-- Main Image -->
             <div class="w-80 h-80 bg-gray-100 rounded-sm flex items-center justify-center text-gray-400 mb-3">
-              <span class="text-sm">{{ product.images[selectedImageIndex]?.alt || '商品图片' }}</span>
+              <span class="text-sm">商品主图</span>
             </div>
-            <!-- Thumbnails -->
+            <!-- Thumbnails (模拟 5 张图片) -->
             <div class="flex gap-2">
               <div
-                v-for="(image, index) in product.images"
-                :key="image.id"
-                @click="selectedImageIndex = index"
+                v-for="index in 5"
+                :key="index"
+                @click="selectedImageIndex = index - 1"
                 class="w-14 h-14 bg-gray-100 rounded-sm flex items-center justify-center cursor-pointer transition-all"
-                :class="selectedImageIndex === index ? 'ring-2 ring-[#FF3B30]' : 'hover:ring-1 hover:ring-gray-300'"
+                :class="selectedImageIndex === index - 1 ? 'ring-2 ring-[#FF3B30]' : 'hover:ring-1 hover:ring-gray-300'"
               >
-                <span class="text-[10px] text-gray-400">{{ index + 1 }}</span>
+                <span class="text-[10px] text-gray-400">{{ index }}</span>
               </div>
             </div>
           </div>
@@ -76,8 +90,11 @@ const goBack = () => {
                 <h2 class="text-4xl font-bold text-gray-900 mb-2">{{ product.productName }}</h2>
                 <p class="text-sm text-gray-500">商品编码: {{ product.itemCode }}</p>
               </div>
-              <span class="px-3 py-1 text-xs font-medium bg-green-100 text-green-700 rounded-full">
-                在售
+              <span
+                class="px-3 py-1 text-xs font-medium rounded-full"
+                :class="product.status === 'on_sale' ? 'bg-green-100 text-green-700' : 'bg-gray-100 text-gray-700'"
+              >
+                {{ product.status === 'on_sale' ? '在售' : '下架' }}
               </span>
             </div>
 
@@ -89,7 +106,7 @@ const goBack = () => {
               </div>
               <div>
                 <p class="text-sm text-gray-500 mb-1">类目</p>
-                <p class="text-gray-900">{{ product.category }}</p>
+                <p class="text-gray-900">{{ product.categoryName }}</p>
               </div>
               <div>
                 <p class="text-sm text-gray-500 mb-1">店铺</p>
@@ -97,70 +114,89 @@ const goBack = () => {
               </div>
               <div>
                 <p class="text-sm text-gray-500 mb-1">销量</p>
-                <p class="text-gray-900 font-medium">{{ formatLargeNumber(product.sales) }}</p>
+                <p class="text-gray-900 font-medium">{{ formatLargeNumber(product.sale) }}</p>
               </div>
             </div>
 
-            <!-- Price Info -->
+            <!-- Price Info - 使用 pricing 对象 -->
             <div class="border-t border-gray-100 pt-4">
-              <div class="flex items-baseline gap-4">
+              <div class="flex items-baseline gap-6">
                 <div>
                   <p class="text-sm text-gray-500 mb-1">原价</p>
-                  <p class="text-gray-400 line-through">{{ formatPrice(product.originalPrice) }}</p>
+                  <p class="text-gray-400 line-through">{{ product.pricing.originalPrice }}</p>
                 </div>
                 <div>
                   <p class="text-sm text-gray-500 mb-1">到手价</p>
-                  <p class="text-2xl font-bold text-[#FF3B30]">{{ formatPrice(product.couponPrice) }}</p>
+                  <p class="text-2xl font-bold text-[#FF3B30]">{{ product.pricing.currentPrice }}</p>
                 </div>
                 <div>
                   <p class="text-sm text-gray-500 mb-1">GMV</p>
                   <p class="text-gray-900 font-medium">{{ formatAmount(product.gmv) }}</p>
                 </div>
               </div>
+              <!-- 优惠信息 -->
+              <div v-if="product.pricing.discountInfo || product.pricing.promotionStrategy" class="mt-3 flex gap-3">
+                <span
+                  v-if="product.pricing.discountInfo"
+                  class="px-2 py-1 text-xs bg-red-50 text-[#FF3B30] rounded"
+                >
+                  {{ product.pricing.discountInfo }}
+                </span>
+                <span
+                  v-if="product.pricing.promotionStrategy"
+                  class="px-2 py-1 text-xs bg-orange-50 text-orange-600 rounded"
+                >
+                  {{ product.pricing.promotionStrategy }}
+                </span>
+              </div>
             </div>
           </div>
         </div>
       </div>
 
-      <!-- Product Highlights -->
+      <!-- Product Highlights - 使用 HighlightItem 结构 -->
       <div class="bg-white rounded-sm border border-gray-200 p-6 mb-6">
         <h3 class="text-lg font-semibold text-gray-900 mb-4">产品卖点</h3>
 
-        <!-- Keywords -->
-        <div class="flex flex-wrap gap-2 mb-4">
-          <span
-            v-for="keyword in product.keywords"
-            :key="keyword"
-            class="px-3 py-1.5 text-sm font-medium text-[#FF3B30] bg-red-50 border border-[#FF3B30]/20 rounded-sm"
-          >
-            {{ keyword }}
-          </span>
+        <!-- 按类别展示卖点 -->
+        <div class="space-y-4">
+          <div v-for="(items, category) in highlightsByCategory" :key="category">
+            <p class="text-sm font-medium text-gray-500 mb-2">{{ category }}</p>
+            <ul class="space-y-2">
+              <li
+                v-for="(description, index) in items"
+                :key="index"
+                class="flex items-start gap-2 text-gray-700"
+              >
+                <span class="w-1.5 h-1.5 bg-[#FF3B30] rounded-full mt-2 flex-shrink-0"></span>
+                {{ description }}
+              </li>
+            </ul>
+          </div>
         </div>
 
-        <!-- Highlights List -->
-        <ul class="space-y-2">
-          <li
-            v-for="(highlight, index) in product.highlights"
-            :key="index"
-            class="flex items-start gap-2 text-gray-700"
-          >
-            <span class="w-1.5 h-1.5 bg-[#FF3B30] rounded-full mt-2 flex-shrink-0"></span>
-            {{ highlight }}
-          </li>
-        </ul>
+        <!-- 置信度评分 -->
+        <div v-if="product.confidenceScore" class="mt-4 pt-4 border-t border-gray-100">
+          <p class="text-sm text-gray-500">
+            置信度评分: <span class="font-medium text-gray-900">{{ (product.confidenceScore * 100).toFixed(1) }}%</span>
+          </p>
+        </div>
       </div>
 
-      <!-- Product Specs -->
+      <!-- Product Ingredients/Specs - 使用 IngredientItem 结构 -->
       <div class="bg-white rounded-sm border border-gray-200 p-6 mb-6">
         <h3 class="text-lg font-semibold text-gray-900 mb-4">产品规格</h3>
         <div class="grid grid-cols-2 gap-4">
           <div
-            v-for="spec in product.specs"
-            :key="spec.label"
+            v-for="ingredient in product.ingredients"
+            :key="ingredient.name"
             class="flex border-b border-gray-100 pb-3"
           >
-            <span class="w-24 text-sm text-gray-500 flex-shrink-0">{{ spec.label }}</span>
-            <span class="text-gray-900">{{ spec.value }}</span>
+            <span class="w-24 text-sm text-gray-500 flex-shrink-0">{{ ingredient.name }}</span>
+            <div class="flex-1">
+              <span class="text-gray-900">{{ ingredient.concentration }}</span>
+              <span v-if="ingredient.source" class="text-gray-500 text-sm ml-2">({{ ingredient.source }})</span>
+            </div>
           </div>
         </div>
       </div>
@@ -192,7 +228,7 @@ const goBack = () => {
             >
               <td class="px-4 py-3 text-[13px] font-mono text-gray-900">{{ live.liveId }}</td>
               <td class="px-4 py-3 text-[13px] text-gray-900">{{ live.anchor }}</td>
-              <td class="px-4 py-3 text-[13px] text-gray-700">{{ live.startTime }} - {{ live.endTime }}</td>
+              <td class="px-4 py-3 text-[13px] text-gray-700">{{ formatSeconds(live.startTime) }} - {{ formatSeconds(live.endTime) }}</td>
               <td class="px-4 py-3 text-[13px] text-gray-700">{{ live.duration }}秒</td>
               <td class="px-4 py-3 text-[13px] text-gray-700">{{ live.mentions }}次</td>
               <td class="px-4 py-3">

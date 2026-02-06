@@ -24,8 +24,8 @@ const categoryFilter = ref('')
 const brandFilter = ref('')
 const priceFilter = ref('')
 
-// Sort state
-type SortField = 'productName' | 'brand' | 'category' | 'couponPrice' | 'sales' | 'gmv' | null
+// Sort state - 对齐 live_product_src 字段名
+type SortField = 'title' | 'brandName' | 'categoryName' | 'couponPrice' | 'sale' | 'gmv' | null
 type SortOrder = 'asc' | 'desc'
 const sortField = ref<SortField>(null)
 const sortOrder = ref<SortOrder>('desc')
@@ -64,27 +64,27 @@ const priceOptions = [
   { label: '1000以上', value: '1000+' }
 ]
 
-// 筛选后的数据
+// 筛选后的数据 - 使用新字段名
 const filteredProducts = computed(() => {
   let result = [...mockProducts]
 
-  // 搜索过滤
+  // 搜索过滤 - 使用 title 代替 productName
   if (searchQuery.value.trim()) {
     const query = searchQuery.value.toLowerCase()
     result = result.filter(p =>
-      p.productName.toLowerCase().includes(query) ||
+      p.title.toLowerCase().includes(query) ||
       p.itemCode.toLowerCase().includes(query)
     )
   }
 
-  // 类目过滤
+  // 类目过滤 - 使用 categoryName，匹配分类路径中的关键词
   if (categoryFilter.value) {
-    result = result.filter(p => p.category === categoryFilter.value)
+    result = result.filter(p => p.categoryName.includes(categoryFilter.value))
   }
 
-  // 品牌过滤
+  // 品牌过滤 - 使用 brandName
   if (brandFilter.value) {
-    result = result.filter(p => p.brand === brandFilter.value)
+    result = result.filter(p => p.brandName === brandFilter.value)
   }
 
   // 价格区间过滤
@@ -210,29 +210,29 @@ function goToDetail(itemCode: string) {
               <th class="px-4 py-3 text-left text-[11px] font-medium tracking-wide" style="width: 60px">图片</th>
               <th
                 class="px-4 py-3 text-left text-[11px] font-medium tracking-wide cursor-pointer hover:text-gray-300 select-none"
-                @click="toggleSort('productName')"
+                @click="toggleSort('title')"
               >
                 <span class="inline-flex items-center gap-1">
                   商品名称
-                  <component :is="getSortIcon('productName')" class="w-3 h-3" />
+                  <component :is="getSortIcon('title')" class="w-3 h-3" />
                 </span>
               </th>
               <th
                 class="px-4 py-3 text-left text-[11px] font-medium tracking-wide cursor-pointer hover:text-gray-300 select-none"
-                @click="toggleSort('brand')"
+                @click="toggleSort('brandName')"
               >
                 <span class="inline-flex items-center gap-1">
                   品牌
-                  <component :is="getSortIcon('brand')" class="w-3 h-3" />
+                  <component :is="getSortIcon('brandName')" class="w-3 h-3" />
                 </span>
               </th>
               <th
                 class="px-4 py-3 text-left text-[11px] font-medium tracking-wide cursor-pointer hover:text-gray-300 select-none"
-                @click="toggleSort('category')"
+                @click="toggleSort('categoryName')"
               >
                 <span class="inline-flex items-center gap-1">
                   类目
-                  <component :is="getSortIcon('category')" class="w-3 h-3" />
+                  <component :is="getSortIcon('categoryName')" class="w-3 h-3" />
                 </span>
               </th>
               <th
@@ -246,11 +246,11 @@ function goToDetail(itemCode: string) {
               </th>
               <th
                 class="px-4 py-3 text-left text-[11px] font-medium tracking-wide cursor-pointer hover:text-gray-300 select-none"
-                @click="toggleSort('sales')"
+                @click="toggleSort('sale')"
               >
                 <span class="inline-flex items-center gap-1">
                   销量
-                  <component :is="getSortIcon('sales')" class="w-3 h-3" />
+                  <component :is="getSortIcon('sale')" class="w-3 h-3" />
                 </span>
               </th>
               <th
@@ -275,16 +275,16 @@ function goToDetail(itemCode: string) {
                 <div class="w-10 h-10 bg-gray-200 rounded-sm"></div>
               </td>
               <td class="px-4 py-3">
-                <div class="text-[13px] font-medium text-gray-900">{{ product.productName }}</div>
+                <div class="text-[13px] font-medium text-gray-900">{{ product.title }}</div>
                 <div class="text-[11px] text-gray-500 mt-1">{{ product.itemCode }}</div>
               </td>
-              <td class="px-4 py-3 text-[13px] text-gray-700">{{ product.brand }}</td>
-              <td class="px-4 py-3 text-[13px] text-gray-700">{{ product.category }}</td>
+              <td class="px-4 py-3 text-[13px] text-gray-700">{{ product.brandName }}</td>
+              <td class="px-4 py-3 text-[13px] text-gray-700">{{ product.categoryName }}</td>
               <td class="px-4 py-3">
-                <div class="line-through text-gray-400 text-[11px]">{{ formatPrice(product.originalPrice) }}</div>
+                <div class="line-through text-gray-400 text-[11px]">{{ formatPrice(product.price) }}</div>
                 <div class="text-[13px] text-[#FF3B30] font-medium">{{ formatPrice(product.couponPrice) }}</div>
               </td>
-              <td class="px-4 py-3 text-[13px] text-gray-700">{{ formatLargeNumber(product.sales) }}</td>
+              <td class="px-4 py-3 text-[13px] text-gray-700">{{ formatLargeNumber(product.sale) }}</td>
               <td class="px-4 py-3 text-[13px] text-[#FF3B30] font-semibold">{{ formatAmount(product.gmv) }}</td>
             </tr>
             <tr v-if="paginatedProducts.length === 0">

@@ -20,8 +20,8 @@ const endDate = ref('')
 const currentPage = ref(1)
 const pageSize = ref(10)
 
-// Sort state
-type SortField = 'anchor' | 'viewCount' | 'salesCount' | 'gmv' | 'duration' | 'date' | null
+// Sort state - 对齐 live_overview 字段名
+type SortField = 'anchor' | 'viewCount' | 'sales' | 'saleAmount' | 'totalDuration' | 'createdAt' | null
 type SortOrder = 'asc' | 'desc'
 const sortField = ref<SortField>(null)
 const sortOrder = ref<SortOrder>('desc')
@@ -39,15 +39,15 @@ const filteredLives = computed(() => {
     )
   }
 
-  // 日期过滤
+  // 日期过滤 - 使用 createdAt 字段
   if (startDate.value) {
     const start = new Date(startDate.value)
-    result = result.filter(l => new Date(l.date) >= start)
+    result = result.filter(l => new Date(l.createdAt) >= start)
   }
   if (endDate.value) {
     const end = new Date(endDate.value)
     end.setHours(23, 59, 59, 999)
-    result = result.filter(l => new Date(l.date) <= end)
+    result = result.filter(l => new Date(l.createdAt) <= end)
   }
 
   // 排序
@@ -57,9 +57,9 @@ const filteredLives = computed(() => {
       let aVal: string | number
       let bVal: string | number
 
-      if (field === 'date') {
-        aVal = new Date(a.date).getTime()
-        bVal = new Date(b.date).getTime()
+      if (field === 'createdAt') {
+        aVal = new Date(a.createdAt).getTime()
+        bVal = new Date(b.createdAt).getTime()
       } else {
         aVal = a[field]
         bVal = b[field]
@@ -191,38 +191,38 @@ function goToDetail(liveId: string) {
               </th>
               <th
                 class="px-4 py-3 text-left text-[11px] font-medium text-white tracking-wide cursor-pointer hover:text-gray-300 select-none"
-                @click="toggleSort('salesCount')"
+                @click="toggleSort('sales')"
               >
                 <span class="inline-flex items-center gap-1">
                   销量
-                  <component :is="getSortIcon('salesCount')" class="w-3 h-3" />
+                  <component :is="getSortIcon('sales')" class="w-3 h-3" />
                 </span>
               </th>
               <th
                 class="px-4 py-3 text-left text-[11px] font-medium text-white tracking-wide cursor-pointer hover:text-gray-300 select-none"
-                @click="toggleSort('gmv')"
+                @click="toggleSort('saleAmount')"
               >
                 <span class="inline-flex items-center gap-1">
                   GMV
-                  <component :is="getSortIcon('gmv')" class="w-3 h-3" />
+                  <component :is="getSortIcon('saleAmount')" class="w-3 h-3" />
                 </span>
               </th>
               <th
                 class="px-4 py-3 text-left text-[11px] font-medium text-white tracking-wide cursor-pointer hover:text-gray-300 select-none"
-                @click="toggleSort('duration')"
+                @click="toggleSort('totalDuration')"
               >
                 <span class="inline-flex items-center gap-1">
                   时长
-                  <component :is="getSortIcon('duration')" class="w-3 h-3" />
+                  <component :is="getSortIcon('totalDuration')" class="w-3 h-3" />
                 </span>
               </th>
               <th
                 class="px-4 py-3 text-left text-[11px] font-medium text-white tracking-wide cursor-pointer hover:text-gray-300 select-none"
-                @click="toggleSort('date')"
+                @click="toggleSort('createdAt')"
               >
                 <span class="inline-flex items-center gap-1">
                   日期
-                  <component :is="getSortIcon('date')" class="w-3 h-3" />
+                  <component :is="getSortIcon('createdAt')" class="w-3 h-3" />
                 </span>
               </th>
             </tr>
@@ -237,10 +237,10 @@ function goToDetail(liveId: string) {
               <td class="px-4 py-3 text-[13px] font-mono text-gray-900">{{ live.liveId }}</td>
               <td class="px-4 py-3 text-[13px] text-gray-900">{{ live.anchor }}</td>
               <td class="px-4 py-3 text-[13px] text-gray-700">{{ formatLargeNumber(live.viewCount) }}</td>
-              <td class="px-4 py-3 text-[13px] text-gray-700">{{ formatLargeNumber(live.salesCount) }}</td>
-              <td class="px-4 py-3 text-[13px] text-[#FF3B30] font-semibold">{{ formatAmount(live.gmv) }}</td>
-              <td class="px-4 py-3 text-[13px] text-gray-700">{{ formatDuration(live.duration) }}</td>
-              <td class="px-4 py-3 text-[13px] text-gray-600">{{ formatDateTime(live.date) }}</td>
+              <td class="px-4 py-3 text-[13px] text-gray-700">{{ formatLargeNumber(live.sales) }}</td>
+              <td class="px-4 py-3 text-[13px] text-[#FF3B30] font-semibold">{{ formatAmount(live.saleAmount) }}</td>
+              <td class="px-4 py-3 text-[13px] text-gray-700">{{ formatDuration(live.totalDuration) }}</td>
+              <td class="px-4 py-3 text-[13px] text-gray-600">{{ formatDateTime(live.createdAt) }}</td>
             </tr>
             <tr v-if="paginatedLives.length === 0">
               <td colspan="7" class="px-4 py-12 text-center text-gray-500">

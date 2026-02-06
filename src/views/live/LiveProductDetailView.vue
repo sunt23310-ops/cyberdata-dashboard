@@ -2,7 +2,7 @@
 import { useRoute, useRouter } from 'vue-router'
 import { ArrowLeft, Play, Timer } from 'lucide-vue-next'
 import PageHeader from '@/components/layout/PageHeader.vue'
-import { formatPrice, formatDuration } from '@/utils/format'
+import { formatDuration, formatSeconds } from '@/utils/format'
 import { getLiveProductDetail } from '@/mock'
 
 const route = useRoute()
@@ -109,19 +109,23 @@ const goBack = () => {
               </div>
             </div>
 
-            <!-- Price -->
+            <!-- Price - 使用 pricing 对象 -->
             <div class="bg-red-50 rounded-sm px-5 py-3 flex items-center gap-6">
               <div>
                 <p class="text-xs text-gray-500 mb-1">原价</p>
-                <p class="text-gray-400 line-through">{{ formatPrice(detail.originalPrice) }}</p>
+                <p class="text-gray-400 line-through">{{ detail.pricing.originalPrice }}</p>
               </div>
               <div>
                 <p class="text-xs text-gray-500 mb-1">到手价</p>
-                <p class="text-xl font-bold text-[#FF3B30]">{{ formatPrice(detail.couponPrice) }}</p>
+                <p class="text-xl font-bold text-[#FF3B30]">{{ detail.pricing.currentPrice }}</p>
               </div>
-              <div v-if="detail.discountInfo">
+              <div v-if="detail.pricing.discountInfo">
                 <p class="text-xs text-gray-500 mb-1">优惠</p>
-                <p class="text-sm font-medium text-green-600">{{ detail.discountInfo }}</p>
+                <p class="text-sm font-medium text-green-600">{{ detail.pricing.discountInfo }}</p>
+              </div>
+              <div v-if="detail.pricing.promotionStrategy">
+                <p class="text-xs text-gray-500 mb-1">促销</p>
+                <p class="text-sm font-medium text-orange-600">{{ detail.pricing.promotionStrategy }}</p>
               </div>
             </div>
           </div>
@@ -134,11 +138,11 @@ const goBack = () => {
         <div class="grid grid-cols-5 gap-4">
           <div class="bg-white rounded-sm border border-gray-200 p-5">
             <p class="text-xs text-gray-500 mb-2">开始时间</p>
-            <p class="text-2xl font-semibold text-gray-900">{{ detail.startTime }}</p>
+            <p class="text-2xl font-semibold text-gray-900">{{ formatSeconds(detail.startTime) }}</p>
           </div>
           <div class="bg-white rounded-sm border border-gray-200 p-5">
             <p class="text-xs text-gray-500 mb-2">结束时间</p>
-            <p class="text-2xl font-semibold text-gray-900">{{ detail.endTime }}</p>
+            <p class="text-2xl font-semibold text-gray-900">{{ formatSeconds(detail.endTime) }}</p>
           </div>
           <div class="bg-white rounded-sm border border-gray-200 p-5">
             <p class="text-xs text-gray-500 mb-2">出现时长</p>
@@ -146,11 +150,11 @@ const goBack = () => {
           </div>
           <div class="bg-white rounded-sm border border-gray-200 p-5">
             <p class="text-xs text-gray-500 mb-2">提及次数</p>
-            <p class="text-2xl font-semibold text-gray-900">{{ detail.mentions }}次</p>
+            <p class="text-2xl font-semibold text-gray-900">{{ detail.totalMentions }}次</p>
           </div>
           <div class="bg-green-50 rounded-sm border border-green-200 p-5">
             <p class="text-xs text-gray-500 mb-2">置信度</p>
-            <p class="text-2xl font-semibold text-green-600">{{ detail.confidence }}%</p>
+            <p class="text-2xl font-semibold text-green-600">{{ (detail.confidence * 100).toFixed(1) }}%</p>
           </div>
         </div>
       </div>
@@ -173,7 +177,7 @@ const goBack = () => {
             <div class="p-4">
               <div class="flex items-center justify-between mb-2">
                 <span class="font-medium text-gray-900">片段{{ index + 1 }}: {{ segment.name }}</span>
-                <span class="text-sm text-gray-500">{{ segment.startTime }} - {{ segment.endTime }}</span>
+                <span class="text-sm text-gray-500">{{ formatSeconds(segment.startTime) }} - {{ formatSeconds(segment.endTime) }}</span>
               </div>
               <div class="flex items-center gap-1.5 text-sm text-gray-500">
                 <Timer class="w-3.5 h-3.5" />
@@ -216,7 +220,7 @@ const goBack = () => {
               >
                 {{ transcript.speaker }}
               </span>
-              <span class="text-xs text-gray-500">{{ transcript.startTime }} - {{ transcript.endTime }}</span>
+              <span class="text-xs text-gray-500">{{ formatSeconds(transcript.startTime) }} - {{ formatSeconds(transcript.endTime) }}</span>
             </div>
             <p class="text-sm text-gray-700 leading-7">{{ transcript.text }}</p>
           </div>
