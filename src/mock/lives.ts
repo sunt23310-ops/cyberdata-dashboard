@@ -476,7 +476,11 @@ export function getLiveProductDetail(liveId: string, itemCode: string) {
     highlights,
     ingredients,
     screenshots,
-    video: { path: 'video_main.mp4', duration: seg1Duration },
+    videos: [
+      { path: '切片1_首次讲解.mp4', duration: seg1Duration },
+      ...(hasReturnMention ? [{ path: '切片2_再次提及.mp4', duration: 100 + (seed % 6) * 25 }] : []),
+      { path: '产品亮点集锦.mp4', duration: 60 + (seed % 60) }
+    ],
     segments
   }
 }

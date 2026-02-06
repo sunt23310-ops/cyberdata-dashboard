@@ -204,7 +204,7 @@ export interface LiveProductDetail {
   ingredients: ProductIngredient[]
   // 直播截图与视频
   screenshots: SegmentScreenshot[]
-  video: SegmentVideo | null
+  videos: SegmentVideo[]
   // 切片列表
   segments: Segment[]
 }

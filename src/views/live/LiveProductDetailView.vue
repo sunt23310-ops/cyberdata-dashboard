@@ -40,6 +40,9 @@ const goBack = () => {
 // 截图轮播索引（独立媒体区）
 const currentScreenshotIndex = ref(0)
 
+// 视频切换索引
+const currentVideoIndex = ref(0)
+
 // 每个切片的转录展开状态
 const expandedTranscripts = ref<Record<string, boolean>>({})
 
@@ -256,16 +259,36 @@ function getTranscriptPreview(text: string) {
               </div>
             </div>
 
-            <!-- Right: Video -->
-            <div class="flex-1 space-y-2" v-if="detail.video">
-              <div class="w-full h-[390px] bg-gray-900 rounded-lg flex items-center justify-center cursor-pointer group">
+            <!-- Right: Videos -->
+            <div class="flex-1 space-y-2" v-if="detail.videos.length > 0">
+              <div class="w-full h-[280px] bg-gray-900 rounded-lg flex items-center justify-center cursor-pointer group">
                 <div class="w-10 h-10 rounded-full bg-white/20 flex items-center justify-center group-hover:bg-white/30 transition-colors">
                   <Play class="w-5 h-5 text-white ml-0.5" />
                 </div>
               </div>
               <div>
-                <p class="text-[13px] font-medium text-foreground">{{ detail.video.path }}</p>
-                <p class="text-xs text-muted-foreground">时长 {{ detail.video.duration }}秒</p>
+                <p class="text-[13px] font-medium text-foreground">{{ detail.videos[currentVideoIndex]?.path }}</p>
+                <p class="text-xs text-muted-foreground">时长 {{ detail.videos[currentVideoIndex]?.duration }}秒</p>
+              </div>
+              <div class="h-px bg-gray-200"></div>
+              <div class="flex gap-2">
+                <div
+                  v-for="(vid, idx) in detail.videos"
+                  :key="idx"
+                  class="flex-1 cursor-pointer"
+                  @click="currentVideoIndex = idx"
+                >
+                  <div
+                    class="w-full h-[72px] bg-gray-800 rounded-md flex items-center justify-center"
+                    :class="idx === currentVideoIndex ? 'ring-2 ring-primary' : ''"
+                  >
+                    <div class="w-6 h-6 rounded-full bg-white/25 flex items-center justify-center">
+                      <Play class="w-3 h-3 text-white ml-px" />
+                    </div>
+                  </div>
+                  <p class="text-[11px] font-medium text-foreground mt-1 truncate">{{ vid.path }}</p>
+                  <p class="text-[11px] text-muted-foreground">{{ vid.duration }}秒</p>
+                </div>
               </div>
             </div>
           </div>
