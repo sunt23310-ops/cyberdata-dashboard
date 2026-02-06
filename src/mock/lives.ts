@@ -1,4 +1,4 @@
-import type { LiveListItem, LiveDetail, LiveProductItem } from '@/types/live'
+import type { LiveListItem, LiveDetail, LiveProductItem, ReturnMention } from '@/types/live'
 import type { ProductLiveItem } from '@/types/product'
 
 // 主播列表
@@ -240,7 +240,49 @@ export function getLiveProducts(liveId: string): LiveProductItem[] {
   return products
 }
 
-// 获取直播商品详情（对齐 segment_json 结构）
+// 截图描述模板（按产品类型）
+const screenshotDescs: Record<string, string[]> = {
+  default: [
+    '主播手持产品展示正面外观',
+    '近距离展示产品包装细节和成分表',
+    '打开产品展示内部质地和颜色',
+    '主播在手背试用产品展示效果',
+    '展示价格标签和促销信息'
+  ],
+  手表: [
+    '主播展示手表正面表盘和表带',
+    '特写展示功能界面和操作演示',
+    '演示手机端APP配对和远程功能',
+    '展示产品到手价和电量续航卖点',
+    '与旧款型号升级参数对比展板'
+  ],
+  收纳: [
+    '主播展示收纳箱整体外观造型',
+    '展示上下分层结构和分隔栏',
+    '对比不同容量规格大小',
+    '展示PP材质和圆润边角细节',
+    '介绍价格和颜色选择'
+  ]
+}
+
+// 转录文本模板库
+const transcriptTemplates = [
+  (name: string, brand: string) =>
+    `[主播] 好，接下来给大家带来的这款${name}，是${brand}的明星产品。\n[主播] 我自己用了大概三个月，真的能感受到效果。\n[主播] 你看这个质地，非常轻薄，上脸完全不会有负担感。\n[助播] 对，后台数据显示这款已经卖了两千多单了。\n[主播] 成分表大家可以看一下，核心成分浓度都标注得很清楚。\n[助播] 价格链接已经挂好了，大家现在下单还有赠品。`,
+  (name: string, brand: string) =>
+    `[主播] 来来来，这个${name}必须给大家安利一下。\n[主播] ${brand}不用我多说了吧，大牌品质，用着放心。\n[助播] 我们直播间今天的价格是全网最低的。\n[主播] 你看我今天的状态，就是用了这款产品。\n[主播] 敏感肌的姐妹也完全可以放心使用，非常温和。\n[助播] 库存不多了，想要的姐妹赶紧拍。`,
+  (name: string, brand: string) =>
+    `[主播] 这款${name}我已经回购了不知道多少次了。\n[助播] 对，我们团队的人也都在用，真的好用。\n[主播] ${brand}的研发实力大家是知道的，专利技术。\n[主播] 看一下这个对比图，使用前和使用后差别非常明显。\n[助播] 链接上架了，今天买两件还有额外折扣。\n[主播] 性价比真的太高了，错过今天就恢复原价了。`
+]
+
+const returnTranscriptTemplates = [
+  (name: string) =>
+    `[主播] 再次给大家推荐一下刚才的${name}。\n[主播] 看评论区好多人在问，说明真的是好东西。\n[助播] 对，刚才有姐妹说加购了没付款，赶紧去付。\n[主播] 最后补一波库存，卖完就真的没有了。`,
+  (name: string) =>
+    `[助播] 主播，好多人让你再讲一下${name}。\n[主播] 好的好的，这款真的是今天的爆品。\n[主播] 刚才没听到的姐妹注意了，这个价格今天过后就没了。\n[助播] 我看后台又追加了一批库存。`
+]
+
+// 获取直播商品详情（基于切片结构）
 export function getLiveProductDetail(liveId: string, itemCode: string) {
   const live = mockLives.find(l => l.liveId === liveId)
   const product = allLiveProducts.find(p => p.itemCode === itemCode)
@@ -254,28 +296,112 @@ export function getLiveProductDetail(liveId: string, itemCode: string) {
   const skuNum = parseInt(itemCode.replace('SKU', ''), 10) || 1
   const seed = liveNum * 100 + skuNum
 
-  // 时间用秒数
-  const startTimeSec = 240 + (seed % 20) * 180
-  const durationSec = 280 + (seed % 8) * 35
-  const endTimeSec = startTimeSec + durationSec
-
   const productName = product?.productName || '兰蔻小黑瓶精华肌底液 100ml'
   const productBasicName = productName.split(' ')[0]
   const brand = product?.brand || '兰蔻'
   const keywords = product?.keywords || ['精华', '护肤', '修护']
 
-  // 主讲人比例
-  const ratio1 = 45 + (seed % 20)
-  const ratio2 = 100 - ratio1
-  const speakers = [
-    { name: '高声', ratio: ratio1 },
-    { name: '明谦', ratio: ratio2 }
-  ]
+  // 判断截图描述类型
+  const descType = productName.includes('手表') ? '手表' : productName.includes('收纳') ? '收纳' : 'default'
+  const descs = screenshotDescs[descType] || screenshotDescs['default']!
 
-  // 视频切片（秒数）
-  const seg1Duration = Math.floor(durationSec * 0.52)
-  const seg2Duration = durationSec - seg1Duration
-  const seg1EndSec = startTimeSec + seg1Duration
+  // 主讲切片
+  const seg1Start = 240 + (seed % 20) * 180
+  const seg1Duration = 200 + (seed % 8) * 35
+  const seg1End = seg1Start + seg1Duration
+  const seg1Ratio1 = 50 + (seed % 20)
+  const seg1Ratio2 = 100 - seg1Ratio1
+  const seg1Template = transcriptTemplates[seed % transcriptTemplates.length]!
+  const seg1Text = seg1Template(productName, brand)
+  const seg1Lines = seg1Text.split('\n').length
+
+  const seg1ScreenshotCount = 3 + (seed % 4) // 3-6张
+  const seg1Screenshots = Array.from({ length: seg1ScreenshotCount }, (_, i) => ({
+    path: `screenshot_seg1_${String(i + 1).padStart(2, '0')}.jpg`,
+    description: descs[i % descs.length]!,
+    timestamp: seg1Start + Math.floor((seg1Duration / seg1ScreenshotCount) * i)
+  }))
+
+  const segment1 = {
+    segmentId: `seg_${String(seed).padStart(3, '0')}_1`,
+    title: '切片 1: 首次讲解',
+    startTime: seg1Start,
+    endTime: seg1End,
+    duration: seg1Duration,
+    confidence: (90 + (seed % 11)) / 100,
+    mainSpeakerRatio: seg1Ratio1 / 100,
+    speakers: [
+      { name: anchor.length > 3 ? anchor.slice(0, 2) : anchor, ratio: seg1Ratio1 },
+      { name: '助播', ratio: seg1Ratio2 }
+    ],
+    transcriptText: seg1Text,
+    transcriptLines: seg1Lines,
+    keyPhrases: keywords,
+    screenshots: seg1Screenshots,
+    video: { path: 'video_main.mp4', duration: seg1Duration },
+    returnMentions: [] as ReturnMention[]
+  }
+
+  const segments = [segment1]
+  let totalSegDuration = seg1Duration
+
+  // 约 60% 的商品有再次提及切片
+  const hasReturnMention = seed % 5 !== 0
+  if (hasReturnMention) {
+    const seg2Start = seg1End + 1800 + (seed % 3600)
+    const seg2Duration = 100 + (seed % 6) * 25
+    const seg2End = seg2Start + seg2Duration
+    const seg2Ratio1 = 30 + (seed % 30)
+    const seg2Ratio2 = 100 - seg2Ratio1
+    const rmTemplate = returnTranscriptTemplates[seed % returnTranscriptTemplates.length]!
+    const rmText = rmTemplate(productName)
+    const rmLines = rmText.split('\n').length
+
+    const seg2ScreenshotCount = 2 + (seed % 3) // 2-4张
+    const seg2Screenshots = Array.from({ length: seg2ScreenshotCount }, (_, i) => ({
+      path: `screenshot_seg2_${String(i + 1).padStart(2, '0')}.jpg`,
+      description: descs[(i + 2) % descs.length]!,
+      timestamp: seg2Start + Math.floor((seg2Duration / seg2ScreenshotCount) * i)
+    }))
+
+    const returnMention: ReturnMention = {
+      mentionId: `mention_${seed}`,
+      productName,
+      productBasicName,
+      startTime: seg2Start,
+      endTime: seg2End,
+      transcriptText: rmText,
+      keyPhrases: keywords.slice(0, 2),
+      confidence: (95 + (seed % 6)) / 100,
+      mainSpeakerRatio: seg2Ratio1 / 100,
+      speakers: [
+        { name: anchor.length > 3 ? anchor.slice(0, 2) : anchor, ratio: seg2Ratio1 },
+        { name: '助播', ratio: seg2Ratio2 }
+      ],
+      duration: seg2Duration
+    }
+
+    segments.push({
+      segmentId: `seg_${String(seed).padStart(3, '0')}_2`,
+      title: '切片 2: 再次提及',
+      startTime: seg2Start,
+      endTime: seg2End,
+      duration: seg2Duration,
+      confidence: returnMention.confidence,
+      mainSpeakerRatio: seg2Ratio1 / 100,
+      speakers: [
+        { name: anchor.length > 3 ? anchor.slice(0, 2) : anchor, ratio: seg2Ratio1 },
+        { name: '助播', ratio: seg2Ratio2 }
+      ],
+      transcriptText: rmText,
+      transcriptLines: rmLines,
+      keyPhrases: keywords.slice(0, 2),
+      screenshots: seg2Screenshots,
+      video: { path: 'video_return.mp4', duration: seg2Duration },
+      returnMentions: [returnMention]
+    })
+    totalSegDuration += seg2Duration
+  }
 
   return {
     liveId,
@@ -296,46 +422,9 @@ export function getLiveProductDetail(liveId: string, itemCode: string) {
       promotionStrategy: '限时特惠，库存有限'
     },
     status: 'on_sale' as const,
-    startTime: startTimeSec,
-    endTime: endTimeSec,
-    duration: durationSec,
-    confidence: (85 + (seed % 16)) / 100,
-    keywords,
-    mainSpeakerRatio: ratio1 / 100,
-    speakers,
-    totalMentions: 2 + (seed % 5),
-    segmentTotalDuration: durationSec + (seed % 3 === 0 ? 131 : 0),
-    returnMentions: seed % 3 === 0 ? [{
-      mentionId: `mention_${seed}`,
-      productName,
-      productBasicName,
-      startTime: endTimeSec + 3600,
-      endTime: endTimeSec + 3731,
-      transcriptText: `再次推荐${productName}，品质保证。`,
-      keyPhrases: keywords.slice(0, 2),
-      confidence: 0.99,
-      mainSpeakerRatio: 0.5,
-      speakers: ['高声', '明谦'],
-      duration: 131
-    }] : [],
-    videoSegments: [
-      { name: '首次介绍', startTime: startTimeSec, endTime: seg1EndSec, duration: seg1Duration },
-      { name: '再次推荐', startTime: seg1EndSec + 1, endTime: endTimeSec, duration: seg2Duration }
-    ],
-    transcripts: [
-      {
-        speaker: '高声',
-        startTime: startTimeSec,
-        endTime: seg1EndSec,
-        text: `接下来给大家介绍的这款${productName}，是我们今天力推的一款产品。${brand}品牌明星产品，专业配方，温和有效。适合各种肤质，敏感肌也可以放心使用。`
-      },
-      {
-        speaker: '明谦',
-        startTime: seg1EndSec + 1,
-        endTime: endTimeSec,
-        text: `刚才高声给大家详细介绍了这款产品，我再补充一下价格方面的信息。今天直播间专享价，错过今天就没有了。${brand}官方正品，品质保证。`
-      }
-    ]
+    totalMentions: segments.length,
+    totalSegmentDuration: totalSegDuration,
+    segments
   }
 }
 

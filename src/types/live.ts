@@ -118,20 +118,17 @@ export interface LiveProductItem {
   keywords: string[]         // 从 segment_json.key_phrases 获取
 }
 
-// 视频切片
-export interface VideoSegment {
-  name: string
-  startTime: number  // 秒数
-  endTime: number    // 秒数
-  duration: number
+// 截图
+export interface SegmentScreenshot {
+  path: string
+  description: string
+  timestamp?: number
 }
 
-// 转录片段
-export interface TranscriptSegment {
-  speaker: string
-  startTime: number  // 秒数
-  endTime: number    // 秒数
-  text: string
+// 视频
+export interface SegmentVideo {
+  path: string
+  duration: number
 }
 
 // 再次提及（对齐 segment_json.return_mentions）
@@ -145,27 +142,26 @@ export interface ReturnMention {
   keyPhrases: string[]
   confidence: number
   mainSpeakerRatio: number
-  speakers: string[]
+  speakers: { name: string; ratio: number }[]
   duration: number
 }
 
-// segment_json 完整结构
-export interface SegmentJson {
-  segmentId: string           // segment_id
-  productName: string
-  productBasicName: string
-  brand: string
-  startTime: number           // 秒数
-  endTime: number             // 秒数
-  transcriptText: string      // 完整转录文本
-  confidence: number          // 0.0-1.0
-  keyPhrases: string[]        // 关键词
-  mainSpeakerRatio: number    // 主讲人占比
-  speakers: string[]          // 发言人列表
-  returnMentions: ReturnMention[]
+// 切片段落（每次出现 = 一个 Segment）
+export interface Segment {
+  segmentId: string
+  title: string               // "切片 1: 首次讲解"
+  startTime: number
+  endTime: number
   duration: number
-  totalMentions: number
-  totalDuration: number
+  confidence: number
+  mainSpeakerRatio: number
+  speakers: { name: string; ratio: number }[]
+  transcriptText: string
+  transcriptLines: number     // 转录总行数
+  keyPhrases: string[]
+  screenshots: SegmentScreenshot[]
+  video: SegmentVideo | null
+  returnMentions: ReturnMention[]
 }
 
 // 直播商品详情（直播中某商品的完整表现）
@@ -190,19 +186,9 @@ export interface LiveProductDetail {
     promotionStrategy?: string
   }
   status: 'on_sale' | 'off_sale'
-  // 出现时间
-  startTime: number          // 秒数
-  endTime: number            // 秒数
-  duration: number
-  // segment_json 解析
-  confidence: number
-  keywords: string[]         // key_phrases
-  mainSpeakerRatio: number
-  speakers: { name: string; ratio: number }[]
+  // 汇总
   totalMentions: number
-  segmentTotalDuration: number  // 改名避免重复
-  returnMentions: ReturnMention[]
-  // 视频切片和转录
-  videoSegments: VideoSegment[]
-  transcripts: TranscriptSegment[]
+  totalSegmentDuration: number
+  // 切片列表
+  segments: Segment[]
 }
