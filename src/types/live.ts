@@ -164,6 +164,18 @@ export interface Segment {
   returnMentions: ReturnMention[]
 }
 
+// 产品亮点
+export interface ProductHighlight {
+  category: string
+  description: string
+}
+
+// 产品参数
+export interface ProductIngredient {
+  name: string
+  value: string
+}
+
 // 直播商品详情（直播中某商品的完整表现）
 export interface LiveProductDetail {
   liveId: string
@@ -189,6 +201,9 @@ export interface LiveProductDetail {
   // 汇总
   totalMentions: number
   totalSegmentDuration: number
+  // 产品亮点和参数
+  highlights: ProductHighlight[]
+  ingredients: ProductIngredient[]
   // 切片列表
   segments: Segment[]
 }

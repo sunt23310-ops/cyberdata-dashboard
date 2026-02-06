@@ -47,6 +47,9 @@ detail.segments.forEach((seg: Segment) => {
 // 每个切片的转录展开状态
 const expandedTranscripts = ref<Record<string, boolean>>({})
 
+// 产品信息 Tab 状态
+const activeProductTab = ref<'highlights' | 'ingredients'>('highlights')
+
 function prevScreenshot(segId: string, total: number) {
   const current = currentScreenshotIndex.value[segId] ?? 0
   currentScreenshotIndex.value[segId] = current > 0 ? current - 1 : total - 1
@@ -149,6 +152,65 @@ function getTranscriptPreview(text: string) {
               <div v-if="detail.pricing.promotionStrategy">
                 <p class="text-xs text-muted-foreground mb-1">促销</p>
                 <p class="text-sm font-medium text-orange-600">{{ detail.pricing.promotionStrategy }}</p>
+              </div>
+            </div>
+
+            <!-- Product Tabs: Highlights & Ingredients -->
+            <div>
+              <div class="flex items-end">
+                <button
+                  @click="activeProductTab = 'highlights'"
+                  class="px-5 py-2.5 text-[13px] font-semibold rounded-t-lg transition-colors"
+                  :class="activeProductTab === 'highlights'
+                    ? 'bg-white text-primary border border-gray-200 border-b-white -mb-px z-10'
+                    : 'bg-gray-50 text-muted-foreground'"
+                >
+                  产品亮点
+                </button>
+                <button
+                  @click="activeProductTab = 'ingredients'"
+                  class="px-5 py-2.5 text-[13px] rounded-t-lg transition-colors"
+                  :class="activeProductTab === 'ingredients'
+                    ? 'bg-white text-primary font-semibold border border-gray-200 border-b-white -mb-px z-10'
+                    : 'bg-gray-50 text-muted-foreground'"
+                >
+                  产品参数
+                </button>
+                <div class="flex-1 border-b border-gray-200"></div>
+              </div>
+              <div class="border border-t-0 border-gray-200 rounded-b-lg px-5 py-4">
+                <!-- Highlights Tab -->
+                <div v-if="activeProductTab === 'highlights'" class="space-y-2">
+                  <div
+                    v-for="(hl, idx) in detail.highlights"
+                    :key="idx"
+                    class="flex items-center gap-2.5"
+                  >
+                    <span
+                      class="px-2.5 py-0.5 text-[11px] font-medium rounded flex-shrink-0"
+                      :class="{
+                        'bg-blue-50 text-blue-500': hl.category === '产品相关',
+                        'bg-green-50 text-green-500': hl.category === '使用相关',
+                        'bg-orange-50 text-orange-500': hl.category === '服务相关'
+                      }"
+                    >
+                      {{ hl.category }}
+                    </span>
+                    <span class="text-[13px] text-foreground">{{ hl.description }}</span>
+                  </div>
+                </div>
+                <!-- Ingredients Tab -->
+                <div v-else class="divide-y divide-gray-100">
+                  <div
+                    v-for="(ig, idx) in detail.ingredients"
+                    :key="idx"
+                    class="flex items-center gap-3 py-2.5 px-4 text-xs"
+                    :class="idx % 2 === 0 ? 'bg-gray-50 rounded' : ''"
+                  >
+                    <span class="text-muted-foreground w-24 flex-shrink-0">{{ ig.name }}</span>
+                    <span class="font-medium text-foreground">{{ ig.value }}</span>
+                  </div>
+                </div>
               </div>
             </div>
           </div>
@@ -307,56 +369,6 @@ function getTranscriptPreview(text: string) {
                 {{ kw }}
               </span>
             </div>
-
-            <!-- Return Mention Sub-card -->
-            <template v-if="seg.returnMentions.length > 0">
-              <div class="h-px bg-gray-200"></div>
-              <div
-                v-for="rm in seg.returnMentions"
-                :key="rm.mentionId"
-                class="bg-amber-50 border border-amber-300 rounded-lg p-5 space-y-3"
-              >
-                <div class="flex items-center justify-between">
-                  <div class="flex items-center gap-2">
-                    <span class="text-sm font-semibold text-foreground font-[Noto_Sans_SC]">再次提及</span>
-                    <span class="text-xs text-muted-foreground">
-                      {{ formatSeconds(rm.startTime) }} → {{ formatSeconds(rm.endTime) }}
-                    </span>
-                  </div>
-                  <span class="text-xs font-medium text-amber-700 bg-amber-100 rounded-full px-2.5 py-0.5">
-                    置信度 {{ (rm.confidence * 100).toFixed(0) }}%
-                  </span>
-                </div>
-
-                <div class="flex items-center gap-2">
-                  <div
-                    v-for="speaker in rm.speakers"
-                    :key="speaker.name"
-                    class="flex items-center gap-1"
-                  >
-                    <span
-                      class="w-2 h-2 rounded-full"
-                      :class="speaker === rm.speakers[0] ? 'bg-primary' : 'bg-gray-400'"
-                    ></span>
-                    <span class="text-xs text-foreground font-medium">{{ speaker.name }} {{ speaker.ratio }}%</span>
-                  </div>
-                </div>
-
-                <div class="bg-white/50 rounded-lg p-3">
-                  <p class="text-sm text-gray-700 leading-7 whitespace-pre-line">{{ rm.transcriptText }}</p>
-                </div>
-
-                <div class="flex items-center gap-2 flex-wrap">
-                  <span
-                    v-for="kw in rm.keyPhrases"
-                    :key="kw"
-                    class="px-2.5 py-1 text-xs font-medium text-amber-700 bg-amber-100 border border-amber-300/50 rounded"
-                  >
-                    {{ kw }}
-                  </span>
-                </div>
-              </div>
-            </template>
           </div>
         </div>
       </div>

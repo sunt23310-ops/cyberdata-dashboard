@@ -275,6 +275,63 @@ const transcriptTemplates = [
     `[主播] 这款${name}我已经回购了不知道多少次了。\n[助播] 对，我们团队的人也都在用，真的好用。\n[主播] ${brand}的研发实力大家是知道的，专利技术。\n[主播] 看一下这个对比图，使用前和使用后差别非常明显。\n[助播] 链接上架了，今天买两件还有额外折扣。\n[主播] 性价比真的太高了，错过今天就恢复原价了。`
 ]
 
+// 产品亮点模板库
+const highlightTemplates: Record<string, { category: string; description: string }[]> = {
+  default: [
+    { category: '产品相关', description: '核心成分浓度高，效果显著' },
+    { category: '产品相关', description: '质地轻薄易吸收，不黏腻' },
+    { category: '使用相关', description: '适合多种肤质，敏感肌可用' },
+    { category: '使用相关', description: '早晚均可使用，方便日常护理' },
+    { category: '服务相关', description: '支持七天无理由退换货' }
+  ],
+  手表: [
+    { category: '产品相关', description: '升级1.5英寸大屏与4GB内存，存更多' },
+    { category: '产品相关', description: '九重AI定位及7天历史轨迹，守护安全' },
+    { category: '使用相关', description: '500元档高性价比，适合作为首款手表' },
+    { category: '使用相关', description: '功能齐全，支持支付、微聊及震动提醒' },
+    { category: '服务相关', description: '赠一年碎屏保、两年延保及只换不修' }
+  ],
+  收纳: [
+    { category: '产品相关', description: '上下分层结构，分类收纳更整齐' },
+    { category: '产品相关', description: 'PP材质安全环保，圆润边角设计' },
+    { category: '使用相关', description: '多种容量可选，16升/30升满足不同需求' },
+    { category: '使用相关', description: '适合收纳玩具、衣物、文具等物品' },
+    { category: '服务相关', description: '破损包赔，顺丰包邮' }
+  ]
+}
+
+// 产品参数模板库
+const ingredientTemplates: Record<string, { name: string; value: string }[]> = {
+  default: [
+    { name: '产品规格', value: '100ml' },
+    { name: '产品类型', value: '精华液' },
+    { name: '适用肤质', value: '所有肤质' },
+    { name: '保质期', value: '36个月' },
+    { name: '产地', value: '法国' },
+    { name: '核心成分', value: '烟酰胺、透明质酸钠' },
+    { name: '使用方法', value: '洁面后取适量涂抹全脸' }
+  ],
+  手表: [
+    { name: '屏幕尺寸', value: '1.5英寸' },
+    { name: '内存容量', value: '4GB' },
+    { name: '定位方式', value: '九重AI定位' },
+    { name: '电池容量', value: '800mAh' },
+    { name: '续航时间', value: '约5天' },
+    { name: '防水等级', value: 'IPX8' },
+    { name: '充电方式', value: '磁吸充电' },
+    { name: '适用年龄', value: '4-12岁' },
+    { name: '表带材质', value: '食品级硅胶' }
+  ],
+  收纳: [
+    { name: '材质', value: 'PP聚丙烯' },
+    { name: '容量', value: '16L / 30L' },
+    { name: '颜色', value: '透明/奶白/浅蓝' },
+    { name: '承重', value: '15kg' },
+    { name: '是否可叠放', value: '支持' },
+    { name: '适用场景', value: '衣柜、书房、儿童房' }
+  ]
+}
+
 const returnTranscriptTemplates = [
   (name: string) =>
     `[主播] 再次给大家推荐一下刚才的${name}。\n[主播] 看评论区好多人在问，说明真的是好东西。\n[助播] 对，刚才有姐妹说加购了没付款，赶紧去付。\n[主播] 最后补一波库存，卖完就真的没有了。`,
@@ -304,6 +361,8 @@ export function getLiveProductDetail(liveId: string, itemCode: string) {
   // 判断截图描述类型
   const descType = productName.includes('手表') ? '手表' : productName.includes('收纳') ? '收纳' : 'default'
   const descs = screenshotDescs[descType] || screenshotDescs['default']!
+  const highlights = highlightTemplates[descType] || highlightTemplates['default']!
+  const ingredients = ingredientTemplates[descType] || ingredientTemplates['default']!
 
   // 主讲切片
   const seg1Start = 240 + (seed % 20) * 180
@@ -424,6 +483,8 @@ export function getLiveProductDetail(liveId: string, itemCode: string) {
     status: 'on_sale' as const,
     totalMentions: segments.length,
     totalSegmentDuration: totalSegDuration,
+    highlights,
+    ingredients,
     segments
   }
 }
