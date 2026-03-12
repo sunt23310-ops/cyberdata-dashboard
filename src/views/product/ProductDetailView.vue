@@ -25,7 +25,10 @@ const relatedLives: ProductLiveItem[] = getProductRelatedLives(productId)
 
 // 从 highlights 中提取各类信息
 const productHighlights = computed(() => {
-  return product?.highlights?.filter(h => h.category === '产品相关' && !h.description.startsWith('核心成分：')) || []
+  const prefixes = ['核心成分：', '功效分类：', '成分类型：', '使用场景：']
+  return product?.highlights?.filter(h =>
+    h.category === '产品相关' && !prefixes.some(p => h.description.startsWith(p))
+  ) || []
 })
 
 const coreIngredients = computed(() => {

@@ -33,27 +33,42 @@ const sortOrder = ref<SortOrder>('desc')
 // Filter options (expanded for 50 products)
 const categoryOptions = [
   { label: '全部', value: '' },
-  { label: '护肤品', value: '护肤品' },
-  { label: '洁面', value: '洁面' },
-  { label: '洗护', value: '洗护' },
-  { label: '防晒', value: '防晒' },
-  { label: '彩妆', value: '彩妆' },
   { label: '精华', value: '精华' },
-  { label: '面膜', value: '面膜' }
+  { label: '次抛', value: '次抛' },
+  { label: '面膜', value: '面膜' },
+  { label: '面霜', value: '面霜' },
+  { label: '眼霜', value: '眼霜' },
+  { label: '水乳/水霜', value: '水乳/水霜' },
+  { label: '护肤套组', value: '护肤套组' },
+  { label: '精华水', value: '精华水' },
+  { label: '妆前隔离', value: '妆前隔离' },
+  { label: '气垫', value: '气垫' },
+  { label: '粉底液', value: '粉底液' },
+  { label: '遮瑕', value: '遮瑕' },
+  { label: '定妆', value: '定妆' },
+  { label: '防晒', value: '防晒' },
+  { label: '洁面', value: '洁面' },
+  { label: '卸妆', value: '卸妆' },
+  { label: '仪器', value: '仪器' },
 ]
 
 const brandOptions = [
   { label: '全部', value: '' },
-  { label: '兰蔻', value: '兰蔻' },
+  { label: '珀莱雅', value: '珀莱雅' },
   { label: '欧莱雅', value: '欧莱雅' },
+  { label: '兰蔻', value: '兰蔻' },
   { label: '雅诗兰黛', value: '雅诗兰黛' },
-  { label: '潘婷', value: '潘婷' },
-  { label: '安耐晒', value: '安耐晒' },
+  { label: '彩棠', value: '彩棠' },
+  { label: '娇韵诗', value: '娇韵诗' },
+  { label: '修丽可', value: '修丽可' },
+  { label: 'OLAY', value: 'OLAY' },
+  { label: '薇诺娜', value: '薇诺娜' },
+  { label: '自然堂', value: '自然堂' },
+  { label: '可复美', value: '可复美' },
   { label: 'SK-II', value: 'SK-II' },
   { label: '资生堂', value: '资生堂' },
-  { label: '娇韵诗', value: '娇韵诗' },
-  { label: '倩碧', value: '倩碧' },
-  { label: '海蓝之谜', value: '海蓝之谜' }
+  { label: '科颜氏', value: '科颜氏' },
+  { label: '海蓝之谜', value: '海蓝之谜' },
 ]
 
 const priceOptions = [

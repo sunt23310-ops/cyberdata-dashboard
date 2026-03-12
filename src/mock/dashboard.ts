@@ -49,20 +49,20 @@ export const metricsData = {
 
 // 类目分布饼图数据
 export const pieChartData = [
-  { category: '精华液', value: 35, percentage: 35 },
-  { category: '面霜', value: 20, percentage: 20 },
-  { category: '面膜', value: 10, percentage: 10 },
-  { category: '底妆', value: 9, percentage: 9 },
-  { category: '次抛精华', value: 4, percentage: 4 },
+  { category: '次抛', value: 47, percentage: 47 },
+  { category: '精华', value: 9, percentage: 9 },
+  { category: '面霜', value: 8, percentage: 8 },
+  { category: '面膜', value: 5, percentage: 5 },
+  { category: '护肤套组', value: 3, percentage: 3 },
 ]
 
 // 商品类目数据
 export const categoryData = [
-  { name: '精华液', count: 245, percentage: 35, color: '#FF3B30' },
-  { name: '面霜', count: 140, percentage: 20, color: '#0A0A0A' },
-  { name: '面膜', count: 67, percentage: 10, color: '#666666' },
-  { name: '底妆', count: 63, percentage: 9, color: '#999999' },
-  { name: '次抛精华', count: 31, percentage: 4, color: '#CCCCCC' },
+  { name: '次抛', count: 328, percentage: 47, color: '#FF3B30' },
+  { name: '精华', count: 61, percentage: 9, color: '#0A0A0A' },
+  { name: '面霜', count: 53, percentage: 8, color: '#666666' },
+  { name: '面膜', count: 33, percentage: 5, color: '#999999' },
+  { name: '护肤套组', count: 24, percentage: 3, color: '#CCCCCC' },
 ]
 
 // 最近直播数据

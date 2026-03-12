@@ -22,28 +22,28 @@ LIVE_SESSIONS = [
     {
         "liveId": "LIVE001", "title": "10.7精华小课堂", "theme": "精华小课堂",
         "date": "2025-10-07T20:00:00Z", "displayDate": "2025-10-07 20:00:00",
-        "category": "护肤品/精华液",
+        "category": "精华",
         "file": KB_BASE / "【2025双十一小课堂】知识结构+产品明细/【2025双十一】10.7精华小课堂_商品明细.md",
         "duration": 14520, "viewCount": 12300000, "sales": 85600, "saleAmount": 45600000
     },
     {
         "liveId": "LIVE002", "title": "10.8次抛+面膜小课堂", "theme": "次抛+面膜小课堂",
         "date": "2025-10-08T20:00:00Z", "displayDate": "2025-10-08 20:00:00",
-        "category": "护肤品/次抛精华",
+        "category": "次抛",
         "file": KB_BASE / "【2025双十一小课堂】知识结构+产品明细/【2025双十一】10.8-次抛面膜小课堂_商品明细.md",
         "duration": 13200, "viewCount": 11500000, "sales": 79200, "saleAmount": 42100000
     },
     {
         "liveId": "LIVE003", "title": "10.9面霜+眼霜小课堂", "theme": "面霜+眼霜小课堂",
         "date": "2025-10-09T20:00:00Z", "displayDate": "2025-10-09 20:00:00",
-        "category": "护肤品/面霜",
+        "category": "面霜",
         "file": KB_BASE / "【2025双十一小课堂】知识结构+产品明细/【2025双十一】10.9面霜+眼霜小课堂_商品明细.md",
         "duration": 12600, "viewCount": 9800000, "sales": 55400, "saleAmount": 28700000
     },
     {
         "liveId": "LIVE004", "title": "10.10水乳套组小课堂", "theme": "水乳套组小课堂",
         "date": "2025-10-10T20:00:00Z", "displayDate": "2025-10-10 20:00:00",
-        "category": "护肤品/水乳套组",
+        "category": "水乳套组",
         "file": KB_BASE / "【2025双十一小课堂】知识结构+产品明细/【2025双十一】10.10水乳套组小课堂_商品明细.md",
         "duration": 11400, "viewCount": 8900000, "sales": 62300, "saleAmount": 32100000
     },
@@ -57,14 +57,14 @@ LIVE_SESSIONS = [
     {
         "liveId": "LIVE006", "title": "10.12仪器防晒卸妆洁面小课堂", "theme": "仪器防晒卸妆洁面小课堂",
         "date": "2025-10-12T20:00:00Z", "displayDate": "2025-10-12 20:00:00",
-        "category": "护肤品/防晒",
+        "category": "仪器/防晒/卸妆/洁面",
         "file": KB_BASE / "【2025双十一小课堂】知识结构+产品明细/【2025双十一】10.12小课堂仪器防晒卸妆洁面_商品明细.md",
         "duration": 9000, "viewCount": 5600000, "sales": 41200, "saleAmount": 18900000
     },
     {
         "liveId": "LIVE007", "title": "38焕新周爆品攻略小课堂", "theme": "38爆品攻略小课堂",
         "date": "2026-02-21T20:00:00Z", "displayDate": "2026-02-21 20:00:00",
-        "category": "护肤品/精华液",
+        "category": "精华/次抛/面膜",
         "file": KB_BASE / "【2026-38】小课堂 /38小课堂完整版.md",
         "duration": 15600, "viewCount": 13100000, "sales": 91200, "saleAmount": 48900000
     },
@@ -272,16 +272,31 @@ def parse_table_products(filepath):
         product = {"name": name}
 
         # Extract category and tags from "> 产品类目：妆前隔离 | 适用肤质：干皮优选"
+        # or "产品类目：面膜 | 功效分类：修护"
+        # or "产品类目：面霜 | 功效分类：抗皱/紧致 | 成分类型：A醇及衍生物"
         cat_match = re.search(r'产品类目[：:]\s*(.+)', body)
         if cat_match:
             cat_text = cat_match.group(1).strip()
+            # 保留完整的类目字符串作为 category_raw
             product["category_raw"] = cat_text
             # Extract tags from "| 适用肤质：xxx" part
             tags_in_cat = re.search(r'适用肤质[：:]\s*(.+)', cat_text)
             if tags_in_cat:
                 product["tags"] = tags_in_cat.group(1).strip()
-                # Clean category_raw to remove tags part
-                product["category_raw"] = re.sub(r'\s*\|\s*适用肤质[：:].*', '', cat_text).strip()
+            # Extract effect from "| 功效分类：xxx" part
+            effect_in_cat = re.search(r'功效分类[：:]\s*([^|]+)', cat_text)
+            if effect_in_cat:
+                product["effect"] = effect_in_cat.group(1).strip()
+            # Extract component type from "| 成分类型：xxx" part
+            comp_type = re.search(r'成分类型[：:]\s*([^|]+)', cat_text)
+            if comp_type:
+                product["component_type"] = comp_type.group(1).strip()
+            # Extract scene from "| 使用场景：xxx" part
+            scene = re.search(r'使用场景[：:]\s*([^|]+)', cat_text)
+            if scene:
+                product["scene"] = scene.group(1).strip()
+            # Clean category_raw to keep only the primary category (before the first |)
+            product["category_raw"] = re.split(r'\s*\|\s*', cat_text)[0].strip()
 
         # Price: match both **价位：** and **价格：**
         price_match = re.search(r'\*\*(价位|价格)[：:]\*\*\s*(.+)', body)
@@ -467,34 +482,15 @@ def parse_38_products(filepath):
 
 
 def build_category_name(product, session_category):
-    """Build a 3-level category name."""
+    """Use the exact primary category from source data. Do NOT mix in 功效/成分/场景."""
     cat_raw = product.get("category_raw", "")
-    effect = product.get("effect", "")
 
-    if "精华" in cat_raw or "精华" in product["name"]:
-        if "次抛" in cat_raw or "次抛" in product["name"]:
-            return "护肤品/次抛精华/修护精华"
-        return f"护肤品/精华液/{effect or '修护精华'}"
-    elif "面膜" in cat_raw or "面膜" in product["name"]:
-        return f"护肤品/面膜/{effect or '修护面膜'}"
-    elif "面霜" in cat_raw or "面霜" in product["name"] or "霜" in product["name"]:
-        return f"护肤品/面霜/{effect or '滋润面霜'}"
-    elif "眼霜" in cat_raw or "眼霜" in product["name"]:
-        return f"护肤品/眼霜/{effect or '修护眼霜'}"
-    elif "水" in cat_raw or "乳" in cat_raw or "套组" in product["name"]:
-        return f"护肤品/水乳/{effect or '保湿套组'}"
-    elif "防晒" in product["name"]:
-        return "护肤品/防晒/防晒霜"
-    elif "卸妆" in product["name"]:
-        return "洁面/卸妆/卸妆产品"
-    elif "洁面" in product["name"] or "洗面" in product["name"]:
-        return "洁面/洁面乳/温和洁面"
-    elif any(kw in product["name"] for kw in ["粉底", "口红", "唇", "眉", "睫毛", "腮红", "遮瑕", "定妆", "妆前", "气垫", "散粉", "粉饼", "隔离"]):
-        return f"彩妆/{cat_raw or '底妆'}/{effect or '持妆'}"
-    elif "仪器" in product["name"] or "美容仪" in product["name"]:
-        return "美容仪器/面部美容/美容仪"
+    if not cat_raw:
+        # 38小课堂没有类目字段，从 session_category 推断
+        return session_category
 
-    return session_category + "/" + (effect or "综合")
+    # 只返回纯类目，不拼功效/成分/场景
+    return cat_raw
 
 
 def escape_ts_string(s: str) -> str:
@@ -566,18 +562,26 @@ def main():
             script = product.get("script", "")
             promotion = product.get("promotion", "限时优惠")
             tags = product.get("tags", "")
+            effect = product.get("effect", "")
+            comp_type = product.get("component_type", "")
+            scene = product.get("scene", "")
 
             highlights = [
                 {"category": "产品相关", "description": highlight_text},
             ]
             if ingredients_raw:
                 highlights.append({"category": "产品相关", "description": f"核心成分：{ingredients_raw}"})
+            if effect:
+                highlights.append({"category": "产品相关", "description": f"功效分类：{effect}"})
+            if comp_type:
+                highlights.append({"category": "产品相关", "description": f"成分类型：{comp_type}"})
+            if scene:
+                highlights.append({"category": "产品相关", "description": f"使用场景：{scene}"})
             if tags:
                 highlights.append({"category": "适用人群", "description": f"适用人群：{tags}"})
             if script:
-                # Add anchor commentary as a highlight
-                script_preview = script[:150] + ('...' if len(script) > 150 else '')
-                highlights.append({"category": "主播讲解", "description": f"李佳琦推荐：{script_preview}"})
+                # Full script, not truncated
+                highlights.append({"category": "主播讲解", "description": f"李佳琦推荐：{script}"})
             highlights.append({"category": "服务相关", "description": "正品保障，假一赔十"})
             highlights.append({"category": "服务相关", "description": "7天无理由退换货"})
 
@@ -586,9 +590,12 @@ def main():
                 ingredients_list.append({"name": "核心成分", "benefit": "主要功效成分", "concentration": ingredients_raw, "source": brand})
             ingredients_list.append({"name": "品牌", "benefit": "品牌信息", "concentration": brand, "source": "官方"})
             ingredients_list.append({"name": "价位段", "benefit": "价格区间", "concentration": display_range, "source": "直播间"})
-            effect = product.get("effect", product.get("category_raw", ""))
             if effect:
                 ingredients_list.append({"name": "功效", "benefit": "核心功效", "concentration": effect, "source": "产品说明"})
+            if comp_type:
+                ingredients_list.append({"name": "成分类型", "benefit": "成分分类", "concentration": comp_type, "source": "产品说明"})
+            if scene:
+                ingredients_list.append({"name": "使用场景", "benefit": "适用场景", "concentration": scene, "source": "产品说明"})
             if tags:
                 ingredients_list.append({"name": "适用人群", "benefit": "适用肤质", "concentration": tags, "source": "产品说明"})
             ingredients_list.append({"name": "保质期", "benefit": "未开封保质期", "concentration": "36个月", "source": "生产日期见包装"})
