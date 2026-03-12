@@ -166,7 +166,7 @@ export const mockProducts: ProductListItem[] = [
   { itemId: 1161, liveId: 'LIVE003', itemCode: 'LIVE003_47', title: '理肤泉「新B5修护霜」', brandName: '理肤泉', shopName: '理肤泉官方旗舰店', categoryName: '面霜', price: 300, couponPrice: 210, sale: 74600, gmv: 15666000, images: 'https://img.alicdn.com/imgextra/i3/45178876/O1CN01sHiZag2FRGRSWUUXf_!!45178876.jpg' },
   { itemId: 1162, liveId: 'LIVE003', itemCode: 'LIVE003_48', title: '薇诺娜 舒缓保湿特护霜第二代', brandName: '薇诺娜', shopName: '薇诺娜官方旗舰店', categoryName: '面霜', price: 600, couponPrice: 300, sale: 47185, gmv: 14155500, images: 'https://img.alicdn.com/imgextra/i4/1063085767/O1CN01WVk4KQ1sTL3rQwhTy_!!1063085767.jpg' },
   { itemId: 1163, liveId: 'LIVE003', itemCode: 'LIVE003_49', title: '相宜本草 青刺果油舒润修护霜', brandName: '相宜本草', shopName: '相宜本草官方旗舰店', categoryName: '面霜', price: 200, couponPrice: 140, sale: 46658, gmv: 6532120, images: 'https://g-search3.alicdn.com/img/bao/uploaded/i4/i3/90919986/O1CN01kD936g2NdeD0tPm4v_!!4611686018427384882-0-item_pic.jpg' },
-  { itemId: 1164, liveId: 'LIVE003', itemCode: 'LIVE003_50', title: '凡士林特润修护精华霜（有香/无香）', brandName: '凡士林', shopName: '凡士林官方旗舰店', categoryName: '面霜', price: 200, couponPrice: 140, sale: 95518, gmv: 13372520, images: 'http://res-sh.clpcdn.com/pmspic/ItemPicture/20008/20067/20481/53758/1601287528227/Original/1_1053767.jpg' },
+  { itemId: 1164, liveId: 'LIVE003', itemCode: 'LIVE003_50', title: '凡士林特润修护精华霜（有香/无香）', brandName: '凡士林', shopName: '凡士林官方旗舰店', categoryName: '面霜', price: 200, couponPrice: 140, sale: 95518, gmv: 13372520, images: 'https://img.alicdn.com/imgextra/i1/2221258507001/O1CN01UoFYr521aVxo5v94Z_!!2221258507001.jpg' },
   { itemId: 1165, liveId: 'LIVE003', itemCode: 'LIVE003_51', title: '适乐肤神经酰胺屏障修护润肤乳「C乳」', brandName: '适乐肤', shopName: '适乐肤官方旗舰店', categoryName: '面霜', price: 200, couponPrice: 140, sale: 45778, gmv: 6408920, images: 'https://img.alicdn.com/imgextra/i2/25410174/O1CN011JHYVV1D9jzjxqmCz_!!25410174.jpg' },
   { itemId: 1166, liveId: 'LIVE003', itemCode: 'LIVE003_52', title: '丝塔芙舒润保湿霜（大白罐）', brandName: '丝塔芙', shopName: '丝塔芙官方旗舰店', categoryName: '面霜', price: 300, couponPrice: 200, sale: 57146, gmv: 11429200, images: 'https://imgservice.suning.cn/uimg1/b2c/image/3nNXOaqqHX7rSkjEjMZiHg.jpg' },
   { itemId: 1167, liveId: 'LIVE003', itemCode: 'LIVE003_53', title: '可丽金 重组胶原蛋白紧致淡纹精华眼霜【昵称：「胶卷」眼霜】', brandName: '可丽金', shopName: '可丽金官方旗舰店', categoryName: '眼霜', price: 300, couponPrice: 210, sale: 74335, gmv: 15610350, images: 'https://img.alicdn.com/imgextra/i4/637486855/O1CN01ZG4NrD20Vdz5YqQQh_!!637486855.jpg' },
@@ -6752,7 +6752,7 @@ export const productDetailsMap: Record<string, ProductDetail> = {
     brand: '凡士林',
     categoryName: '面霜',
     shopName: '凡士林官方旗舰店',
-    mainImages: 'http://res-sh.clpcdn.com/pmspic/ItemPicture/20008/20067/20481/53758/1601287528227/Original/1_1053767.jpg',
+    mainImages: 'https://img.alicdn.com/imgextra/i1/2221258507001/O1CN01UoFYr521aVxo5v94Z_!!2221258507001.jpg',
     pricing: {
       originalPrice: '200元以内**',
       currentPrice: '200元以内**',
