@@ -49,34 +49,34 @@ export const metricsData = {
 
 // 类目分布饼图数据
 export const pieChartData = [
-  { category: '精华/次抛/面膜', value: 44, percentage: 44 },
-  { category: '精华', value: 9, percentage: 9 },
-  { category: '面霜', value: 8, percentage: 8 },
-  { category: '面膜', value: 5, percentage: 5 },
-  { category: '护肤套组', value: 3, percentage: 3 },
-  { category: '精华水/水', value: 3, percentage: 3 },
-  { category: '气垫', value: 3, percentage: 3 },
-  { category: '眼霜', value: 3, percentage: 3 },
-  { category: '次抛', value: 3, percentage: 3 },
-  { category: '水乳/水霜', value: 3, percentage: 3 },
+  { category: '精华', value: 17, percentage: 17 },
+  { category: '面霜', value: 14, percentage: 14 },
+  { category: '面膜', value: 10, percentage: 10 },
+  { category: '精华水/水', value: 7, percentage: 7 },
+  { category: '气垫', value: 6, percentage: 6 },
+  { category: '眼霜', value: 6, percentage: 6 },
+  { category: '次抛', value: 5, percentage: 5 },
+  { category: '护肤套组', value: 5, percentage: 5 },
+  { category: '水乳/水霜', value: 4, percentage: 4 },
+  { category: '粉底液', value: 4, percentage: 4 },
+  { category: '妆前隔离', value: 3, percentage: 3 },
   { category: '洁面', value: 3, percentage: 3 },
-  { category: '防晒', value: 2, percentage: 2 },
 ]
 
 // 商品类目数据
 export const categoryData = [
-  { name: '精华/次抛/面膜', count: 309, percentage: 44, color: '#FF3B30' },
-  { name: '精华', count: 61, percentage: 9, color: '#0A0A0A' },
-  { name: '面霜', count: 53, percentage: 8, color: '#FF6B35' },
-  { name: '面膜', count: 33, percentage: 5, color: '#4A90D9' },
-  { name: '护肤套组', count: 24, percentage: 3, color: '#666666' },
-  { name: '精华水/水', count: 22, percentage: 3, color: '#50C878' },
-  { name: '气垫', count: 22, percentage: 3, color: '#9B59B6' },
-  { name: '眼霜', count: 20, percentage: 3, color: '#E67E22' },
-  { name: '次抛', count: 19, percentage: 3, color: '#1ABC9C' },
-  { name: '水乳/水霜', count: 18, percentage: 3, color: '#999999' },
-  { name: '洁面', count: 18, percentage: 3, color: '#CCCCCC' },
-  { name: '防晒', count: 15, percentage: 2, color: '#E5E5E5' },
+  { name: '精华', count: 115, percentage: 17, color: '#FF3B30' },
+  { name: '面霜', count: 98, percentage: 14, color: '#0A0A0A' },
+  { name: '面膜', count: 73, percentage: 10, color: '#FF6B35' },
+  { name: '精华水/水', count: 47, percentage: 7, color: '#4A90D9' },
+  { name: '气垫', count: 44, percentage: 6, color: '#666666' },
+  { name: '眼霜', count: 40, percentage: 6, color: '#50C878' },
+  { name: '次抛', count: 37, percentage: 5, color: '#9B59B6' },
+  { name: '护肤套组', count: 36, percentage: 5, color: '#E67E22' },
+  { name: '水乳/水霜', count: 31, percentage: 4, color: '#1ABC9C' },
+  { name: '粉底液', count: 26, percentage: 4, color: '#999999' },
+  { name: '妆前隔离', count: 20, percentage: 3, color: '#CCCCCC' },
+  { name: '洁面', count: 19, percentage: 3, color: '#E5E5E5' },
 ]
 
 // 最近直播数据
