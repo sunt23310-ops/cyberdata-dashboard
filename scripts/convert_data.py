@@ -1158,11 +1158,12 @@ def generate_dashboard_ts(products):
 
     categories = {}
     for p in products:
-        cat = p['categoryName'].split('/')[1] if '/' in p['categoryName'] else p['categoryName'].split('/')[0]
+        cat = p['categoryName']
         categories[cat] = categories.get(cat, 0) + 1
 
     sorted_cats = sorted(categories.items(), key=lambda x: -x[1])
-    colors = ['#FF3B30', '#0A0A0A', '#666666', '#999999', '#CCCCCC', '#E5E5E5', '#F0F0F0']
+    colors = ['#FF3B30', '#0A0A0A', '#FF6B35', '#4A90D9', '#666666', '#50C878', '#9B59B6',
+              '#E67E22', '#1ABC9C', '#999999', '#CCCCCC', '#E5E5E5', '#F0F0F0', '#C0C0C0', '#808080']
 
     lines = []
     lines.append("import type { LiveSession } from '@/types/live'")
@@ -1220,7 +1221,7 @@ function generateChartData(
 
     lines.append("// 类目分布饼图数据")
     lines.append("export const pieChartData = [")
-    for cat_name, count in sorted_cats[:5]:
+    for cat_name, count in sorted_cats[:12]:
         pct = round(count / total_products * 100)
         lines.append(f"  {{ category: '{cat_name}', value: {pct}, percentage: {pct} }},")
     lines.append("]")
@@ -1228,7 +1229,7 @@ function generateChartData(
 
     lines.append("// 商品类目数据")
     lines.append("export const categoryData = [")
-    for idx, (cat_name, count) in enumerate(sorted_cats[:5]):
+    for idx, (cat_name, count) in enumerate(sorted_cats[:12]):
         pct = round(count / total_products * 100)
         color = colors[idx] if idx < len(colors) else '#CCCCCC'
         lines.append(f"  {{ name: '{cat_name}', count: {count}, percentage: {pct}, color: '{color}' }},")
