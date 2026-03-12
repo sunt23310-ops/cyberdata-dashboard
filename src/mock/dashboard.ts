@@ -60,7 +60,11 @@ export const pieChartData = [
   { category: '水乳/水霜', value: 4, percentage: 4 },
   { category: '粉底液', value: 4, percentage: 4 },
   { category: '妆前隔离', value: 3, percentage: 3 },
+  { category: '唇部', value: 3, percentage: 3 },
   { category: '洁面', value: 3, percentage: 3 },
+  { category: '定妆粉饼', value: 2, percentage: 2 },
+  { category: '防晒', value: 2, percentage: 2 },
+  { category: '卸妆', value: 2, percentage: 2 },
 ]
 
 // 商品类目数据
@@ -76,7 +80,11 @@ export const categoryData = [
   { name: '水乳/水霜', count: 31, percentage: 4, color: '#1ABC9C' },
   { name: '粉底液', count: 26, percentage: 4, color: '#999999' },
   { name: '妆前隔离', count: 20, percentage: 3, color: '#CCCCCC' },
+  { name: '唇部', count: 18, percentage: 3, color: '#3498DB' },
   { name: '洁面', count: 19, percentage: 3, color: '#E5E5E5' },
+  { name: '定妆粉饼', count: 16, percentage: 2, color: '#8E44AD' },
+  { name: '防晒', count: 15, percentage: 2, color: '#F39C12' },
+  { name: '卸妆', count: 15, percentage: 2, color: '#95A5A6' },
 ]
 
 // 最近直播数据
