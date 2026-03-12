@@ -190,7 +190,10 @@ function goToLiveDetail(liveId: string) {
                 class="border-b border-gray-100 hover:bg-gray-50 transition-colors cursor-pointer"
               >
                 <td class="px-6 py-4 text-[13px] text-gray-900 font-mono">{{ live.id }}</td>
-                <td class="px-6 py-4 text-[13px] text-gray-900">{{ live.anchor }}</td>
+                <td class="px-6 py-4 text-[13px] text-gray-900">
+                  <div>{{ live.anchor }}</div>
+                  <div v-if="live.title" class="text-[11px] text-gray-500 mt-0.5">{{ live.title }}</div>
+                </td>
                 <td class="px-6 py-4 text-[13px] text-gray-600">{{ formatDurationMinutes(live.duration) }}</td>
                 <td class="px-6 py-4 text-[13px] text-gray-900 font-medium">{{ formatAmount(live.gmv) }}</td>
                 <td class="px-6 py-4 text-[13px] text-gray-600">{{ live.date }}</td>

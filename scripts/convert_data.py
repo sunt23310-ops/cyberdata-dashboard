@@ -1,12 +1,14 @@
 #!/usr/bin/env python3
 """
 Parse knowledge base markdown files and generate TypeScript mock data for cyberdata-dashboard.
+v2: Enhanced with full product details, live titles, real images, exact prices.
 """
 
 import re
 import json
 import random
 import hashlib
+import urllib.parse
 from pathlib import Path
 
 random.seed(42)  # Reproducible
@@ -15,69 +17,114 @@ random.seed(42)  # Reproducible
 KB_BASE = Path("/Users/sunzhuoqi/Desktop/商品知识库")
 OUTPUT_DIR = Path("/Users/sunzhuoqi/Desktop/cyberdata-dashboard/src/mock")
 
-# Live session mapping
+# Live session mapping - titles match source data file names
 LIVE_SESSIONS = [
     {
-        "liveId": "LIVE001", "theme": "精华小课堂", "date": "2025-10-07T20:00:00Z",
-        "displayDate": "2025-10-07 20:00:00", "category": "护肤品/精华液",
+        "liveId": "LIVE001", "title": "10.7精华小课堂", "theme": "精华小课堂",
+        "date": "2025-10-07T20:00:00Z", "displayDate": "2025-10-07 20:00:00",
+        "category": "护肤品/精华液",
         "file": KB_BASE / "【2025双十一小课堂】知识结构+产品明细/【2025双十一】10.7精华小课堂_商品明细.md",
         "duration": 14520, "viewCount": 12300000, "sales": 85600, "saleAmount": 45600000
     },
     {
-        "liveId": "LIVE002", "theme": "次抛+面膜小课堂", "date": "2025-10-08T20:00:00Z",
-        "displayDate": "2025-10-08 20:00:00", "category": "护肤品/次抛精华",
+        "liveId": "LIVE002", "title": "10.8次抛+面膜小课堂", "theme": "次抛+面膜小课堂",
+        "date": "2025-10-08T20:00:00Z", "displayDate": "2025-10-08 20:00:00",
+        "category": "护肤品/次抛精华",
         "file": KB_BASE / "【2025双十一小课堂】知识结构+产品明细/【2025双十一】10.8-次抛面膜小课堂_商品明细.md",
         "duration": 13200, "viewCount": 11500000, "sales": 79200, "saleAmount": 42100000
     },
     {
-        "liveId": "LIVE003", "theme": "面霜+眼霜小课堂", "date": "2025-10-09T20:00:00Z",
-        "displayDate": "2025-10-09 20:00:00", "category": "护肤品/面霜",
+        "liveId": "LIVE003", "title": "10.9面霜+眼霜小课堂", "theme": "面霜+眼霜小课堂",
+        "date": "2025-10-09T20:00:00Z", "displayDate": "2025-10-09 20:00:00",
+        "category": "护肤品/面霜",
         "file": KB_BASE / "【2025双十一小课堂】知识结构+产品明细/【2025双十一】10.9面霜+眼霜小课堂_商品明细.md",
         "duration": 12600, "viewCount": 9800000, "sales": 55400, "saleAmount": 28700000
     },
     {
-        "liveId": "LIVE004", "theme": "水乳套组小课堂", "date": "2025-10-10T20:00:00Z",
-        "displayDate": "2025-10-10 20:00:00", "category": "护肤品/水乳套组",
+        "liveId": "LIVE004", "title": "10.10水乳套组小课堂", "theme": "水乳套组小课堂",
+        "date": "2025-10-10T20:00:00Z", "displayDate": "2025-10-10 20:00:00",
+        "category": "护肤品/水乳套组",
         "file": KB_BASE / "【2025双十一小课堂】知识结构+产品明细/【2025双十一】10.10水乳套组小课堂_商品明细.md",
         "duration": 11400, "viewCount": 8900000, "sales": 62300, "saleAmount": 32100000
     },
     {
-        "liveId": "LIVE005", "theme": "彩妆小课堂", "date": "2025-10-11T20:00:00Z",
-        "displayDate": "2025-10-11 20:00:00", "category": "彩妆",
+        "liveId": "LIVE005", "title": "10.11彩妆小课堂", "theme": "彩妆小课堂",
+        "date": "2025-10-11T20:00:00Z", "displayDate": "2025-10-11 20:00:00",
+        "category": "彩妆",
         "file": KB_BASE / "【2025双十一小课堂】知识结构+产品明细/【2025双十一】10.11-彩妆小课堂_商品明细.md",
         "duration": 10800, "viewCount": 7200000, "sales": 48900, "saleAmount": 21500000
     },
     {
-        "liveId": "LIVE006", "theme": "仪器防晒卸妆洁面小课堂", "date": "2025-10-12T20:00:00Z",
-        "displayDate": "2025-10-12 20:00:00", "category": "护肤品/防晒",
+        "liveId": "LIVE006", "title": "10.12仪器防晒卸妆洁面小课堂", "theme": "仪器防晒卸妆洁面小课堂",
+        "date": "2025-10-12T20:00:00Z", "displayDate": "2025-10-12 20:00:00",
+        "category": "护肤品/防晒",
         "file": KB_BASE / "【2025双十一小课堂】知识结构+产品明细/【2025双十一】10.12小课堂仪器防晒卸妆洁面_商品明细.md",
         "duration": 9000, "viewCount": 5600000, "sales": 41200, "saleAmount": 18900000
     },
     {
-        "liveId": "LIVE007", "theme": "38爆品攻略小课堂", "date": "2026-02-21T20:00:00Z",
-        "displayDate": "2026-02-21 20:00:00", "category": "护肤品/精华液",
+        "liveId": "LIVE007", "title": "38焕新周爆品攻略小课堂", "theme": "38爆品攻略小课堂",
+        "date": "2026-02-21T20:00:00Z", "displayDate": "2026-02-21 20:00:00",
+        "category": "护肤品/精华液",
         "file": KB_BASE / "【2026-38】小课堂 /38小课堂完整版.md",
         "duration": 15600, "viewCount": 13100000, "sales": 91200, "saleAmount": 48900000
     },
 ]
 
+# Brand color mapping for placeholder images
+BRAND_COLORS = {
+    'PMPM': 'e8d5b7', '理肤泉': '0072bc', '修丽可': '2b2b2b', '兰蔻': '000000',
+    'HR赫莲娜': '1a1a1a', '海蓝之谜': '004d40', '薇诺娜': 'e8f5e9', '珀莱雅': '1565c0',
+    '绽媄娅': 'f8bbd0', '双妹': 'b71c1c', '科兰黎': '4a148c', '雅诗兰黛': '1b5e20',
+    '娇韵诗': 'ff6f00', 'SK-II': 'b71c1c', '达尔肤': '4caf50', '欧玛橄榄': '558b2f',
+    '科颜氏': 'fff9c4', 'TAKAMI': 'e0e0e0', 'YSL': '000000', '妮维雅': '1565c0',
+    'OLAY': 'ffffff', '倩碧': '66bb6a', 'DR.CI:LABO': 'ff9800', '相宜本草': '2e7d32',
+    '欧莱雅': '000000', '自然堂': '0097a7', '韩束': 'c62828', '百雀羚': '1b5e20',
+    '瑷尔博士': 'e1f5fe', '法国娇兰': 'ffd700', 'The Ginza御银座': 'f5f5f5',
+    'CPB肌肤之钥': 'f5f5dc', '莱珀妮': 'e0e0e0', '资生堂': 'b71c1c',
+    '敷尔佳': 'e3f2fd', '润百颜': 'fce4ec', '可复美': 'f3e5f5', '可丽金': 'fff8e1',
+    '同频': 'e8eaf6', '听研': 'fafafa', '伊丽莎白雅顿': 'fff3e0', '夸迪': 'efebe9',
+    '欧诗漫': 'fce4ec', '完美日记': '000000', 'DARPHIN朵梵': '1b5e20',
+    'Murad慕拉得': '4a148c', '羽西': 'bf360c', '兰时光': 'f3e5f5',
+    '馥蕾诗': 'ff7043', '希思黎': '000000', 'cellcosmet瑞妍': 'e0e0e0',
+    '美研因式': '81c784', 'MAOGEPING毛戈平': '3e2723', '彩棠': 'efebe9',
+    'PASSIONAL LOVER': 'ff4081', '恋火': 'ff4081', 'MISTINE': 'f8bbd0',
+    '郑瑄茉': 'f5f5f5', 'MAC': '000000', 'NARS': '000000', '花西子': 'd4e157',
+    '黛珂': 'f5f5f5', 'TOM FORD': '000000', '阿玛尼': '000000', '华伦天奴': 'b71c1c',
+    'CT夏洛特蒂': 'f8bbd0', '植村秀': '000000', '玫珂菲': '000000',
+    'FENTY': 'ff6f00', '纪梵希': '000000', 'HOURGLASS': 'e0e0e0',
+}
+
+
+def get_image_url(brand, idx, live_id):
+    """Generate a placehold.co image URL with brand name."""
+    bg_color = BRAND_COLORS.get(brand, 'f5f5f5')
+    # Determine text color based on background brightness
+    r, g, b = int(bg_color[:2], 16), int(bg_color[2:4], 16), int(bg_color[4:6], 16)
+    brightness = (r * 299 + g * 587 + b * 114) / 1000
+    text_color = '333' if brightness > 128 else 'fff'
+    # URL-encode the brand name
+    short_brand = brand[:8]
+    encoded = urllib.parse.quote(short_brand)
+    return f"https://placehold.co/400x400/{bg_color}/{text_color}?text={encoded}"
+
 
 def parse_price_range(price_str: str):
-    """Parse a price range string and return (price, couponPrice)."""
+    """Parse a price range string and return (price, couponPrice, display_range).
+    Returns the exact source values without transformation.
+    """
     price_str = price_str.strip()
-    # Patterns: "100元-300元", "300元～600元", "100元以内", "2000元以上", "200元-400元"
     nums = re.findall(r'(\d+)', price_str)
     if not nums:
-        return 299, 199
+        return 299, 199, price_str
     nums = [int(n) for n in nums]
     if '以内' in price_str:
-        return nums[0], int(nums[0] * 0.7)
+        return nums[0], int(nums[0] * 0.7), price_str
     elif '以上' in price_str:
-        return int(nums[0] * 1.3), nums[0]
+        return int(nums[0] * 1.3), nums[0], price_str
     elif len(nums) >= 2:
-        return nums[1], nums[0]  # price=upper, couponPrice=lower
+        return nums[1], nums[0], price_str  # price=upper, couponPrice=lower
     else:
-        return nums[0], int(nums[0] * 0.8)
+        return nums[0], int(nums[0] * 0.8), price_str
 
 
 def extract_brand(product_name: str) -> str:
@@ -89,26 +136,29 @@ def extract_brand(product_name: str) -> str:
         '欧莱雅', 'OLAY', '珀莱雅', '薇诺娜', '自然堂', '韩束', '百雀羚', '相宜本草',
         'PMPM', '瑷尔博士', '敷尔佳', '润百颜', '可复美', '可丽金', '夸迪', '听研',
         '同频', '绽媄娅', '欧诗漫', '科兰黎', '双妹', '羽西', '兰时光',
-        'Murad慕拉得', 'TAKAMI', '妮维雅', 'DR.CI:LABO', '达尔肤', '欧玛橄榄',
+        'Murad慕拉得', 'Murad', 'TAKAMI', '妮维雅', 'DR.CI:LABO', '达尔肤', '欧玛橄榄', '欧玛',
         '伊丽莎白雅顿', 'cellcosmet瑞妍', '馥蕾诗', '希思黎',
         'evereden安唯伊', 'Curél珂润', 'onTop', 'my CLARINS小娇韵诗',
         '完美日记', '欧珀莱', '丝塔芙', '优色林', '凡士林', '适乐肤',
-        '瑷科缦', '优时颜', 'FAN BEAUTY DIARY', '蒂佳婷', '达肤妍', '珀芙研',
-        'codemint纨素之肤', 'MAOGEPING毛戈平', 'CNP希恩派', '芙芙',
+        '瑷科缦', '优时颜', 'FAN BEAUTY DIARY', 'FAN BEAUTY', '蒂佳婷', '达肤妍', '珀芙研',
+        'codemint纨素之肤', 'MAOGEPING毛戈平', 'MAOGEPING BEAUTY', 'MAOGEPING',
+        '毛戈平', 'CNP希恩派', '芙芙',
         '美研因式', 'DAISY SKY雏菊的天空', 'AromeManpo馥郁满铺',
         '颐莲', '伊菲丹', '赫莲娜',
+        'PASSIONAL LOVER', '恋火', 'MISTINE', '郑瑄茉',
+        'MAC', 'NARS', '花西子', '黛珂', 'TOM FORD', '阿玛尼', '华伦天奴',
+        'CT夏洛特蒂', '植村秀', '玫珂菲', 'FENTY BEAUTY', 'FENTY',
+        '纪梵希', 'HOURGLASS', 'Za姬芮', '德妃', '彩棠',
     ]
     for brand in known_brands:
         if brand in product_name:
             return brand
-    # Try first word
     parts = re.split(r'[「」\s]', product_name)
     return parts[0] if parts else product_name[:4]
 
 
 def generate_sales(price, brand):
     """Generate realistic sales numbers based on price tier and brand."""
-    # Higher price = lower volume, well-known brands = higher volume
     big_brands = ['兰蔻', '雅诗兰黛', 'SK-II', '欧莱雅', '资生堂', '珀莱雅', '薇诺娜', 'OLAY']
     brand_mult = 1.5 if any(b in brand for b in big_brands) else 1.0
 
@@ -132,23 +182,18 @@ def parse_jinghua_products(filepath):
     content = filepath.read_text(encoding='utf-8')
     products = []
 
-    # Split by ## headings (product names)
     sections = re.split(r'^## (.+)$', content, flags=re.MULTILINE)
-    # sections[0] is before first ##, then alternating: name, content, name, content...
-
     i = 1
     while i < len(sections) - 1:
         name = sections[i].strip()
         body = sections[i + 1]
         i += 2
 
-        # Skip non-product headings
         if any(kw in name for kw in ['产品列表', '商品详细', '精华商品', '总览']):
             continue
 
         product = {"name": name}
 
-        # Extract fields
         cat_match = re.search(r'\*\*产品类目[：:]\*\*\s*(.+)', body)
         if cat_match:
             product["category_raw"] = cat_match.group(1).strip()
@@ -174,14 +219,20 @@ def parse_jinghua_products(filepath):
         tags_match = re.search(r'\*\*适用标签[：:]\*\*\s*(.+)', body)
         if tags_match:
             product["tags"] = tags_match.group(1).strip()
+        else:
+            # Try to find tags in format: 敏肌可用 | 干/油皮皆可
+            tags_line = re.search(r'(敏肌可用|干[/、]油皮皆可|油皮优选|干皮优选).*', body)
+            if tags_line:
+                product["tags"] = tags_line.group(0).strip()
 
         promo_match = re.search(r'\*\*促销机制[：:]\*\*\s*(.+)', body)
         if promo_match:
             product["promotion"] = promo_match.group(1).strip()
 
+        # Full script - no truncation
         script_match = re.search(r'\*\*李佳琦直播话术[：:]\*\*\s*\n+([\s\S]*?)(?=\n---|\n## |\Z)', body)
         if script_match:
-            product["script"] = script_match.group(1).strip()[:200]
+            product["script"] = script_match.group(1).strip()
 
         products.append(product)
 
@@ -193,7 +244,6 @@ def parse_table_products(filepath):
     content = filepath.read_text(encoding='utf-8')
     products = []
 
-    # Find ### product headings with details
     sections = re.split(r'^### (.+)$', content, flags=re.MULTILINE)
     i = 1
     while i < len(sections) - 1:
@@ -201,7 +251,6 @@ def parse_table_products(filepath):
         body = sections[i + 1]
         i += 2
 
-        # Skip category headings like "补水/修护类", "1. 口腔护理"
         if re.match(r'^\d+\.', name) or '类' in name[-1:]:
             continue
 
@@ -225,9 +274,22 @@ def parse_table_products(filepath):
         if highlight_match:
             product["highlight"] = highlight_match.group(1).strip()
 
+        tags_match = re.search(r'\*\*适用标签[：:]\*\*\s*(.+)', body)
+        if tags_match:
+            product["tags"] = tags_match.group(1).strip()
+        else:
+            tags_line = re.search(r'(敏肌可用|干[/、]油皮皆可|油皮优选|干皮优选).*', body)
+            if tags_line:
+                product["tags"] = tags_line.group(0).strip()
+
+        promo_match = re.search(r'\*\*促销机制[：:]\*\*\s*(.+)', body)
+        if promo_match:
+            product["promotion"] = promo_match.group(1).strip()
+
+        # Full script - no truncation
         script_match = re.search(r'\*\*李佳琦直播话术[：:]\*\*\s*\n+([\s\S]*?)(?=\n---|\n### |\Z)', body)
         if script_match:
-            product["script"] = script_match.group(1).strip()[:200]
+            product["script"] = script_match.group(1).strip()
 
         products.append(product)
 
@@ -249,9 +311,7 @@ def parse_table_products(filepath):
 
 def parse_38_products(filepath):
     """Parse the 38小课堂完整版 format.
-
-    Products appear as "- ProductName" lines, preceded by "**价格范围**" lines.
-    Non-product lines (explanatory text) are filtered out.
+    Products appear as "- ProductName" lines, with 🎙️ blocks as script.
     """
     content = filepath.read_text(encoding='utf-8')
     products = []
@@ -259,7 +319,6 @@ def parse_38_products(filepath):
     lines = content.split('\n')
     current_price = None
 
-    # Keywords that indicate a line is NOT a product
     skip_keywords = [
         '换季', '肌肤', '目的', '定位', '护肤逻辑', '主播推荐', '象限',
         '解决方案', '建议', '注意', '步骤', 'STEP', '可见', '以下',
@@ -271,7 +330,6 @@ def parse_38_products(filepath):
         '重点', '关键', '核心', '基础', '进阶', '高阶',
     ]
 
-    # Brand keywords that indicate a product line
     brand_indicators = [
         '薇诺娜', '修丽可', '海蓝之谜', '理肤泉', '珀莱雅', '兰蔻', '雅诗兰黛',
         'SK-II', 'OLAY', '欧莱雅', '资生堂', '娇韵诗', '科颜氏', '倩碧',
@@ -282,49 +340,82 @@ def parse_38_products(filepath):
         'PMPM', '完美日记', 'Murad', '馥蕾诗', 'CPB', '莱珀妮',
         'FAN BEAUTY', '蒂佳婷', '希思黎', '优时颜', '瑷科缦',
         'The Ginza', 'cellcosmet', 'MAOGEPING', '毛戈平',
+        '彩棠', '恋火', 'PASSIONAL LOVER', 'MISTINE', '郑瑄茉',
+        'MAC', 'NARS', '花西子', 'TOM FORD', '阿玛尼', 'FENTY',
+        '纪梵希', 'HOURGLASS', '黛珂', '植村秀', '玫珂菲', '华伦天奴',
+        'CT夏洛特蒂', 'Za姬芮', '德妃',
     ]
 
-    for line in lines:
+    i = 0
+    while i < len(lines):
+        line = lines[i]
+
         # Detect price range headers
         price_m = re.match(r'^\*\*(\d+.*?元.*?)\*\*', line)
+        if not price_m:
+            price_m = re.match(r'^\*\*(\d+[\-\~～]\d+.*?)\*\*', line)
         if price_m:
             current_price = price_m.group(1)
+            i += 1
             continue
 
         # Product lines start with "- "
         m = re.match(r'^-\s+(.+)', line)
         if m:
             text = m.group(1).strip()
-            # Remove markdown formatting
             text = re.sub(r'>\s*🎙️.*', '', text).strip()
             if not text or len(text) < 3:
+                i += 1
                 continue
 
-            # Skip non-product lines
             if any(kw in text for kw in skip_keywords):
+                i += 1
                 continue
 
-            # Must contain a brand name or product-type keyword to be a product
             is_product = any(brand in text for brand in brand_indicators)
             if not is_product:
-                # Also accept if it contains typical product keywords
                 product_keywords = ['精华', '面膜', '面霜', '眼霜', '乳液', '化妆水',
                                    '防晒', '卸妆', '洁面', '粉底', '口红', '唇膏',
-                                   '次抛', '安瓶', '套组', '喷雾', '洗面奶']
+                                   '次抛', '安瓶', '套组', '喷雾', '洗面奶',
+                                   '气垫', '散粉', '粉饼', '遮瑕', '妆前', '隔离',
+                                   '眉笔', '睫毛', '腮红']
                 is_product = any(kw in text for kw in product_keywords)
 
             if is_product and not text.startswith('>'):
                 product = {"name": text}
                 if current_price:
                     product["price_range"] = current_price
+
+                # Look ahead for 🎙️ script on the next line(s)
+                script_lines = []
+                j = i + 1
+                while j < len(lines):
+                    next_line = lines[j].strip()
+                    if next_line.startswith('> 🎙️'):
+                        script_text = next_line.replace('> 🎙️ 主播推荐：', '').replace('> 🎙️ ', '').strip()
+                        script_lines.append(script_text)
+                        j += 1
+                    elif next_line.startswith('>') and script_lines:
+                        # Continuation of script block
+                        script_lines.append(next_line.lstrip('> ').strip())
+                        j += 1
+                    else:
+                        break
+
+                if script_lines:
+                    product["script"] = ' '.join(script_lines)
+
                 products.append(product)
+                i = j
+                continue
+
+        i += 1
 
     # Deduplicate by name
     seen = set()
     unique = []
     for p in products:
         name = p["name"]
-        # Clean up name: remove trailing punctuation, parenthetical notes
         name = re.sub(r'\s*[/／]\s*$', '', name)
         p["name"] = name
         if name not in seen and len(name) > 3:
@@ -332,43 +423,6 @@ def parse_38_products(filepath):
             unique.append(p)
 
     return unique
-
-
-def select_products(all_products, max_per_live=10):
-    """Select representative products from parsed list."""
-    if len(all_products) <= max_per_live:
-        return all_products
-
-    # Try to get a mix of price ranges
-    selected = []
-    random.shuffle(all_products)
-
-    # Group by rough price tier
-    low, mid, high, premium = [], [], [], []
-    for p in all_products:
-        pr = p.get("price_range", "300元-600元")
-        nums = re.findall(r'\d+', pr)
-        max_price = int(nums[-1]) if nums else 300
-        if max_price <= 300:
-            low.append(p)
-        elif max_price <= 600:
-            mid.append(p)
-        elif max_price <= 1500:
-            high.append(p)
-        else:
-            premium.append(p)
-
-    # Pick from each tier
-    for tier in [low, mid, high, premium]:
-        n = min(len(tier), max(2, max_per_live // 4))
-        selected.extend(tier[:n])
-
-    # Fill up to max if needed
-    remaining = [p for p in all_products if p not in selected]
-    while len(selected) < max_per_live and remaining:
-        selected.append(remaining.pop(0))
-
-    return selected[:max_per_live]
 
 
 def build_category_name(product, session_category):
@@ -394,7 +448,7 @@ def build_category_name(product, session_category):
         return "洁面/卸妆/卸妆产品"
     elif "洁面" in product["name"] or "洗面" in product["name"]:
         return "洁面/洁面乳/温和洁面"
-    elif any(kw in product["name"] for kw in ["粉底", "口红", "唇", "眉", "睫毛", "腮红", "遮瑕", "定妆", "妆前"]):
+    elif any(kw in product["name"] for kw in ["粉底", "口红", "唇", "眉", "睫毛", "腮红", "遮瑕", "定妆", "妆前", "气垫", "散粉", "粉饼", "隔离"]):
         return f"彩妆/{cat_raw or '底妆'}/{effect or '持妆'}"
     elif "仪器" in product["name"] or "美容仪" in product["name"]:
         return "美容仪器/面部美容/美容仪"
@@ -403,15 +457,15 @@ def build_category_name(product, session_category):
 
 
 def escape_ts_string(s: str) -> str:
-    """Escape string for TypeScript."""
-    return s.replace("\\", "\\\\").replace("'", "\\'").replace("\n", "\\n")
+    """Escape string for TypeScript single-quoted strings."""
+    return s.replace("\\", "\\\\").replace("'", "\\'").replace("\n", " ").replace("\r", "")
 
 
 # === Main Logic ===
 def main():
-    all_mock_products = []  # ProductListItem[]
-    all_product_details = {}  # Record<string, ProductDetail>
-    all_live_products = {}  # Record<string, product[]>
+    all_mock_products = []
+    all_product_details = {}
+    all_live_products = {}
     item_id_counter = 1001
 
     for session in LIVE_SESSIONS:
@@ -429,7 +483,6 @@ def main():
 
         print(f"  Found {len(raw_products)} products, using all...")
         selected = raw_products  # 全部挂载
-        print(f"  Using all {len(selected)} products")
 
         live_product_list = []
 
@@ -437,13 +490,13 @@ def main():
             item_code = f"{live_id}_{idx}"
             brand = extract_brand(product["name"])
             price_range = product.get("price_range", "300元-600元")
-            price, coupon_price = parse_price_range(price_range)
+            price, coupon_price, display_range = parse_price_range(price_range)
             sale = generate_sales(price, brand)
             gmv = sale * coupon_price
             category_name = build_category_name(product, session["category"])
             shop_name = f"{brand}官方旗舰店"
+            image_url = get_image_url(brand, idx, live_id)
 
-            # Clean up brand for shop name
             if len(brand) > 10:
                 short_brand = brand.split('·')[0].split('（')[0][:6]
                 shop_name = f"{short_brand}官方旗舰店"
@@ -459,9 +512,10 @@ def main():
                 "categoryName": category_name,
                 "price": price,
                 "couponPrice": coupon_price,
+                "priceRange": display_range,
                 "sale": sale,
                 "gmv": gmv,
-                "images": f"//img.alicdn.com/bao/uploaded/i1/{live_id.lower()}_{idx:03d}.jpg"
+                "images": image_url,
             }
             all_mock_products.append(mock_product)
 
@@ -473,23 +527,29 @@ def main():
             tags = product.get("tags", "")
 
             highlights = [
-                {"category": "产品相关", "description": highlight_text[:80]},
+                {"category": "产品相关", "description": highlight_text},
             ]
             if ingredients_raw:
-                highlights.append({"category": "产品相关", "description": f"核心成分：{ingredients_raw[:60]}"})
+                highlights.append({"category": "产品相关", "description": f"核心成分：{ingredients_raw}"})
             if tags:
-                highlights.append({"category": "产品相关", "description": f"适用人群：{tags}"})
+                highlights.append({"category": "适用人群", "description": f"适用人群：{tags}"})
+            if script:
+                # Add anchor commentary as a highlight
+                script_preview = script[:150] + ('...' if len(script) > 150 else '')
+                highlights.append({"category": "主播讲解", "description": f"李佳琦推荐：{script_preview}"})
             highlights.append({"category": "服务相关", "description": "正品保障，假一赔十"})
             highlights.append({"category": "服务相关", "description": "7天无理由退换货"})
 
             ingredients_list = []
             if ingredients_raw:
-                ingredients_list.append({"name": "核心成分", "benefit": "主要功效成分", "concentration": ingredients_raw[:40], "source": brand})
+                ingredients_list.append({"name": "核心成分", "benefit": "主要功效成分", "concentration": ingredients_raw, "source": brand})
             ingredients_list.append({"name": "品牌", "benefit": "品牌信息", "concentration": brand, "source": "官方"})
-            ingredients_list.append({"name": "价位段", "benefit": "价格区间", "concentration": price_range, "source": "直播间"})
+            ingredients_list.append({"name": "价位段", "benefit": "价格区间", "concentration": display_range, "source": "直播间"})
             effect = product.get("effect", product.get("category_raw", ""))
             if effect:
                 ingredients_list.append({"name": "功效", "benefit": "核心功效", "concentration": effect, "source": "产品说明"})
+            if tags:
+                ingredients_list.append({"name": "适用人群", "benefit": "适用肤质", "concentration": tags, "source": "产品说明"})
             ingredients_list.append({"name": "保质期", "benefit": "未开封保质期", "concentration": "36个月", "source": "生产日期见包装"})
 
             detail = {
@@ -500,13 +560,13 @@ def main():
                 "brand": brand,
                 "categoryName": category_name,
                 "shopName": shop_name,
-                "mainImages": f"//img.alicdn.com/bao/uploaded/i1/{live_id.lower()}_{idx:03d}.jpg",
+                "mainImages": image_url,
                 "pricing": {
                     "originalPrice": f"¥{price}",
                     "currentPrice": f"¥{coupon_price}",
                     "discountInfo": f"直降{price - coupon_price}元" if price > coupon_price else None,
                     "promotionStrategy": promotion,
-                    "priceText": script[:50] if script else "直播间专属价"
+                    "priceText": script if script else "直播间专属价"
                 },
                 "sale": sale,
                 "gmv": gmv,
@@ -533,7 +593,8 @@ def main():
                 "brand": brand,
                 "startTime": start_time,
                 "endTime": start_time + duration,
-                "keywords": keywords_list[:4]
+                "keywords": keywords_list[:4],
+                "script": script,
             })
 
             item_id_counter += 1
@@ -558,7 +619,7 @@ def generate_products_ts(products, details):
     lines.append("export const mockProducts: ProductListItem[] = [")
 
     for p in products:
-        lines.append(f"  {{ itemId: {p['itemId']}, liveId: '{p['liveId']}', itemCode: '{p['itemCode']}', title: '{escape_ts_string(p['title'])}', brandName: '{escape_ts_string(p['brandName'])}', shopName: '{escape_ts_string(p['shopName'])}', categoryName: '{escape_ts_string(p['categoryName'])}', price: {p['price']}, couponPrice: {p['couponPrice']}, sale: {p['sale']}, gmv: {p['gmv']}, images: '{p['images']}' }},")
+        lines.append(f"  {{ itemId: {p['itemId']}, liveId: '{p['liveId']}', itemCode: '{p['itemCode']}', title: '{escape_ts_string(p['title'])}', brandName: '{escape_ts_string(p['brandName'])}', shopName: '{escape_ts_string(p['shopName'])}', categoryName: '{escape_ts_string(p['categoryName'])}', price: {p['price']}, couponPrice: {p['couponPrice']}, sale: {p['sale']}, gmv: {p['gmv']}, images: '{escape_ts_string(p['images'])}' }},")
 
     lines.append("]")
     lines.append("")
@@ -576,7 +637,7 @@ def generate_products_ts(products, details):
         lines.append(f"    brand: '{escape_ts_string(d['brand'])}',")
         lines.append(f"    categoryName: '{escape_ts_string(d['categoryName'])}',")
         lines.append(f"    shopName: '{escape_ts_string(d['shopName'])}',")
-        lines.append(f"    mainImages: '{d['mainImages']}',")
+        lines.append(f"    mainImages: '{escape_ts_string(d['mainImages'])}',")
         lines.append(f"    pricing: {{")
         lines.append(f"      originalPrice: '{d['pricing']['originalPrice']}',")
         lines.append(f"      currentPrice: '{d['pricing']['currentPrice']}',")
@@ -588,13 +649,11 @@ def generate_products_ts(products, details):
         lines.append(f"    sale: {d['sale']},")
         lines.append(f"    gmv: {d['gmv']},")
 
-        # highlights
         lines.append(f"    highlights: [")
         for h in d['highlights']:
-            lines.append(f"      {{ category: '{h['category']}', description: '{escape_ts_string(h['description'])}' }},")
+            lines.append(f"      {{ category: '{escape_ts_string(h['category'])}', description: '{escape_ts_string(h['description'])}' }},")
         lines.append(f"    ],")
 
-        # ingredients
         lines.append(f"    ingredients: [")
         for ing in d['ingredients']:
             lines.append(f"      {{ name: '{escape_ts_string(ing['name'])}', benefit: '{escape_ts_string(ing['benefit'])}', concentration: '{escape_ts_string(ing['concentration'])}', source: '{escape_ts_string(ing['source'])}' }},")
@@ -607,7 +666,7 @@ def generate_products_ts(products, details):
     lines.append("}")
     lines.append("")
 
-    # getProductDetail function (keep original logic)
+    # getProductDetail function
     lines.append("""// 获取商品详情
 export function getProductDetail(itemCode: string): ProductDetail {
   if (productDetailsMap[itemCode]) {
@@ -692,7 +751,7 @@ def generate_lives_ts(all_live_products):
 
     for session in LIVE_SESSIONS:
         s = session
-        lines.append(f"  {{ liveId: '{s['liveId']}', influencerId: 'INF001', anchor: '李佳琦', totalDuration: {s['duration']}, viewCount: {s['viewCount']}, viewCountChange: {round(random.uniform(3, 15), 1)}, sales: {s['sales']}, salesChange: {round(random.uniform(5, 18), 1)}, saleAmount: {s['saleAmount']}, saleAmountChange: {round(random.uniform(8, 20), 1)}, createdAt: '{s['date']}' }},")
+        lines.append(f"  {{ liveId: '{s['liveId']}', influencerId: 'INF001', anchor: '李佳琦', title: '{s['title']}', totalDuration: {s['duration']}, viewCount: {s['viewCount']}, viewCountChange: {round(random.uniform(3, 15), 1)}, sales: {s['sales']}, salesChange: {round(random.uniform(5, 18), 1)}, saleAmount: {s['saleAmount']}, saleAmountChange: {round(random.uniform(8, 20), 1)}, createdAt: '{s['date']}' }},")
 
     lines.append("]")
     lines.append("")
@@ -713,6 +772,7 @@ def generate_lives_ts(all_live_products):
         lines.append(f"    liveId: '{lid}',")
         lines.append(f"    influencerId: 'INF001',")
         lines.append(f"    anchor: '李佳琦',")
+        lines.append(f"    title: '{s['title']}',")
         lines.append(f"    createdAt: '{s['displayDate']}',")
         lines.append(f"    totalProducts: {total_products},")
         lines.append(f"    totalDuration: {s['duration']},")
@@ -756,6 +816,7 @@ export function getLiveDetail(liveId: string): LiveDetail {
     liveId: live.liveId,
     influencerId: live.influencerId,
     anchor: live.anchor,
+    title: live.title,
     createdAt: new Date(live.createdAt).toLocaleString('zh-CN', { year: 'numeric', month: '2-digit', day: '2-digit', hour: '2-digit', minute: '2-digit', second: '2-digit' }),
     totalProducts: 50 + (seed % 40),
     totalDuration: live.totalDuration,
@@ -776,15 +837,16 @@ export function getLiveDetail(liveId: string): LiveDetail {
 }
 """)
 
-    # allLiveProducts
+    # allLiveProducts - now includes script
     lines.append("// 直播商品列表（内部数据源）")
-    lines.append("const allLiveProducts: Record<string, { itemCode: string; itemIndex: number; productName: string; brand: string; startTime: number; endTime: number; keywords: string[] }[]> = {")
+    lines.append("const allLiveProducts: Record<string, { itemCode: string; itemIndex: number; productName: string; brand: string; startTime: number; endTime: number; keywords: string[]; script: string }[]> = {")
 
     for live_id, products in all_live_products.items():
         lines.append(f"  '{live_id}': [")
         for p in products:
             kw_str = ", ".join([f"'{escape_ts_string(k)}'" for k in p['keywords']])
-            lines.append(f"    {{ itemCode: '{p['itemCode']}', itemIndex: {p['itemIndex']}, productName: '{escape_ts_string(p['productName'])}', brand: '{escape_ts_string(p['brand'])}', startTime: {p['startTime']}, endTime: {p['endTime']}, keywords: [{kw_str}] }},")
+            script_text = escape_ts_string(p.get('script', ''))
+            lines.append(f"    {{ itemCode: '{p['itemCode']}', itemIndex: {p['itemIndex']}, productName: '{escape_ts_string(p['productName'])}', brand: '{escape_ts_string(p['brand'])}', startTime: {p['startTime']}, endTime: {p['endTime']}, keywords: [{kw_str}], script: '{script_text}' }},")
         lines.append(f"  ],")
 
     lines.append("}")
@@ -811,7 +873,7 @@ export function getLiveProducts(liveId: string): LiveProductItem[] {
 }
 """)
 
-    # Transcript templates and getLiveProductDetail (keep original structure)
+    # Transcript templates - now uses real script data when available
     lines.append("""// 截图描述模板
 const screenshotDescs = [
   '主播手持产品展示正面外观',
@@ -821,7 +883,7 @@ const screenshotDescs = [
   '展示价格标签和促销信息'
 ]
 
-// 转录文本模板库
+// 转录文本模板库（当源数据无话术时使用）
 const transcriptTemplates = [
   (name: string, brand: string) =>
     `[李佳琦] 好，接下来给大家带来的这款${name}，是${brand}的明星产品。\\n[李佳琦] 我自己用了大概三个月，真的能感受到效果。\\n[李佳琦] 你看这个质地，非常轻薄，上脸完全不会有负担感。\\n[助播] 对，后台数据显示这款已经卖了两千多单了。\\n[李佳琦] 成分表大家可以看一下，核心成分浓度都标注得很清楚。\\n[助播] 价格链接已经挂好了，大家现在下单还有赠品。`,
@@ -875,15 +937,23 @@ export function getLiveProductDetail(liveId: string, itemCode: string) {
   const productBasicName = (productName || '').split('（')[0]!.split('【')[0]!.substring(0, 15)
   const brand = product?.brand || '品牌'
   const keywords = product?.keywords || ['精华', '护肤', '修护']
+  const realScript = product?.script || ''
 
-  // 主讲切片
+  // 主讲切片 - 优先使用真实话术
   const seg1Start = 240 + (seed % 20) * 180
   const seg1Duration = 200 + (seed % 8) * 35
   const seg1End = seg1Start + seg1Duration
   const seg1Ratio1 = 50 + (seed % 20)
   const seg1Ratio2 = 100 - seg1Ratio1
-  const seg1Template = transcriptTemplates[seed % transcriptTemplates.length]!
-  const seg1Text = seg1Template(productName, brand)
+
+  // Use real script if available, otherwise use template
+  let seg1Text: string
+  if (realScript) {
+    seg1Text = `[李佳琦] ${realScript}`
+  } else {
+    const seg1Template = transcriptTemplates[seed % transcriptTemplates.length]!
+    seg1Text = seg1Template(productName, brand)
+  }
   const seg1Lines = seg1Text.split('\\n').length
 
   const screenshotCount = 3 + (seed % 4)
@@ -1034,12 +1104,10 @@ export function getProductRelatedLives(itemCode: string): ProductLiveItem[] {
 
 def generate_dashboard_ts(products):
     """Generate src/mock/dashboard.ts"""
-    # Calculate real stats from products
     total_products = len(products)
     total_sales = sum(p['sale'] for p in products)
     total_gmv = sum(p['gmv'] for p in products)
 
-    # Category distribution
     categories = {}
     for p in products:
         cat = p['categoryName'].split('/')[1] if '/' in p['categoryName'] else p['categoryName'].split('/')[0]
@@ -1054,7 +1122,6 @@ def generate_dashboard_ts(products):
     lines.append("type MetricType = 'sales' | 'volume' | 'products' | 'lives'")
     lines.append("")
 
-    # Chart data generation function (keep original)
     lines.append("""// 生成连续日期数据
 function generateChartData(
   startDate: string,
@@ -1103,7 +1170,6 @@ function generateChartData(
     lines.append("}")
     lines.append("")
 
-    # Pie chart
     lines.append("// 类目分布饼图数据")
     lines.append("export const pieChartData = [")
     for cat_name, count in sorted_cats[:5]:
@@ -1112,7 +1178,6 @@ function generateChartData(
     lines.append("]")
     lines.append("")
 
-    # Category data
     lines.append("// 商品类目数据")
     lines.append("export const categoryData = [")
     for idx, (cat_name, count) in enumerate(sorted_cats[:5]):
@@ -1122,11 +1187,10 @@ function generateChartData(
     lines.append("]")
     lines.append("")
 
-    # Recent lives
     lines.append("// 最近直播数据")
     lines.append("export const recentLives: LiveSession[] = [")
     for s in LIVE_SESSIONS:
-        lines.append(f"  {{ id: '{s['liveId']}', anchor: '李佳琦', duration: {s['duration'] // 60}, gmv: {s['saleAmount']}, date: '{s['date'][:10]}' }},")
+        lines.append(f"  {{ id: '{s['liveId']}', anchor: '李佳琦', title: '{s['title']}', duration: {s['duration'] // 60}, gmv: {s['saleAmount']}, date: '{s['date'][:10]}' }},")
     lines.append("]")
 
     output_path = OUTPUT_DIR / "dashboard.ts"

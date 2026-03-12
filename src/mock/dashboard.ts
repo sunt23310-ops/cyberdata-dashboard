@@ -33,45 +33,45 @@ function generateChartData(
 
 // 30天图表数据（对齐2025双十一+2026-38期间）
 export const chartDataByMetric: Record<MetricType, { date: string; rawDate: string; value: number }[]> = {
-  sales: generateChartData('2025-09-15', 30, 329044851, 0.6, 0.15),
-  volume: generateChartData('2025-09-15', 30, 1081279, 0.35, 0.12),
-  products: generateChartData('2025-09-15', 30, 661, 0.18, 0.05),
+  sales: generateChartData('2025-09-15', 30, 343324323, 0.6, 0.15),
+  volume: generateChartData('2025-09-15', 30, 1156728, 0.35, 0.12),
+  products: generateChartData('2025-09-15', 30, 696, 0.18, 0.05),
   lives: generateChartData('2025-09-15', 30, 7, 0.2, 0.08)
 }
 
 // 指标卡片数据
 export const metricsData = {
-  products: { value: 661, change: 5.2, label: '覆盖商品数量' },
+  products: { value: 696, change: 5.2, label: '覆盖商品数量' },
   lives: { value: 7, change: 12.8, label: '覆盖直播数量' },
-  sales: { value: 9871345555, change: 8.5, label: '销售总额' },
-  volume: { value: 32438371, change: -2.3, label: '总销量' }
+  sales: { value: 10299729715, change: 8.5, label: '销售总额' },
+  volume: { value: 34701867, change: -2.3, label: '总销量' }
 }
 
 // 类目分布饼图数据
 export const pieChartData = [
-  { category: '精华液', value: 38, percentage: 38 },
-  { category: '面霜', value: 21, percentage: 21 },
+  { category: '精华液', value: 35, percentage: 35 },
+  { category: '面霜', value: 20, percentage: 20 },
   { category: '面膜', value: 10, percentage: 10 },
-  { category: '综合', value: 5, percentage: 5 },
-  { category: '次抛精华', value: 5, percentage: 5 },
+  { category: '底妆', value: 9, percentage: 9 },
+  { category: '次抛精华', value: 4, percentage: 4 },
 ]
 
 // 商品类目数据
 export const categoryData = [
-  { name: '精华液', count: 249, percentage: 38, color: '#FF3B30' },
-  { name: '面霜', count: 137, percentage: 21, color: '#0A0A0A' },
+  { name: '精华液', count: 245, percentage: 35, color: '#FF3B30' },
+  { name: '面霜', count: 140, percentage: 20, color: '#0A0A0A' },
   { name: '面膜', count: 67, percentage: 10, color: '#666666' },
-  { name: '综合', count: 33, percentage: 5, color: '#999999' },
-  { name: '次抛精华', count: 31, percentage: 5, color: '#CCCCCC' },
+  { name: '底妆', count: 63, percentage: 9, color: '#999999' },
+  { name: '次抛精华', count: 31, percentage: 4, color: '#CCCCCC' },
 ]
 
 // 最近直播数据
 export const recentLives: LiveSession[] = [
-  { id: 'LIVE001', anchor: '李佳琦', duration: 242, gmv: 45600000, date: '2025-10-07' },
-  { id: 'LIVE002', anchor: '李佳琦', duration: 220, gmv: 42100000, date: '2025-10-08' },
-  { id: 'LIVE003', anchor: '李佳琦', duration: 210, gmv: 28700000, date: '2025-10-09' },
-  { id: 'LIVE004', anchor: '李佳琦', duration: 190, gmv: 32100000, date: '2025-10-10' },
-  { id: 'LIVE005', anchor: '李佳琦', duration: 180, gmv: 21500000, date: '2025-10-11' },
-  { id: 'LIVE006', anchor: '李佳琦', duration: 150, gmv: 18900000, date: '2025-10-12' },
-  { id: 'LIVE007', anchor: '李佳琦', duration: 260, gmv: 48900000, date: '2026-02-21' },
+  { id: 'LIVE001', anchor: '李佳琦', title: '10.7精华小课堂', duration: 242, gmv: 45600000, date: '2025-10-07' },
+  { id: 'LIVE002', anchor: '李佳琦', title: '10.8次抛+面膜小课堂', duration: 220, gmv: 42100000, date: '2025-10-08' },
+  { id: 'LIVE003', anchor: '李佳琦', title: '10.9面霜+眼霜小课堂', duration: 210, gmv: 28700000, date: '2025-10-09' },
+  { id: 'LIVE004', anchor: '李佳琦', title: '10.10水乳套组小课堂', duration: 190, gmv: 32100000, date: '2025-10-10' },
+  { id: 'LIVE005', anchor: '李佳琦', title: '10.11彩妆小课堂', duration: 180, gmv: 21500000, date: '2025-10-11' },
+  { id: 'LIVE006', anchor: '李佳琦', title: '10.12仪器防晒卸妆洁面小课堂', duration: 150, gmv: 18900000, date: '2025-10-12' },
+  { id: 'LIVE007', anchor: '李佳琦', title: '38焕新周爆品攻略小课堂', duration: 260, gmv: 48900000, date: '2026-02-21' },
 ]

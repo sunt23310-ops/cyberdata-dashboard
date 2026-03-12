@@ -235,7 +235,10 @@ function goToDetail(liveId: string) {
               class="border-b border-gray-100 hover:bg-gray-50 transition-colors cursor-pointer"
             >
               <td class="px-4 py-3 text-[13px] font-mono text-gray-900">{{ live.liveId }}</td>
-              <td class="px-4 py-3 text-[13px] text-gray-900">{{ live.anchor }}</td>
+              <td class="px-4 py-3 text-[13px] text-gray-900">
+                <div>{{ live.anchor }}</div>
+                <div v-if="live.title" class="text-[11px] text-gray-500 mt-0.5">{{ live.title }}</div>
+              </td>
               <td class="px-4 py-3 text-[13px] text-gray-700">{{ formatLargeNumber(live.viewCount) }}</td>
               <td class="px-4 py-3 text-[13px] text-gray-700">{{ formatLargeNumber(live.sales) }}</td>
               <td class="px-4 py-3 text-[13px] text-[#FF3B30] font-semibold">{{ formatAmount(live.saleAmount) }}</td>

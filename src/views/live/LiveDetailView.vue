@@ -23,6 +23,7 @@ const live = {
   liveId: liveDetail.liveId,
   influencerId: liveDetail.influencerId,
   anchor: liveDetail.anchor,
+  title: liveDetail.title,
   createdAt: liveDetail.createdAt,
   totalProducts: liveDetail.totalProducts,
   totalDuration: liveDetail.totalDuration,
@@ -70,6 +71,7 @@ const goBack = () => {
         <div class="flex items-start justify-between">
           <div>
             <h2 class="text-4xl font-bold text-gray-900 mb-2">{{ live.anchor }} 直播间</h2>
+            <div v-if="live.title" class="text-lg text-gray-600 mb-2">{{ live.title }}</div>
             <div class="flex items-center gap-6 text-[13px] text-gray-500">
               <span>直播ID: <span class="font-mono text-gray-700">{{ live.liveId }}</span></span>
               <span>开播时间: {{ formatDateTime(live.createdAt) }}</span>

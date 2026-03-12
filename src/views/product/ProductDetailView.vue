@@ -66,8 +66,14 @@ const goBack = () => {
           <!-- Product Images -->
           <div class="flex-shrink-0">
             <!-- Main Image -->
-            <div class="w-80 h-80 bg-gray-100 rounded-sm flex items-center justify-center text-gray-400 mb-3">
-              <span class="text-sm">商品主图</span>
+            <div class="w-80 h-80 bg-gray-100 rounded-sm flex items-center justify-center overflow-hidden mb-3">
+              <img
+                v-if="product.mainImages && product.mainImages.startsWith('http')"
+                :src="product.mainImages"
+                :alt="product.productName"
+                class="w-full h-full object-cover"
+              />
+              <span v-else class="text-sm text-gray-400">商品主图</span>
             </div>
             <!-- Thumbnails (模拟 5 张图片) -->
             <div class="flex gap-2">

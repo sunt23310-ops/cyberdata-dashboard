@@ -5,6 +5,7 @@ export interface LiveListItem {
   liveId: string           // live_id
   influencerId: string     // influencer_id
   anchor: string           // 展示用（前端映射）
+  title?: string           // 直播标题（如"10.7精华小课堂"）
   totalDuration: number    // total_duration
   viewCount: number        // view_count
   viewCountChange: number  // view_count_change
@@ -52,6 +53,7 @@ export interface Live {
 export interface LiveSession {
   id: string
   anchor: string
+  title?: string           // 直播标题
   duration: number
   gmv: number
   date: string
@@ -83,6 +85,7 @@ export interface LiveDetail {
   liveId: string
   influencerId: string
   anchor: string              // 展示用
+  title?: string              // 直播标题
   createdAt: string
   totalProducts: number
   totalDuration: number
