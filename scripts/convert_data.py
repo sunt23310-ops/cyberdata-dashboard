@@ -202,19 +202,34 @@ def parse_jinghua_products(filepath):
         if effect_match:
             product["effect"] = effect_match.group(1).strip()
 
-        price_match = re.search(r'\*\*价位[：:]\*\*\s*(.+)', body)
+        price_match = re.search(r'\*\*(价位|价格)[：:]\*\*\s*(.+)', body)
         if not price_match:
-            price_match = re.search(r'价位[：:]\s*(.+)', body)
+            price_match = re.search(r'(价位|价格)[：:]\s*(.+)', body)
         if price_match:
-            product["price_range"] = price_match.group(1).strip()
+            product["price_range"] = price_match.group(2).strip()
 
         comp_match = re.search(r'\*\*核心成分[：:]\*\*\s*(.+)', body)
         if comp_match:
             product["ingredients_raw"] = comp_match.group(1).strip()
 
+        # Highlight: handle both inline and multi-line bullet formats
         highlight_match = re.search(r'\*\*亮点[：:]\*\*\s*(.+)', body)
         if highlight_match:
-            product["highlight"] = highlight_match.group(1).strip()
+            first_line = highlight_match.group(1).strip()
+            if first_line and not first_line.startswith('-'):
+                product["highlight"] = first_line
+            else:
+                hl_block = re.search(r'\*\*亮点[：:]\*\*\s*\n((?:-\s*.+\n?)+)', body)
+                if hl_block:
+                    bullets = [line.lstrip('- ').strip() for line in hl_block.group(1).strip().split('\n') if line.strip().startswith('-')]
+                    product["highlight"] = '；'.join(bullets)
+                else:
+                    product["highlight"] = first_line
+        else:
+            hl_block = re.search(r'\*\*亮点[：:]\*\*\s*\n((?:-\s*.+\n?)+)', body)
+            if hl_block:
+                bullets = [line.lstrip('- ').strip() for line in hl_block.group(1).strip().split('\n') if line.strip().startswith('-')]
+                product["highlight"] = '；'.join(bullets)
 
         tags_match = re.search(r'\*\*适用标签[：:]\*\*\s*(.+)', body)
         if tags_match:
@@ -256,28 +271,54 @@ def parse_table_products(filepath):
 
         product = {"name": name}
 
+        # Extract category and tags from "> 产品类目：妆前隔离 | 适用肤质：干皮优选"
         cat_match = re.search(r'产品类目[：:]\s*(.+)', body)
         if cat_match:
-            product["category_raw"] = cat_match.group(1).strip()
+            cat_text = cat_match.group(1).strip()
+            product["category_raw"] = cat_text
+            # Extract tags from "| 适用肤质：xxx" part
+            tags_in_cat = re.search(r'适用肤质[：:]\s*(.+)', cat_text)
+            if tags_in_cat:
+                product["tags"] = tags_in_cat.group(1).strip()
+                # Clean category_raw to remove tags part
+                product["category_raw"] = re.sub(r'\s*\|\s*适用肤质[：:].*', '', cat_text).strip()
 
-        price_match = re.search(r'\*\*价位[：:]\*\*\s*(.+)', body)
+        # Price: match both **价位：** and **价格：**
+        price_match = re.search(r'\*\*(价位|价格)[：:]\*\*\s*(.+)', body)
         if not price_match:
-            price_match = re.search(r'价位[：:]\s*(.+)', body)
+            price_match = re.search(r'(价位|价格)[：:]\s*(.+)', body)
         if price_match:
-            product["price_range"] = price_match.group(1).strip()
+            product["price_range"] = price_match.group(2).strip()
 
         comp_match = re.search(r'\*\*核心成分[：:]\*\*\s*(.+)', body)
         if comp_match:
             product["ingredients_raw"] = comp_match.group(1).strip()
 
+        # Highlight: capture multi-line bullet points after **亮点：**
         highlight_match = re.search(r'\*\*亮点[：:]\*\*\s*(.+)', body)
         if highlight_match:
-            product["highlight"] = highlight_match.group(1).strip()
+            first_line = highlight_match.group(1).strip()
+            if first_line and not first_line.startswith('-'):
+                product["highlight"] = first_line
+            else:
+                # Multi-line bullet format
+                hl_block = re.search(r'\*\*亮点[：:]\*\*\s*\n((?:-\s*.+\n?)+)', body)
+                if hl_block:
+                    bullets = [line.lstrip('- ').strip() for line in hl_block.group(1).strip().split('\n') if line.strip().startswith('-')]
+                    product["highlight"] = '；'.join(bullets)
+                else:
+                    product["highlight"] = first_line
+        else:
+            # Try multi-line bullet format without inline text
+            hl_block = re.search(r'\*\*亮点[：:]\*\*\s*\n((?:-\s*.+\n?)+)', body)
+            if hl_block:
+                bullets = [line.lstrip('- ').strip() for line in hl_block.group(1).strip().split('\n') if line.strip().startswith('-')]
+                product["highlight"] = '；'.join(bullets)
 
         tags_match = re.search(r'\*\*适用标签[：:]\*\*\s*(.+)', body)
         if tags_match:
             product["tags"] = tags_match.group(1).strip()
-        else:
+        elif "tags" not in product:
             tags_line = re.search(r'(敏肌可用|干[/、]油皮皆可|油皮优选|干皮优选).*', body)
             if tags_line:
                 product["tags"] = tags_line.group(0).strip()
@@ -562,9 +603,9 @@ def main():
                 "shopName": shop_name,
                 "mainImages": image_url,
                 "pricing": {
-                    "originalPrice": f"¥{price}",
-                    "currentPrice": f"¥{coupon_price}",
-                    "discountInfo": f"直降{price - coupon_price}元" if price > coupon_price else None,
+                    "originalPrice": display_range,
+                    "currentPrice": display_range,
+                    "discountInfo": None,
                     "promotionStrategy": promotion,
                     "priceText": script if script else "直播间专属价"
                 },

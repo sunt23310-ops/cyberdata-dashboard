@@ -128,12 +128,8 @@ const goBack = () => {
             <div class="border-t border-gray-100 pt-4">
               <div class="flex items-baseline gap-6">
                 <div>
-                  <p class="text-sm text-gray-500 mb-1">原价</p>
-                  <p class="text-gray-400 line-through">{{ product.pricing.originalPrice }}</p>
-                </div>
-                <div>
-                  <p class="text-sm text-gray-500 mb-1">到手价</p>
-                  <p class="text-2xl font-bold text-[#FF3B30]">{{ product.pricing.currentPrice }}</p>
+                  <p class="text-sm text-gray-500 mb-1">价格区间</p>
+                  <p class="text-2xl font-bold text-[#FF3B30]">{{ product.pricing.originalPrice }}</p>
                 </div>
                 <div>
                   <p class="text-sm text-gray-500 mb-1">GMV</p>

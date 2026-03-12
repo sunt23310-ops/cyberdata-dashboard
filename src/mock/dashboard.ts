@@ -33,8 +33,8 @@ function generateChartData(
 
 // 30天图表数据（对齐2025双十一+2026-38期间）
 export const chartDataByMetric: Record<MetricType, { date: string; rawDate: string; value: number }[]> = {
-  sales: generateChartData('2025-09-15', 30, 343324323, 0.6, 0.15),
-  volume: generateChartData('2025-09-15', 30, 1156728, 0.35, 0.12),
+  sales: generateChartData('2025-09-15', 30, 363755747, 0.6, 0.15),
+  volume: generateChartData('2025-09-15', 30, 1252591, 0.35, 0.12),
   products: generateChartData('2025-09-15', 30, 696, 0.18, 0.05),
   lives: generateChartData('2025-09-15', 30, 7, 0.2, 0.08)
 }
@@ -43,8 +43,8 @@ export const chartDataByMetric: Record<MetricType, { date: string; rawDate: stri
 export const metricsData = {
   products: { value: 696, change: 5.2, label: '覆盖商品数量' },
   lives: { value: 7, change: 12.8, label: '覆盖直播数量' },
-  sales: { value: 10299729715, change: 8.5, label: '销售总额' },
-  volume: { value: 34701867, change: -2.3, label: '总销量' }
+  sales: { value: 10912672417, change: 8.5, label: '销售总额' },
+  volume: { value: 37577741, change: -2.3, label: '总销量' }
 }
 
 // 类目分布饼图数据

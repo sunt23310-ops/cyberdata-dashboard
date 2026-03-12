@@ -281,8 +281,7 @@ function goToDetail(itemCode: string) {
               <td class="px-4 py-3 text-[13px] text-gray-700">{{ product.brandName }}</td>
               <td class="px-4 py-3 text-[13px] text-gray-700">{{ product.categoryName }}</td>
               <td class="px-4 py-3">
-                <div class="line-through text-gray-400 text-[11px]">{{ formatPrice(product.price) }}</div>
-                <div class="text-[13px] text-[#FF3B30] font-medium">{{ formatPrice(product.couponPrice) }}</div>
+                <div class="text-[13px] text-[#FF3B30] font-medium">{{ formatPrice(product.couponPrice) }}~{{ formatPrice(product.price) }}</div>
               </td>
               <td class="px-4 py-3 text-[13px] text-gray-700">{{ formatLargeNumber(product.sale) }}</td>
               <td class="px-4 py-3 text-[13px] text-[#FF3B30] font-semibold">{{ formatAmount(product.gmv) }}</td>
