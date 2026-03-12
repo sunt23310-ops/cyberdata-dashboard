@@ -272,7 +272,14 @@ function goToDetail(itemCode: string) {
               class="border-b border-gray-100 hover:bg-gray-50 transition-colors cursor-pointer"
             >
               <td class="px-4 py-3">
-                <div class="w-10 h-10 bg-gray-200 rounded-sm"></div>
+                <div class="w-10 h-10 bg-gray-100 rounded-sm overflow-hidden">
+                  <img
+                    v-if="product.images && product.images.startsWith('http')"
+                    :src="product.images"
+                    :alt="product.title"
+                    class="w-full h-full object-cover"
+                  />
+                </div>
               </td>
               <td class="px-4 py-3">
                 <div class="text-[13px] font-medium text-gray-900">{{ product.title }}</div>

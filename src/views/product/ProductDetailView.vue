@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref, computed } from 'vue'
+import { computed } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import { ArrowLeft } from 'lucide-vue-next'
 import PageHeader from '@/components/layout/PageHeader.vue'
@@ -17,27 +17,30 @@ const breadcrumbs = [
   { label: '商品详情' }
 ]
 
-// 当前选中的图片索引
-const selectedImageIndex = ref(0)
-
 // 从 mock 获取商品详情 - 对齐 ProductDetail 类型
 const product = getProductDetail(productId)
 
 // 从 mock 获取关联直播
 const relatedLives: ProductLiveItem[] = getProductRelatedLives(productId)
 
-// 按类别分组的卖点
-const highlightsByCategory = computed(() => {
-  const grouped: Record<string, string[]> = {}
-  if (product?.highlights) {
-    product.highlights.forEach(h => {
-      if (!grouped[h.category]) {
-        grouped[h.category] = []
-      }
-      grouped[h.category]!.push(h.description)
-    })
-  }
-  return grouped
+// 从 highlights 中提取各类信息
+const productHighlights = computed(() => {
+  return product?.highlights?.filter(h => h.category === '产品相关' && !h.description.startsWith('核心成分：')) || []
+})
+
+const coreIngredients = computed(() => {
+  const item = product?.highlights?.find(h => h.description.startsWith('核心成分：'))
+  return item ? item.description.replace('核心成分：', '') : ''
+})
+
+const targetAudience = computed(() => {
+  const item = product?.highlights?.find(h => h.category === '适用人群')
+  return item ? item.description.replace('适用人群：', '') : ''
+})
+
+const anchorScript = computed(() => {
+  const item = product?.highlights?.find(h => h.category === '主播讲解')
+  return item ? item.description.replace('李佳琦推荐：', '') : ''
 })
 
 const goBack = () => {
@@ -75,16 +78,12 @@ const goBack = () => {
               />
               <span v-else class="text-sm text-gray-400">商品主图</span>
             </div>
-            <!-- Thumbnails (模拟 5 张图片) -->
-            <div class="flex gap-2">
+            <!-- Thumbnail -->
+            <div class="flex gap-2" v-if="product.mainImages && product.mainImages.startsWith('http')">
               <div
-                v-for="index in 5"
-                :key="index"
-                @click="selectedImageIndex = index - 1"
-                class="w-14 h-14 bg-gray-100 rounded-sm flex items-center justify-center cursor-pointer transition-all"
-                :class="selectedImageIndex === index - 1 ? 'ring-2 ring-[#FF3B30]' : 'hover:ring-1 hover:ring-gray-300'"
+                class="w-14 h-14 bg-gray-100 rounded-sm overflow-hidden cursor-pointer ring-2 ring-[#FF3B30]"
               >
-                <span class="text-[10px] text-gray-400">{{ index }}</span>
+                <img :src="product.mainImages" :alt="product.productName" class="w-full h-full object-cover" />
               </div>
             </div>
           </div>
@@ -156,36 +155,59 @@ const goBack = () => {
         </div>
       </div>
 
-      <!-- Product Highlights - 使用 HighlightItem 结构 -->
+      <!-- 产品亮点 -->
       <div class="bg-white rounded-sm border border-gray-200 p-6 mb-6">
-        <h3 class="text-lg font-semibold text-gray-900 mb-4">产品卖点</h3>
+        <h3 class="text-lg font-semibold text-gray-900 mb-4">产品亮点</h3>
+        <ul v-if="productHighlights.length" class="space-y-2">
+          <li
+            v-for="(h, index) in productHighlights"
+            :key="index"
+            class="flex items-start gap-2 text-gray-700"
+          >
+            <span class="w-1.5 h-1.5 bg-[#FF3B30] rounded-full mt-2 flex-shrink-0"></span>
+            {{ h.description }}
+          </li>
+        </ul>
+        <p v-else class="text-sm text-gray-400">暂无亮点信息</p>
+      </div>
 
-        <!-- 按类别展示卖点 -->
-        <div class="space-y-4">
-          <div v-for="(items, category) in highlightsByCategory" :key="category">
-            <p class="text-sm font-medium text-gray-500 mb-2">{{ category }}</p>
-            <ul class="space-y-2">
-              <li
-                v-for="(description, index) in items"
-                :key="index"
-                class="flex items-start gap-2 text-gray-700"
-              >
-                <span class="w-1.5 h-1.5 bg-[#FF3B30] rounded-full mt-2 flex-shrink-0"></span>
-                {{ description }}
-              </li>
-            </ul>
-          </div>
-        </div>
-
-        <!-- 置信度评分 -->
-        <div v-if="product.confidenceScore" class="mt-4 pt-4 border-t border-gray-100">
-          <p class="text-sm text-gray-500">
-            置信度评分: <span class="font-medium text-gray-900">{{ (product.confidenceScore * 100).toFixed(1) }}%</span>
-          </p>
+      <!-- 核心成分 -->
+      <div v-if="coreIngredients" class="bg-white rounded-sm border border-gray-200 p-6 mb-6">
+        <h3 class="text-lg font-semibold text-gray-900 mb-4">核心成分</h3>
+        <div class="flex flex-wrap gap-2">
+          <span
+            v-for="(ingredient, index) in coreIngredients.split(/[、+，,]/)"
+            :key="index"
+            class="px-3 py-1.5 text-sm bg-blue-50 text-blue-700 rounded-full"
+          >
+            {{ ingredient.trim() }}
+          </span>
         </div>
       </div>
 
-      <!-- Product Ingredients/Specs - 使用 IngredientItem 结构 -->
+      <!-- 适用人群 -->
+      <div v-if="targetAudience" class="bg-white rounded-sm border border-gray-200 p-6 mb-6">
+        <h3 class="text-lg font-semibold text-gray-900 mb-4">适用人群</h3>
+        <div class="flex flex-wrap gap-2">
+          <span
+            v-for="(tag, index) in targetAudience.replace(/`/g, '').split(/[|｜]/)"
+            :key="index"
+            class="px-3 py-1.5 text-sm bg-green-50 text-green-700 rounded-full"
+          >
+            {{ tag.trim() }}
+          </span>
+        </div>
+      </div>
+
+      <!-- 主播讲解 -->
+      <div v-if="anchorScript" class="bg-white rounded-sm border border-gray-200 p-6 mb-6">
+        <h3 class="text-lg font-semibold text-gray-900 mb-4">李佳琦直播话术</h3>
+        <div class="bg-orange-50 rounded-sm p-4 border-l-4 border-[#FF3B30]">
+          <p class="text-gray-700 leading-relaxed text-sm">{{ anchorScript }}</p>
+        </div>
+      </div>
+
+      <!-- 产品规格 -->
       <div class="bg-white rounded-sm border border-gray-200 p-6 mb-6">
         <h3 class="text-lg font-semibold text-gray-900 mb-4">产品规格</h3>
         <div class="grid grid-cols-2 gap-4">
