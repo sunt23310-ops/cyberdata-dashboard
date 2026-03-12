@@ -1,41 +1,16 @@
 import type { LiveListItem, LiveDetail, LiveProductItem, ReturnMention } from '@/types/live'
 import type { ProductLiveItem } from '@/types/product'
 
-// 主播列表
-const anchors = ['李佳琦', '薇娅', '罗永浩', '董宇辉', '小杨哥', '辛巴', '雪梨', '烈儿宝贝', '陈洁kiki', '刘媛媛', '贾乃亮', '朱梓骁', '张庭', '大狼狗郑建鹏', '林珊珊']
-
 // 生成直播列表数据（对齐 live_overview 表）
+// 数据来源：李佳琦2025双十一小课堂 + 2026年38焕新周小课堂
 export const mockLives: LiveListItem[] = [
-  { liveId: 'LIVE001', influencerId: 'INF001', anchor: '李佳琦', totalDuration: 14520, viewCount: 12300000, viewCountChange: 8.5, sales: 85600, salesChange: 12.3, saleAmount: 45600000, saleAmountChange: 15.7, createdAt: '2024-01-15T20:00:00Z' },
-  { liveId: 'LIVE002', influencerId: 'INF002', anchor: '薇娅', totalDuration: 10800, viewCount: 8900000, viewCountChange: 5.2, sales: 62300, salesChange: 8.1, saleAmount: 32100000, saleAmountChange: 10.3, createdAt: '2024-01-14T19:30:00Z' },
-  { liveId: 'LIVE003', influencerId: 'INF003', anchor: '罗永浩', totalDuration: 7200, viewCount: 5600000, viewCountChange: -2.1, sales: 41200, salesChange: 3.5, saleAmount: 18900000, saleAmountChange: 5.8, createdAt: '2024-01-13T20:00:00Z' },
-  { liveId: 'LIVE004', influencerId: 'INF004', anchor: '董宇辉', totalDuration: 12600, viewCount: 9800000, viewCountChange: 12.6, sales: 55400, salesChange: 14.2, saleAmount: 28700000, saleAmountChange: 18.9, createdAt: '2024-01-12T18:00:00Z' },
-  { liveId: 'LIVE005', influencerId: 'INF005', anchor: '小杨哥', totalDuration: 9000, viewCount: 7200000, viewCountChange: 3.8, sales: 48900, salesChange: 6.7, saleAmount: 21500000, saleAmountChange: 9.2, createdAt: '2024-01-11T19:00:00Z' },
-  { liveId: 'LIVE006', influencerId: 'INF006', anchor: '辛巴', totalDuration: 11400, viewCount: 6800000, viewCountChange: 4.1, sales: 52100, salesChange: 7.8, saleAmount: 24300000, saleAmountChange: 11.5, createdAt: '2024-01-10T20:30:00Z' },
-  { liveId: 'LIVE007', influencerId: 'INF007', anchor: '雪梨', totalDuration: 8100, viewCount: 4500000, viewCountChange: 2.3, sales: 38700, salesChange: 5.2, saleAmount: 15800000, saleAmountChange: 6.8, createdAt: '2024-01-09T19:00:00Z' },
-  { liveId: 'LIVE008', influencerId: 'INF008', anchor: '烈儿宝贝', totalDuration: 7800, viewCount: 3900000, viewCountChange: 1.5, sales: 31200, salesChange: 4.1, saleAmount: 12600000, saleAmountChange: 5.3, createdAt: '2024-01-08T20:00:00Z' },
-  { liveId: 'LIVE009', influencerId: 'INF009', anchor: '陈洁kiki', totalDuration: 6300, viewCount: 2800000, viewCountChange: -0.8, sales: 24500, salesChange: 2.9, saleAmount: 9800000, saleAmountChange: 3.6, createdAt: '2024-01-07T19:30:00Z' },
-  { liveId: 'LIVE010', influencerId: 'INF010', anchor: '刘媛媛', totalDuration: 7200, viewCount: 3200000, viewCountChange: 1.2, sales: 27800, salesChange: 3.4, saleAmount: 11200000, saleAmountChange: 4.7, createdAt: '2024-01-06T18:00:00Z' },
-  { liveId: 'LIVE011', influencerId: 'INF001', anchor: '李佳琦', totalDuration: 13800, viewCount: 11500000, viewCountChange: 7.2, sales: 79200, salesChange: 10.5, saleAmount: 42100000, saleAmountChange: 13.8, createdAt: '2024-01-05T20:00:00Z' },
-  { liveId: 'LIVE012', influencerId: 'INF004', anchor: '董宇辉', totalDuration: 11100, viewCount: 8700000, viewCountChange: 9.8, sales: 48600, salesChange: 11.2, saleAmount: 25400000, saleAmountChange: 14.6, createdAt: '2024-01-04T19:00:00Z' },
-  { liveId: 'LIVE013', influencerId: 'INF011', anchor: '贾乃亮', totalDuration: 6600, viewCount: 4100000, viewCountChange: 3.5, sales: 33500, salesChange: 5.8, saleAmount: 14200000, saleAmountChange: 7.2, createdAt: '2024-01-03T20:30:00Z' },
-  { liveId: 'LIVE014', influencerId: 'INF012', anchor: '朱梓骁', totalDuration: 5400, viewCount: 3600000, viewCountChange: 2.1, sales: 29100, salesChange: 4.3, saleAmount: 11800000, saleAmountChange: 5.6, createdAt: '2024-01-02T19:00:00Z' },
-  { liveId: 'LIVE015', influencerId: 'INF013', anchor: '张庭', totalDuration: 5100, viewCount: 2500000, viewCountChange: -1.2, sales: 21300, salesChange: 1.8, saleAmount: 8700000, saleAmountChange: 2.4, createdAt: '2024-01-01T18:00:00Z' },
-  { liveId: 'LIVE016', influencerId: 'INF014', anchor: '大狼狗郑建鹏', totalDuration: 8400, viewCount: 5800000, viewCountChange: 4.6, sales: 42300, salesChange: 6.9, saleAmount: 19800000, saleAmountChange: 9.5, createdAt: '2023-12-31T20:00:00Z' },
-  { liveId: 'LIVE017', influencerId: 'INF015', anchor: '林珊珊', totalDuration: 6900, viewCount: 3400000, viewCountChange: 1.8, sales: 26700, salesChange: 3.6, saleAmount: 10500000, saleAmountChange: 4.9, createdAt: '2023-12-30T19:00:00Z' },
-  { liveId: 'LIVE018', influencerId: 'INF001', anchor: '李佳琦', totalDuration: 15600, viewCount: 13100000, viewCountChange: 9.2, sales: 91200, salesChange: 13.8, saleAmount: 48900000, saleAmountChange: 17.2, createdAt: '2023-12-29T20:00:00Z' },
-  { liveId: 'LIVE019', influencerId: 'INF002', anchor: '薇娅', totalDuration: 11400, viewCount: 9200000, viewCountChange: 6.1, sales: 65800, salesChange: 9.3, saleAmount: 34500000, saleAmountChange: 12.1, createdAt: '2023-12-28T19:30:00Z' },
-  { liveId: 'LIVE020', influencerId: 'INF005', anchor: '小杨哥', totalDuration: 9600, viewCount: 7800000, viewCountChange: 5.3, sales: 52100, salesChange: 7.6, saleAmount: 23400000, saleAmountChange: 10.8, createdAt: '2023-12-27T19:00:00Z' },
-  { liveId: 'LIVE021', influencerId: 'INF006', anchor: '辛巴', totalDuration: 12000, viewCount: 7100000, viewCountChange: 4.8, sales: 54600, salesChange: 8.2, saleAmount: 25800000, saleAmountChange: 11.9, createdAt: '2023-12-26T20:30:00Z' },
-  { liveId: 'LIVE022', influencerId: 'INF004', anchor: '董宇辉', totalDuration: 13200, viewCount: 10200000, viewCountChange: 11.5, sales: 58900, salesChange: 13.6, saleAmount: 30200000, saleAmountChange: 16.8, createdAt: '2023-12-25T18:00:00Z' },
-  { liveId: 'LIVE023', influencerId: 'INF003', anchor: '罗永浩', totalDuration: 7800, viewCount: 6100000, viewCountChange: 2.6, sales: 43800, salesChange: 5.1, saleAmount: 20100000, saleAmountChange: 7.4, createdAt: '2023-12-24T20:00:00Z' },
-  { liveId: 'LIVE024', influencerId: 'INF007', anchor: '雪梨', totalDuration: 8700, viewCount: 4800000, viewCountChange: 3.2, sales: 40100, salesChange: 5.9, saleAmount: 16900000, saleAmountChange: 7.8, createdAt: '2023-12-23T19:00:00Z' },
-  { liveId: 'LIVE025', influencerId: 'INF008', anchor: '烈儿宝贝', totalDuration: 8100, viewCount: 4200000, viewCountChange: 2.5, sales: 33800, salesChange: 4.7, saleAmount: 13800000, saleAmountChange: 6.2, createdAt: '2023-12-22T20:00:00Z' },
-  { liveId: 'LIVE026', influencerId: 'INF001', anchor: '李佳琦', totalDuration: 14400, viewCount: 12800000, viewCountChange: 8.9, sales: 88500, salesChange: 12.8, saleAmount: 47200000, saleAmountChange: 16.3, createdAt: '2023-12-21T20:00:00Z' },
-  { liveId: 'LIVE027', influencerId: 'INF009', anchor: '陈洁kiki', totalDuration: 6600, viewCount: 3100000, viewCountChange: 0.9, sales: 26200, salesChange: 3.2, saleAmount: 10600000, saleAmountChange: 4.5, createdAt: '2023-12-20T19:30:00Z' },
-  { liveId: 'LIVE028', influencerId: 'INF011', anchor: '贾乃亮', totalDuration: 7200, viewCount: 4500000, viewCountChange: 4.1, sales: 36200, salesChange: 6.3, saleAmount: 15600000, saleAmountChange: 8.1, createdAt: '2023-12-19T20:30:00Z' },
-  { liveId: 'LIVE029', influencerId: 'INF010', anchor: '刘媛媛', totalDuration: 7500, viewCount: 3500000, viewCountChange: 1.6, sales: 29800, salesChange: 3.9, saleAmount: 12100000, saleAmountChange: 5.4, createdAt: '2023-12-18T18:00:00Z' },
-  { liveId: 'LIVE030', influencerId: 'INF012', anchor: '朱梓骁', totalDuration: 5700, viewCount: 3800000, viewCountChange: 2.8, sales: 30600, salesChange: 4.6, saleAmount: 12800000, saleAmountChange: 6.1, createdAt: '2023-12-17T19:00:00Z' }
+  { liveId: 'LIVE001', influencerId: 'INF001', anchor: '李佳琦', totalDuration: 14520, viewCount: 12300000, viewCountChange: 10.2, sales: 85600, salesChange: 5.1, saleAmount: 45600000, saleAmountChange: 11.6, createdAt: '2025-10-07T20:00:00Z' },
+  { liveId: 'LIVE002', influencerId: 'INF001', anchor: '李佳琦', totalDuration: 13200, viewCount: 11500000, viewCountChange: 5.5, sales: 79200, salesChange: 6.8, saleAmount: 42100000, saleAmountChange: 11.1, createdAt: '2025-10-08T20:00:00Z' },
+  { liveId: 'LIVE003', influencerId: 'INF001', anchor: '李佳琦', totalDuration: 12600, viewCount: 9800000, viewCountChange: 6.9, sales: 55400, salesChange: 5.1, saleAmount: 28700000, saleAmountChange: 17.0, createdAt: '2025-10-09T20:00:00Z' },
+  { liveId: 'LIVE004', influencerId: 'INF001', anchor: '李佳琦', totalDuration: 11400, viewCount: 8900000, viewCountChange: 5.1, sales: 62300, salesChange: 9.9, saleAmount: 32100000, saleAmountChange: 16.4, createdAt: '2025-10-10T20:00:00Z' },
+  { liveId: 'LIVE005', influencerId: 'INF001', anchor: '李佳琦', totalDuration: 10800, viewCount: 7200000, viewCountChange: 9.0, sales: 48900, salesChange: 15.8, saleAmount: 21500000, saleAmountChange: 17.7, createdAt: '2025-10-11T20:00:00Z' },
+  { liveId: 'LIVE006', influencerId: 'INF001', anchor: '李佳琦', totalDuration: 9000, viewCount: 5600000, viewCountChange: 3.9, sales: 41200, salesChange: 16.2, saleAmount: 18900000, saleAmountChange: 8.5, createdAt: '2025-10-12T20:00:00Z' },
+  { liveId: 'LIVE007', influencerId: 'INF001', anchor: '李佳琦', totalDuration: 15600, viewCount: 13100000, viewCountChange: 3.2, sales: 91200, salesChange: 17.0, saleAmount: 48900000, saleAmountChange: 18.3, createdAt: '2026-02-21T20:00:00Z' },
 ]
 
 // 直播详情映射表（对齐 live_overview 完整字段）
@@ -44,107 +19,149 @@ export const liveDetailsMap: Record<string, LiveDetail> = {
     liveId: 'LIVE001',
     influencerId: 'INF001',
     anchor: '李佳琦',
-    createdAt: '2024-01-15 20:00:00',
-    totalProducts: 84,
+    createdAt: '2025-10-07 20:00:00',
+    totalProducts: 61,
     totalDuration: 14520,
-    totalJoinCount: { value: 2580000, change: 6.2 },
-    viewCount: { value: 12300000, change: 8.5 },
-    avgPrice: { value: 246.59, change: 0.31 },
-    sales: { value: 85600, change: 12.3 },
-    saleAmount: { value: 45600000, change: 15.7 },
-    goBuyUv: { value: 6230, change: 9.4 },
-    goBuyCount: { value: 8520, change: 11.2 },
-    likeCount: { value: 15238699, change: 38.9 },
-    commentCount: { value: 22683, change: 24.5 },
-    fansGrowth: { value: 2464, change: 112.0 },
-    itemCount: { value: 89, change: 5.6 },
-    gmvItemCountRatio: { value: 512360, change: 8.3 },
-    interaction: { value: 15261382, change: 38.7, detail: { likeCount: 15238699, commentCount: 22683 } }
+    totalJoinCount: { value: 2583000, change: 7.8 },
+    viewCount: { value: 12300000, change: 9.9 },
+    avgPrice: { value: 532.71, change: 0.21 },
+    sales: { value: 85600, change: 10.4 },
+    saleAmount: { value: 45600000, change: 9.4 },
+    goBuyUv: { value: 6848, change: 5.1 },
+    goBuyCount: { value: 8560, change: 9.6 },
+    likeCount: { value: 14760000, change: 40.0 },
+    commentCount: { value: 24600, change: 27.4 },
+    fansGrowth: { value: 2982, change: 59.7 },
+    itemCount: { value: 61, change: 7.1 },
+    gmvItemCountRatio: { value: 747540, change: 5.2 },
+    interaction: { value: 14784600, change: 36.8, detail: { likeCount: 14760000, commentCount: 24600 } }
   },
   'LIVE002': {
     liveId: 'LIVE002',
-    influencerId: 'INF002',
-    anchor: '薇娅',
-    createdAt: '2024-01-14 19:30:00',
-    totalProducts: 72,
-    totalDuration: 10800,
-    totalJoinCount: { value: 1890000, change: 4.5 },
-    viewCount: { value: 8900000, change: 5.2 },
-    avgPrice: { value: 218.45, change: 0.25 },
-    sales: { value: 62300, change: 8.1 },
-    saleAmount: { value: 32100000, change: 10.3 },
-    goBuyUv: { value: 4850, change: 7.2 },
-    goBuyCount: { value: 6320, change: 8.5 },
-    likeCount: { value: 11200000, change: 32.5 },
-    commentCount: { value: 18500, change: 21.3 },
-    fansGrowth: { value: 1850, change: 85.0 },
-    itemCount: { value: 72, change: 4.2 },
-    gmvItemCountRatio: { value: 445833, change: 5.9 },
-    interaction: { value: 11218500, change: 32.4, detail: { likeCount: 11200000, commentCount: 18500 } }
+    influencerId: 'INF001',
+    anchor: '李佳琦',
+    createdAt: '2025-10-08 20:00:00',
+    totalProducts: 52,
+    totalDuration: 13200,
+    totalJoinCount: { value: 2415000, change: 7.2 },
+    viewCount: { value: 11500000, change: 7.7 },
+    avgPrice: { value: 531.57, change: -0.19 },
+    sales: { value: 79200, change: 9.4 },
+    saleAmount: { value: 42100000, change: 12.0 },
+    goBuyUv: { value: 6336, change: 6.2 },
+    goBuyCount: { value: 7920, change: 11.1 },
+    likeCount: { value: 13800000, change: 22.9 },
+    commentCount: { value: 23000, change: 25.2 },
+    fansGrowth: { value: 2931, change: 88.6 },
+    itemCount: { value: 52, change: 7.7 },
+    gmvItemCountRatio: { value: 809615, change: 8.8 },
+    interaction: { value: 13823000, change: 28.0, detail: { likeCount: 13800000, commentCount: 23000 } }
   },
   'LIVE003': {
     liveId: 'LIVE003',
-    influencerId: 'INF003',
-    anchor: '罗永浩',
-    createdAt: '2024-01-13 20:00:00',
-    totalProducts: 56,
-    totalDuration: 7200,
-    totalJoinCount: { value: 1120000, change: -1.3 },
-    viewCount: { value: 5600000, change: -2.1 },
-    avgPrice: { value: 285.60, change: 0.42 },
-    sales: { value: 41200, change: 3.5 },
-    saleAmount: { value: 18900000, change: 5.8 },
-    goBuyUv: { value: 3200, change: 2.8 },
-    goBuyCount: { value: 4100, change: 3.6 },
-    likeCount: { value: 6800000, change: 18.2 },
-    commentCount: { value: 12300, change: 15.6 },
-    fansGrowth: { value: 980, change: 45.0 },
-    itemCount: { value: 56, change: 2.1 },
-    gmvItemCountRatio: { value: 337500, change: 3.6 },
-    interaction: { value: 6812300, change: 18.2, detail: { likeCount: 6800000, commentCount: 12300 } }
+    influencerId: 'INF001',
+    anchor: '李佳琦',
+    createdAt: '2025-10-09 20:00:00',
+    totalProducts: 73,
+    totalDuration: 12600,
+    totalJoinCount: { value: 2058000, change: 3.0 },
+    viewCount: { value: 9800000, change: 6.1 },
+    avgPrice: { value: 518.05, change: -0.33 },
+    sales: { value: 55400, change: 7.0 },
+    saleAmount: { value: 28700000, change: 17.1 },
+    goBuyUv: { value: 4432, change: 5.5 },
+    goBuyCount: { value: 5540, change: 14.6 },
+    likeCount: { value: 11760000, change: 35.7 },
+    commentCount: { value: 19600, change: 24.3 },
+    fansGrowth: { value: 3809, change: 133.6 },
+    itemCount: { value: 73, change: 4.7 },
+    gmvItemCountRatio: { value: 393150, change: 11.3 },
+    interaction: { value: 11779600, change: 36.3, detail: { likeCount: 11760000, commentCount: 19600 } }
   },
   'LIVE004': {
     liveId: 'LIVE004',
-    influencerId: 'INF004',
-    anchor: '董宇辉',
-    createdAt: '2024-01-12 18:00:00',
-    totalProducts: 68,
-    totalDuration: 12600,
-    totalJoinCount: { value: 2340000, change: 15.1 },
-    viewCount: { value: 9800000, change: 12.6 },
-    avgPrice: { value: 198.75, change: 0.18 },
-    sales: { value: 55400, change: 14.2 },
-    saleAmount: { value: 28700000, change: 18.9 },
-    goBuyUv: { value: 5680, change: 12.5 },
-    goBuyCount: { value: 7450, change: 14.8 },
-    likeCount: { value: 13500000, change: 42.1 },
-    commentCount: { value: 28900, change: 35.6 },
-    fansGrowth: { value: 3200, change: 156.0 },
-    itemCount: { value: 68, change: 6.8 },
-    gmvItemCountRatio: { value: 422059, change: 11.3 },
-    interaction: { value: 13528900, change: 42.0, detail: { likeCount: 13500000, commentCount: 28900 } }
+    influencerId: 'INF001',
+    anchor: '李佳琦',
+    createdAt: '2025-10-10 20:00:00',
+    totalProducts: 64,
+    totalDuration: 11400,
+    totalJoinCount: { value: 1869000, change: 8.4 },
+    viewCount: { value: 8900000, change: 10.5 },
+    avgPrice: { value: 515.25, change: 0.36 },
+    sales: { value: 62300, change: 13.2 },
+    saleAmount: { value: 32100000, change: 9.8 },
+    goBuyUv: { value: 4984, change: 5.5 },
+    goBuyCount: { value: 6230, change: 10.5 },
+    likeCount: { value: 10680000, change: 27.6 },
+    commentCount: { value: 17800, change: 20.5 },
+    fansGrowth: { value: 1730, change: 88.7 },
+    itemCount: { value: 64, change: 2.4 },
+    gmvItemCountRatio: { value: 501562, change: 7.2 },
+    interaction: { value: 10697800, change: 25.8, detail: { likeCount: 10680000, commentCount: 17800 } }
   },
   'LIVE005': {
     liveId: 'LIVE005',
-    influencerId: 'INF005',
-    anchor: '小杨哥',
-    createdAt: '2024-01-11 19:00:00',
-    totalProducts: 62,
+    influencerId: 'INF001',
+    anchor: '李佳琦',
+    createdAt: '2025-10-11 20:00:00',
+    totalProducts: 82,
+    totalDuration: 10800,
+    totalJoinCount: { value: 1512000, change: 5.7 },
+    viewCount: { value: 7200000, change: 6.4 },
+    avgPrice: { value: 439.67, change: 0.14 },
+    sales: { value: 48900, change: 17.7 },
+    saleAmount: { value: 21500000, change: 9.1 },
+    goBuyUv: { value: 3912, change: 9.2 },
+    goBuyCount: { value: 4890, change: 10.1 },
+    likeCount: { value: 8640000, change: 34.5 },
+    commentCount: { value: 14400, change: 34.1 },
+    fansGrowth: { value: 1668, change: 99.5 },
+    itemCount: { value: 82, change: 6.9 },
+    gmvItemCountRatio: { value: 262195, change: 8.9 },
+    interaction: { value: 8654400, change: 31.4, detail: { likeCount: 8640000, commentCount: 14400 } }
+  },
+  'LIVE006': {
+    liveId: 'LIVE006',
+    influencerId: 'INF001',
+    anchor: '李佳琦',
+    createdAt: '2025-10-12 20:00:00',
+    totalProducts: 55,
     totalDuration: 9000,
-    totalJoinCount: { value: 1560000, change: 2.4 },
-    viewCount: { value: 7200000, change: 3.8 },
-    avgPrice: { value: 165.80, change: 0.12 },
-    sales: { value: 48900, change: 6.7 },
-    saleAmount: { value: 21500000, change: 9.2 },
-    goBuyUv: { value: 4120, change: 5.8 },
-    goBuyCount: { value: 5380, change: 7.2 },
-    likeCount: { value: 9200000, change: 28.5 },
-    commentCount: { value: 16800, change: 22.3 },
-    fansGrowth: { value: 1650, change: 78.0 },
-    itemCount: { value: 62, change: 3.5 },
-    gmvItemCountRatio: { value: 346774, change: 5.5 },
-    interaction: { value: 9216800, change: 28.4, detail: { likeCount: 9200000, commentCount: 16800 } }
-  }
+    totalJoinCount: { value: 1176000, change: 6.8 },
+    viewCount: { value: 5600000, change: 4.8 },
+    avgPrice: { value: 458.74, change: -0.44 },
+    sales: { value: 41200, change: 6.3 },
+    saleAmount: { value: 18900000, change: 18.8 },
+    goBuyUv: { value: 3296, change: 7.4 },
+    goBuyCount: { value: 4120, change: 12.7 },
+    likeCount: { value: 6720000, change: 32.6 },
+    commentCount: { value: 11200, change: 18.5 },
+    fansGrowth: { value: 2514, change: 127.8 },
+    itemCount: { value: 55, change: 7.9 },
+    gmvItemCountRatio: { value: 343636, change: 7.7 },
+    interaction: { value: 6731200, change: 37.2, detail: { likeCount: 6720000, commentCount: 11200 } }
+  },
+  'LIVE007': {
+    liveId: 'LIVE007',
+    influencerId: 'INF001',
+    anchor: '李佳琦',
+    createdAt: '2026-02-21 20:00:00',
+    totalProducts: 274,
+    totalDuration: 15600,
+    totalJoinCount: { value: 2751000, change: 5.6 },
+    viewCount: { value: 13100000, change: 14.0 },
+    avgPrice: { value: 536.18, change: -0.11 },
+    sales: { value: 91200, change: 15.1 },
+    saleAmount: { value: 48900000, change: 16.1 },
+    goBuyUv: { value: 7296, change: 5.4 },
+    goBuyCount: { value: 9120, change: 12.0 },
+    likeCount: { value: 15720000, change: 28.4 },
+    commentCount: { value: 26200, change: 21.6 },
+    fansGrowth: { value: 3785, change: 124.6 },
+    itemCount: { value: 274, change: 3.7 },
+    gmvItemCountRatio: { value: 178467, change: 9.5 },
+    interaction: { value: 15746200, change: 38.1, detail: { likeCount: 15720000, commentCount: 26200 } }
+  },
 }
 
 // 获取直播详情
@@ -158,7 +175,6 @@ export function getLiveDetail(liveId: string): LiveDetail {
     return liveDetailsMap['LIVE001']!
   }
 
-  // 基于列表数据生成完整详情
   const seed = parseInt(liveId.replace('LIVE', ''), 10) || 1
   const interactionValue = Math.round(live.viewCount * 0.2)
 
@@ -186,183 +202,766 @@ export function getLiveDetail(liveId: string): LiveDetail {
 }
 
 // 直播商品列表（内部数据源）
-const allLiveProducts = [
-  { itemCode: 'SKU001', itemIndex: 0, productName: '兰蔻小黑瓶精华肌底液 100ml', brand: '兰蔻', startTime: 284, endTime: 599, keywords: ['小黑瓶', '精华', '修护', '抗老'] },
-  { itemCode: 'SKU002', itemIndex: 1, productName: '欧莱雅复颜玻尿酸水光充盈导入精华液', brand: '欧莱雅', startTime: 750, endTime: 1125, keywords: ['玻尿酸', '补水', '精华'] },
-  { itemCode: 'SKU003', itemIndex: 2, productName: '雅诗兰黛特润修护肌透精华露 50ml', brand: '雅诗兰黛', startTime: 1320, endTime: 1710, keywords: ['小棕瓶', '修护', '抗皱'] },
-  { itemCode: 'SKU004', itemIndex: 3, productName: '安耐晒金瓶防晒霜 SPF50+ PA++++', brand: '安耐晒', startTime: 2100, endTime: 2535, keywords: ['防晒', 'SPF50', '金瓶'] },
-  { itemCode: 'SKU005', itemIndex: 4, productName: '潘婷3分钟奇迹护发素 深层滋养型', brand: '潘婷', startTime: 2900, endTime: 3250, keywords: ['护发素', '深层滋养', '修护'] },
-  { itemCode: 'SKU006', itemIndex: 5, productName: '欧莱雅清润葡萄籽膜力水', brand: '欧莱雅', startTime: 3480, endTime: 3930, keywords: ['葡萄籽', '膜力水', '保湿'] },
-  { itemCode: 'SKU007', itemIndex: 6, productName: '兰蔻清滢柔肤水 粉水 400ml', brand: '兰蔻', startTime: 4215, endTime: 4720, keywords: ['粉水', '柔肤', '清爽'] },
-  { itemCode: 'SKU008', itemIndex: 7, productName: '雅诗兰黛红石榴鲜活亮采洁面乳', brand: '雅诗兰黛', startTime: 4920, endTime: 5300, keywords: ['红石榴', '洁面', '提亮'] },
-  { itemCode: 'SKU009', itemIndex: 8, productName: '欧莱雅玻尿酸安瓶精华面膜 5片装', brand: '欧莱雅', startTime: 5550, endTime: 5930, keywords: ['面膜', '安瓶', '补水'] },
-  { itemCode: 'SKU010', itemIndex: 9, productName: '兰蔻极光水精华 30ml', brand: '兰蔻', startTime: 6120, endTime: 6615, keywords: ['极光水', '美白', '精华'] },
-  { itemCode: 'SKU021', itemIndex: 10, productName: 'SK-II神仙水护肤精华露 230ml', brand: 'SK-II', startTime: 6900, endTime: 7470, keywords: ['神仙水', 'Pitera', '精华'] },
-  { itemCode: 'SKU022', itemIndex: 11, productName: '资生堂红腰子精华 75ml', brand: '资生堂', startTime: 7680, endTime: 8205, keywords: ['红腰子', '精华', '修护'] },
-  { itemCode: 'SKU024', itemIndex: 12, productName: '倩碧黄油特效润肤露 125ml', brand: '倩碧', startTime: 8430, endTime: 8890, keywords: ['黄油', '保湿', '润肤'] },
-  { itemCode: 'SKU044', itemIndex: 13, productName: 'SK-II前男友面膜 10片装', brand: 'SK-II', startTime: 9120, endTime: 9620, keywords: ['面膜', '前男友', 'SK-II'] },
-  { itemCode: 'SKU049', itemIndex: 14, productName: '兰蔻纯净玫瑰卸妆水 400ml', brand: '兰蔻', startTime: 9840, endTime: 10350, keywords: ['卸妆水', '玫瑰', '温和'] }
-]
+const allLiveProducts: Record<string, { itemCode: string; itemIndex: number; productName: string; brand: string; startTime: number; endTime: number; keywords: string[] }[]> = {
+  'LIVE001': [
+    { itemCode: 'LIVE001_0', itemIndex: 0, productName: 'PMPM中法玫瑰维C焕光肽嫩亮精华油', brand: 'PMPM', startTime: 240, endTime: 520, keywords: ['千叶玫瑰精粹', '墨红玫瑰精粹', 'PMPM', '补水/修'] },
+    { itemCode: 'LIVE001_1', itemIndex: 1, productName: '理肤泉「新B5多效修护精华」', brand: '理肤泉', startTime: 960, endTime: 1275, keywords: ['维生素原B5+二裂酵母溶液', '理肤泉', '补水/修'] },
+    { itemCode: 'LIVE001_2', itemIndex: 2, productName: '修丽可色修精华', brand: '修丽可', startTime: 1680, endTime: 2030, keywords: ['黄瓜果提取物+迷迭香叶提取物+油橄榄叶提取物', '修丽可', '补水/修'] },
+    { itemCode: 'LIVE001_3', itemIndex: 3, productName: '兰蔻「超修小黑瓶」精华', brand: '兰蔻', startTime: 2400, endTime: 2785, keywords: ['β-葡聚糖（羧甲基β-葡聚糖钠）+二裂酵母发酵产物溶胞产物+腺苷', '兰蔻', '补水/修'] },
+    { itemCode: 'LIVE001_4', itemIndex: 4, productName: 'HR赫莲娜新一代「绿宝瓶」精华露', brand: 'HR赫莲娜', startTime: 3120, endTime: 3540, keywords: ['海茴香愈伤组织培养物滤液', '红没药醇', 'HR赫莲娜', '补水/修'] },
+    { itemCode: 'LIVE001_5', itemIndex: 5, productName: '海蓝之谜「浓修瓶」精华', brand: '海蓝之谜', startTime: 3840, endTime: 4295, keywords: ['神奇活性精萃+橙光精萃', '海蓝之谜', '补水/修'] },
+    { itemCode: 'LIVE001_6', itemIndex: 6, productName: '薇诺娜舒缓保湿特护精华液第二代', brand: '薇诺娜', startTime: 4560, endTime: 5050, keywords: ['青刺果PRO MAX+黄金肽 EQ-9', '薇诺娜', '补水/修'] },
+    { itemCode: 'LIVE001_7', itemIndex: 7, productName: '薇诺娜凝时塑颜抗皱精华液（银核精华）', brand: '薇诺娜', startTime: 5280, endTime: 5805, keywords: ['专研超塑肽×促渗科技+奢华玫瑰木精粹', '薇诺娜', '补水/修'] },
+    { itemCode: 'LIVE001_8', itemIndex: 8, productName: '绽媄娅焕能修护安肌精华液', brand: '绽媄娅', startTime: 6000, endTime: 6560, keywords: ['球PDRN+自研超分子微球化技术', '绽媄娅', '补水/修'] },
+    { itemCode: 'LIVE001_9', itemIndex: 9, productName: '珀莱雅「源力」精华3.0', brand: '珀莱雅', startTime: 6720, endTime: 7315, keywords: ['专研重组XVII型胶原蛋白+复配植物舒缓成分&羟脯氨酸衍生物+专研ProECM', '珀莱雅', '补水/修'] },
+    { itemCode: 'LIVE001_10', itemIndex: 10, productName: '珀莱雅「源力」精华3.0+源力次抛套组', brand: '珀莱雅', startTime: 7440, endTime: 8070, keywords: ['- 「源力」精华3.0：专研重组XVII型胶原蛋白+复配植物舒缓成分&羟脯氨酸衍生物+专研ProECM', '珀莱雅', '补水/修'] },
+    { itemCode: 'LIVE001_11', itemIndex: 11, productName: '双妹玉容松露臻萃精华油第二代（联名款）', brand: '双妹', startTime: 8160, endTime: 8825, keywords: ['南法松露精粹+云南松露精粹+阿魏酸+白池花籽油', '双妹', '补水/修'] },
+    { itemCode: 'LIVE001_12', itemIndex: 12, productName: '双妹玉容松露臻萃油露精华蜜（联名款）', brand: '双妹', startTime: 8880, endTime: 9580, keywords: ['南法松露精粹+云南松露精粹+PDRN促渗技术+紫苜蓿', '双妹', '补水/修'] },
+    { itemCode: 'LIVE001_13', itemIndex: 13, productName: '科兰黎三号修护VB精华', brand: '科兰黎', startTime: 9600, endTime: 10335, keywords: ['专利四重VB：B12抑制泛红敏感因子，B3改善红敏暗沉，B9抵御胶原损伤，B5重构强韧屏障', '科兰黎', '补水/修'] },
+    { itemCode: 'LIVE001_14', itemIndex: 14, productName: '雅诗兰黛小棕瓶精华', brand: '雅诗兰黛', startTime: 10320, endTime: 11090, keywords: ['律波肽+二裂酵母发酵产物溶胞物', '雅诗兰黛', '补水/修'] },
+    { itemCode: 'LIVE001_15', itemIndex: 15, productName: '娇韵诗油皮双萃精华', brand: '娇韵诗', startTime: 11040, endTime: 11845, keywords: ['第九代更新，高能水飞蓟精萃+六重抗氧化植萃矩阵+哈伦加那提取物+胜肽', '娇韵诗', '补水/修'] },
+    { itemCode: 'LIVE001_16', itemIndex: 16, productName: '娇韵诗双萃焕活修护精华', brand: '娇韵诗', startTime: 11760, endTime: 12600, keywords: ['芦竹提取物+姜黄根提取物', '娇韵诗', '补水/修'] },
+    { itemCode: 'LIVE001_17', itemIndex: 17, productName: 'SK-II「神仙水」精华露', brand: 'SK-II', startTime: 12480, endTime: 13355, keywords: ['含90%以上的PITERA精华', 'SK-II', '补水/修'] },
+    { itemCode: 'LIVE001_18', itemIndex: 18, productName: '美研因式复合酸祛痘凝胶', brand: '美研因式', startTime: 13200, endTime: 14110, keywords: ['三重复合酸配方+专研9thOSMO原料组', '美研因式', '改善油痘'] },
+    { itemCode: 'LIVE001_19', itemIndex: 19, productName: '达尔肤杏仁酸精准净痘精华乳', brand: '达尔肤', startTime: 13920, endTime: 14865, keywords: ['3种酸复配（3%杏仁酸', '1.3%水杨酸', '达尔肤', '改善油痘'] },
+    { itemCode: 'LIVE001_20', itemIndex: 20, productName: '达尔肤杏仁酸精华液组合', brand: '达尔肤', startTime: 14640, endTime: 15620, keywords: ['- 杏仁酸6%：杏仁酸', '达尔肤', '改善油痘'] },
+    { itemCode: 'LIVE001_21', itemIndex: 21, productName: '欧玛橄榄精华', brand: '欧玛橄榄', startTime: 15360, endTime: 16375, keywords: ['油橄榄叶提取物+维生素原B5+透明质酸钠', '欧玛橄榄', '改善油痘'] },
+    { itemCode: 'LIVE001_22', itemIndex: 22, productName: '达尔肤光透焕亮精华油', brand: '达尔肤', startTime: 16080, endTime: 17130, keywords: ['杏仁酸+双重焕亮成分', '达尔肤', '角质护理'] },
+    { itemCode: 'LIVE001_23', itemIndex: 23, productName: '科颜氏嫩肤溜溜瓶精华', brand: '科颜氏', startTime: 16800, endTime: 17885, keywords: ['三重修护成分（葡糖因子+泛醇+矢车菊花水）+三酸（BHA-水杨酸', 'AHA-羟基乙酸及乳酸', '科颜氏', '角质护理'] },
+    { itemCode: 'LIVE001_24', itemIndex: 24, productName: 'TAKAMI角质护理精华液', brand: 'TAKAMI', startTime: 17520, endTime: 18640, keywords: ['添加了7种天然活性果萃成分', 'TAKAMI', '角质护理'] },
+    { itemCode: 'LIVE001_25', itemIndex: 25, productName: 'YSL夜皇后精华', brand: 'YSL', startTime: 18240, endTime: 19395, keywords: ['仙人掌花精萃+双重复合酸配比+红没药醇', 'YSL', '角质护理'] },
+    { itemCode: 'LIVE001_26', itemIndex: 26, productName: '妮维雅630淡斑精华', brand: '妮维雅', startTime: 18960, endTime: 20150, keywords: ['专利成分LUMINOUS 630+透明质酸钠+维E衍生物', '妮维雅', '美白淡化'] },
+    { itemCode: 'LIVE001_27', itemIndex: 27, productName: 'OLAY淡斑小白瓶精华液', brand: 'OLAY', startTime: 19680, endTime: 20905, keywords: ['烟酰胺+色淡林+传明酸', 'OLAY', '美白淡化'] },
+    { itemCode: 'LIVE001_28', itemIndex: 28, productName: 'DR.CI:LABO 活颜光曜精华', brand: 'DR.CI:LABO', startTime: 20400, endTime: 21660, keywords: ['377+专研成分SymBright（香紫苏内酯）', 'SymVital（姜根提取物）', 'DR.CI:LABO', '美白淡化'] },
+    { itemCode: 'LIVE001_29', itemIndex: 29, productName: '科颜氏「安白瓶」淡斑精华', brand: '科颜氏', startTime: 21120, endTime: 22415, keywords: ['透明维C衍生物+玻色因', '科颜氏', '美白淡化'] },
+    { itemCode: 'LIVE001_30', itemIndex: 30, productName: '倩碧新302「光子镭射瓶」', brand: '倩碧', startTime: 21840, endTime: 23170, keywords: ['UP302+双重VC+烟酰胺', '倩碧', '美白淡化'] },
+    { itemCode: 'LIVE001_31', itemIndex: 31, productName: '修丽可淡斑发光瓶精华液', brand: '修丽可', startTime: 22560, endTime: 23925, keywords: ['传明酸', '烟酰胺', '修丽可', '美白淡化'] },
+    { itemCode: 'LIVE001_32', itemIndex: 32, productName: '相宜本草红景天焕白精华液', brand: '相宜本草', startTime: 23280, endTime: 24680, keywords: ['大花红景天根提取物', '相宜本草', '美白/提'] },
+    { itemCode: 'LIVE001_33', itemIndex: 33, productName: 'OLAY水光小白瓶', brand: 'OLAY', startTime: 24000, endTime: 25435, keywords: ['专研水光蛋白科技：烟酰胺+革糖素pro+控羰素+BCE体系', 'OLAY', '美白/提'] },
+    { itemCode: 'LIVE001_34', itemIndex: 34, productName: '妮维雅630双能瓶精华礼盒装', brand: '妮维雅', startTime: 24720, endTime: 26190, keywords: ['专利成分LUMINOUS 630+专研成分NAHP+甘油葡糖苷+泛醇', '妮维雅', '美白/提'] },
+    { itemCode: 'LIVE001_35', itemIndex: 35, productName: '珀莱雅「双抗」精华', brand: '珀莱雅', startTime: 25440, endTime: 26945, keywords: ['专研NOX-AGE+麦角硫因', '珀莱雅', '美白/提'] },
+    { itemCode: 'LIVE001_36', itemIndex: 36, productName: 'CPB肌肤之钥 第四代「钻光」精华', brand: 'CPB肌肤之钥', startTime: 26160, endTime: 27700, keywords: ['圣母百合精粹+柠檬香桃木精粹+「Kelplex」多元三色海藻精粹，协同焕活肌肤', 'CPB肌肤之钥', '美白/提'] },
+    { itemCode: 'LIVE001_37', itemIndex: 37, productName: 'SK-II「光子小灯泡」美白精华', brand: 'SK-II', startTime: 26880, endTime: 28455, keywords: ['PITERA™+升级版光蕴复合精粹（红没药醇Pro+SDL+烟酰胺+莲花精粹）', 'SK-II', '美白/提'] },
+    { itemCode: 'LIVE001_38', itemIndex: 38, productName: '兰时光兰花臻颜精粹油 / 兰时光兰花焕活精粹油', brand: '兰时光', startTime: 27600, endTime: 29210, keywords: ['双兰花精萃+不皂化物浓缩/鳄梨油+灵芝孢子油+植物A醇Pro', '兰时光', '抗皱/紧'] },
+    { itemCode: 'LIVE001_39', itemIndex: 39, productName: '珀莱雅「红宝石」精华3.0', brand: '珀莱雅', startTime: 28320, endTime: 29965, keywords: ['环肽-161+视黄醇+HPR', '珀莱雅', '抗皱/紧'] },
+    { itemCode: 'LIVE001_40', itemIndex: 40, productName: '欧莱雅 第四代黑精华', brand: '欧莱雅', startTime: 29040, endTime: 30720, keywords: ['二裂酵母精粹+22种活性护肤成分', '欧莱雅', '抗皱/紧'] },
+    { itemCode: 'LIVE001_41', itemIndex: 41, productName: '自然堂 小紫瓶精华液第六代', brand: '自然堂', startTime: 29760, endTime: 31475, keywords: ['喜默因®滤液+溶胞物', '自然堂', '抗皱/紧'] },
+    { itemCode: 'LIVE001_42', itemIndex: 42, productName: 'OLAY 紧颜淡纹精华露（OLAY 黑管精华）', brand: 'OLAY', startTime: 30480, endTime: 32230, keywords: ['PHCA（羟基肉桂酸）+植物A醇（补骨脂酚）+淡纹肽', 'OLAY', '抗皱/紧'] },
+    { itemCode: 'LIVE001_43', itemIndex: 43, productName: '韩束「X肽」赋活丰盈光透精华液', brand: '韩束', startTime: 31200, endTime: 32985, keywords: ['专利加持专研X肽（环六肽+胶原肽+阻隔肽）+多重焕亮成分', '韩束', '抗皱/紧'] },
+    { itemCode: 'LIVE001_44', itemIndex: 44, productName: 'DARPHIN朵梵 双生精华', brand: 'DARPHIN朵梵', startTime: 31920, endTime: 33740, keywords: ['复配六胜肽+白池花籽油', 'DARPHIN朵梵', '抗皱/紧'] },
+    { itemCode: 'LIVE001_45', itemIndex: 45, productName: 'Murad 慕拉得 A醇面部精华', brand: 'Murad', startTime: 32640, endTime: 34495, keywords: ['专研"3A"技术，温和A酯+缓释A醇+A醇"助推器"', 'Murad', '抗皱/紧'] },
+    { itemCode: 'LIVE001_46', itemIndex: 46, productName: '羽西「鎏金瓶精华」', brand: '羽西', startTime: 33360, endTime: 35250, keywords: ['21%玻色因溶液+乳酸菌发酵产物+依克多因', '羽西', '抗皱/紧'] },
+    { itemCode: 'LIVE001_47', itemIndex: 47, productName: '资生堂 新红妍肌活精华露「4.0版」', brand: '资生堂', startTime: 34080, endTime: 36005, keywords: ['记忆T因子+五重山茶精粹', '资生堂', '抗皱/紧'] },
+    { itemCode: 'LIVE001_48', itemIndex: 48, productName: 'Murad 慕拉得早C晚A组合（A醇精华+VC精华）', brand: 'Murad', startTime: 34800, endTime: 36760, keywords: ['- Murad维C精华：采用专研3G技术（原型VC和金复合物+谷胱甘肽+乙醇酸）', 'Murad', '抗皱/紧'] },
+    { itemCode: 'LIVE001_49', itemIndex: 49, productName: '修丽可 A.G.E.精华', brand: '修丽可', startTime: 35520, endTime: 37515, keywords: ['30%玻色因溶液+鼠李糖', '修丽可', '抗皱/紧'] },
+    { itemCode: 'LIVE001_50', itemIndex: 50, productName: '全新升级 修丽可「紫米」精华', brand: '修丽可', startTime: 36240, endTime: 38270, keywords: ['玻色因溶液浓度从10%提升至12%+（全新添加）皮肤益生精粹溶液&乙酰化透明质酸钠+紫米精华+2%甘草酸二钾', '修丽可', '抗皱/紧'] },
+    { itemCode: 'LIVE001_51', itemIndex: 51, productName: '修丽可 抗皱精华', brand: '修丽可', startTime: 36960, endTime: 39025, keywords: ['5大成分复配（2大胜肽+烟酰胺+PHA葡糖酸内酯+藻类提取物）', '修丽可', '抗皱/紧'] },
+    { itemCode: 'LIVE001_52', itemIndex: 52, productName: 'CPB肌肤之钥「4D」立体紧颜精华', brand: 'CPB肌肤之钥', startTime: 37680, endTime: 39780, keywords: ['根萃直立复合物（地榆根植萃', '光果甘草）+羟脯氨酸', 'CPB肌肤之钥', '抗皱/紧'] },
+    { itemCode: 'LIVE001_53', itemIndex: 53, productName: '莱珀妮 鱼子精华琼贵紧颜液', brand: '莱珀妮', startTime: 38400, endTime: 40535, keywords: ['鱼子精纯精华+至纯鱼子精萃', '莱珀妮', '抗皱/紧'] },
+    { itemCode: 'LIVE001_54', itemIndex: 54, productName: '瑷尔博士 摇醒精华2.0', brand: '瑷尔博士', startTime: 39120, endTime: 41290, keywords: ['虾青素成分+麦角硫因成分', '瑷尔博士', '补水/修'] },
+    { itemCode: 'LIVE001_55', itemIndex: 55, productName: '法国娇兰 全新第四代复原蜜精华', brand: '法国娇兰', startTime: 39840, endTime: 42045, keywords: ['臻选3种黑蜂蜂蜜+蜂王浆', '法国娇兰', '补水/修'] },
+    { itemCode: 'LIVE001_56', itemIndex: 56, productName: 'The Ginza御银座 粉晶按摩精华露', brand: 'The Ginza御银座', startTime: 40560, endTime: 42800, keywords: ['感知复合臻粹™ 西洋菩提精粹', 'The Ginza御银座', '补水/修'] },
+    { itemCode: 'LIVE001_57', itemIndex: 57, productName: '珀莱雅「早C晚A」精华组合', brand: '珀莱雅', startTime: 41280, endTime: 43555, keywords: ['- 「双抗」精华：双重美白成分+专研NOX-AGE+麦角硫因+柚皮苷', '珀莱雅', '美白/提'] },
+    { itemCode: 'LIVE001_58', itemIndex: 58, productName: 'CPB肌肤之钥「4D」耀白精华', brand: 'CPB肌肤之钥', startTime: 42000, endTime: 44310, keywords: ['独特焕亮因子TIPARP（酵母菌发酵溶胞产物滤液）+专研美白成分4MSK+白尾鸢尾花', 'CPB肌肤之钥', '美白/提'] },
+    { itemCode: 'LIVE001_59', itemIndex: 59, productName: '雅诗兰黛 白金黑钻松露精华', brand: '雅诗兰黛', startTime: 42720, endTime: 45065, keywords: ['高品质黑松露提取物，协同「色提因™」科技', '雅诗兰黛', '美白/提'] },
+    { itemCode: 'LIVE001_60', itemIndex: 60, productName: '修丽可 日夜修护精华组合', brand: '修丽可', startTime: 43440, endTime: 45820, keywords: ['- CE精华：VC+VE+阿魏酸', '修丽可', '抗皱/紧'] },
+  ],
+  'LIVE002': [
+    { itemCode: 'LIVE002_0', itemIndex: 0, productName: '敷尔佳 透明质酸钠次抛修护液', brand: '敷尔佳', startTime: 240, endTime: 520, keywords: ['透明质酸钠+水解透明质酸钠', '敷尔佳', '护肤'] },
+    { itemCode: 'LIVE002_1', itemIndex: 1, productName: '润百颜 屏障修护次抛精华液3.0', brand: '润百颜', startTime: 960, endTime: 1275, keywords: ['韧颜舒PRO+韧颜玻PRO', '润百颜', '护肤'] },
+    { itemCode: 'LIVE002_2', itemIndex: 2, productName: '同频 多重胶原修护次抛精华', brand: '同频', startTime: 1680, endTime: 2030, keywords: ['3大重组人源化专利胶原：III型弹簧胶原+独家V型锁扣胶原+XVII型绷带胶原', '同频', '护肤'] },
+    { itemCode: 'LIVE002_3', itemIndex: 3, productName: '可复美 重组胶原蛋白修护次抛精华2.0', brand: '可复美', startTime: 2400, endTime: 2785, keywords: ['4种重组胶原蛋白和小分子肽+GPIS+依克多因+羟基积雪草甙+甘油葡糖苷+透明质酸钠+聚谷氨酸钠', '可复美', '护肤'] },
+    { itemCode: 'LIVE002_4', itemIndex: 4, productName: '伊丽莎白雅顿 经典「金胶」/「轻感金胶」精华', brand: '伊丽莎白雅顿', startTime: 3120, endTime: 3540, keywords: ['神经酰胺EOP', 'NP', '伊丽莎白雅顿', '护肤'] },
+    { itemCode: 'LIVE002_5', itemIndex: 5, productName: '可丽金「嘭嘭」紧致次抛精华', brand: '可丽金', startTime: 3840, endTime: 4295, keywords: ['C5HA重组胶原蛋白组合', '可丽金', '护肤'] },
+    { itemCode: 'LIVE002_6', itemIndex: 6, productName: '听研 胶原紧致次抛', brand: '听研', startTime: 4560, endTime: 5050, keywords: ['5D超分子胶原', '重组III型人源化胶原蛋白', '听研', '护肤'] },
+    { itemCode: 'LIVE002_7', itemIndex: 7, productName: '伊丽莎白雅顿 第二代「粉胶」精华液', brand: '伊丽莎白雅顿', startTime: 5280, endTime: 5805, keywords: ['HPR+真A醇「双A智性技术」+多重胜肽成分', '伊丽莎白雅顿', '护肤'] },
+    { itemCode: 'LIVE002_8', itemIndex: 8, productName: '科兰黎 1号VC精华（2000元以上）', brand: '科兰黎', startTime: 6000, endTime: 6560, keywords: ['20%原型VC', '科兰黎', '护肤'] },
+    { itemCode: 'LIVE002_9', itemIndex: 9, productName: '绽媄娅 控油祛痘次抛精华液（200元以内）', brand: '绽媄娅', startTime: 6720, endTime: 7315, keywords: ['仿生蜂毒肽+植物祛痘因子+复合植萃舒缓成分+包裹型水杨酸+羟基乙酸', '绽媄娅', '护肤'] },
+    { itemCode: 'LIVE002_10', itemIndex: 10, productName: '可复美 稀有人参皂苷净痘次抛精华液', brand: '可复美', startTime: 7440, endTime: 8070, keywords: ['稀有人参皂苷Ck', '七酸复配体系', '可复美', '护肤'] },
+    { itemCode: 'LIVE002_11', itemIndex: 11, productName: '同频 多重胶原澄净次抛精华', brand: '同频', startTime: 8160, endTime: 8825, keywords: ['3大重组人源化专利胶原(III型+V型+XVII型)+紫松果菊提取物+柚果提取物', '同频', '护肤'] },
+    { itemCode: 'LIVE002_12', itemIndex: 12, productName: '听研「黄油」次抛', brand: '听研', startTime: 8880, endTime: 9580, keywords: ['- 修护型胶原组合（活性胶原+重组VII型胶原蛋白+重组XVII型胶原蛋白）', '听研', '护肤'] },
+    { itemCode: 'LIVE002_13', itemIndex: 13, productName: '薇诺娜 屏障修护精华液第二代【昵称：311次抛】', brand: '薇诺娜', startTime: 9600, endTime: 10335, keywords: ['全新升级专研3:1:1屏障修护配比，神经酰胺EOP+植物胆甾醇+青刺果发酵油，全新添加3型/21型胶原+丝心蛋白', '薇诺娜', '护肤'] },
+    { itemCode: 'LIVE002_14', itemIndex: 14, productName: '绽媄娅 球PDRN「能量棒」', brand: '绽媄娅', startTime: 10320, endTime: 11090, keywords: ['球PDRN+球胶原', '绽媄娅', '护肤'] },
+    { itemCode: 'LIVE002_15', itemIndex: 15, productName: '夸迪 CT50稳肌轻龄悬油次抛精华液2.0', brand: '夸迪', startTime: 11040, endTime: 11845, keywords: ['CT50（专利抗皱成分）+雪绒花精粹', '夸迪', '护肤'] },
+    { itemCode: 'LIVE002_16', itemIndex: 16, productName: '欧诗漫 舒颜修白精华液「第二代小白管」', brand: '欧诗漫', startTime: 11760, endTime: 12600, keywords: ['珍敏优+珍白因+珍白因Pro+光甘草定+九肽-1', '欧诗漫', '护肤'] },
+    { itemCode: 'LIVE002_17', itemIndex: 17, productName: '薇诺娜 光透皙白淡斑精华液「修白瓶」', brand: '薇诺娜', startTime: 12480, endTime: 13355, keywords: ['烟酰胺+VC衍生物+滇山茶+光果甘草根植萃，协同焕亮美白', '薇诺娜', '护肤'] },
+    { itemCode: 'LIVE002_18', itemIndex: 18, productName: '欧诗漫 胶原紧致修护精华液（胶原小金管）', brand: '欧诗漫', startTime: 13200, endTime: 14110, keywords: ['7D胶原+3重胜肽Pro+珍敏优', '欧诗漫', '护肤'] },
+    { itemCode: 'LIVE002_19', itemIndex: 19, productName: '妮维雅「双能」面膜', brand: '妮维雅', startTime: 13920, endTime: 14865, keywords: ['LUMINOUS 630(异丁酰氨基噻唑间苯二酚)+烟酰胺+4重玻尿酸钠', '妮维雅', '护肤'] },
+    { itemCode: 'LIVE002_20', itemIndex: 20, productName: 'FAN BEAUTY DIARY 瓷透光感淡斑美白双舱面膜', brand: 'FAN BEAUTY DIARY', startTime: 14640, endTime: 15620, keywords: ['烟酰胺+熊果苷+VC衍生物', 'FAN BEAUTY DIARY', '护肤'] },
+    { itemCode: 'LIVE002_21', itemIndex: 21, productName: '欧诗漫 美白淡斑面膜3.0', brand: '欧诗漫', startTime: 15360, endTime: 16375, keywords: ['珍白因Pro+珍白因+烟酰胺+珍珠粉+光甘草定', '欧诗漫', '护肤'] },
+    { itemCode: 'LIVE002_22', itemIndex: 22, productName: '全新OLAY 水光小白瓶面膜', brand: 'OLAY', startTime: 16080, endTime: 17130, keywords: ['烟酰胺+革糖素PRO+控羰素', 'OLAY', '护肤'] },
+    { itemCode: 'LIVE002_23', itemIndex: 23, productName: '珀莱雅「双抗」面膜 美白特证版', brand: '珀莱雅', startTime: 16800, endTime: 17885, keywords: ['专研NOX-AGE抗氧化成分+麦角硫因', '珀莱雅', '护肤'] },
+    { itemCode: 'LIVE002_24', itemIndex: 24, productName: '欧莱雅 奶白面膜', brand: '欧莱雅', startTime: 17520, endTime: 18640, keywords: ['专研377精粹+烟酰胺', '欧莱雅', '护肤'] },
+    { itemCode: 'LIVE002_25', itemIndex: 25, productName: '颐莲 保湿深润面膜', brand: '颐莲', startTime: 18240, endTime: 19395, keywords: ['3重玻尿酸衍生物+硅烷化玻尿酸衍生物', '颐莲', '护肤'] },
+    { itemCode: 'LIVE002_26', itemIndex: 26, productName: '自然堂 喜马拉雅植物补水面膜组', brand: '自然堂', startTime: 18960, endTime: 20150, keywords: ['4重雪域植萃', '专研保湿网技术', '自然堂', '护肤'] },
+    { itemCode: 'LIVE002_27', itemIndex: 27, productName: '百雀羚 小雀幸面膜套组', brand: '百雀羚', startTime: 19680, endTime: 20905, keywords: ['- 补水款：专研水解透明质酸钠，银耳精粹', '百雀羚', '护肤'] },
+    { itemCode: 'LIVE002_28', itemIndex: 28, productName: '蒂佳婷 经典【蓝绿丸】2.0面膜', brand: '蒂佳婷', startTime: 20400, endTime: 21660, keywords: ['- 补水蓝丸2.0：10倍专研玻尿酸+专研聚光科技', '蒂佳婷', '护肤'] },
+    { itemCode: 'LIVE002_29', itemIndex: 29, productName: '达肤妍 臻研舒缓修护面膜', brand: '达肤妍', startTime: 21120, endTime: 22415, keywords: ['5%积雪草提取物+泛醇+油橄榄叶提取物', '达肤妍', '护肤'] },
+    { itemCode: 'LIVE002_30', itemIndex: 30, productName: '自然堂 极地补水修护等渗面膜', brand: '自然堂', startTime: 21840, endTime: 23170, keywords: ['极地益生菌产物', '高纯度原B5', '自然堂', '护肤'] },
+    { itemCode: 'LIVE002_31', itemIndex: 31, productName: '敷尔佳 B5舒缓修护贴 / 积雪草舒缓修护贴', brand: '敷尔佳', startTime: 22560, endTime: 23925, keywords: ['- B5舒缓修护贴：泛醇（维生素原B5）+水解透明质酸钠', '敷尔佳', '护肤'] },
+    { itemCode: 'LIVE002_32', itemIndex: 32, productName: '珀芙研 舒缓修护涂抹冷膜', brand: '珀芙研', startTime: 23280, endTime: 24680, keywords: ['胶原', '西藏温泉水', '珀芙研', '护肤'] },
+    { itemCode: 'LIVE002_33', itemIndex: 33, productName: '可复美 重组胶原蛋白修护贴', brand: '可复美', startTime: 24000, endTime: 25435, keywords: ['专研重组胶原蛋白', '可复美', '护肤'] },
+    { itemCode: 'LIVE002_34', itemIndex: 34, productName: '同频 多重胶原修护面膜', brand: '同频', startTime: 24720, endTime: 26190, keywords: ['三重专利胶原：3型胶原+5型胶原+17型胶原', '同频', '护肤'] },
+    { itemCode: 'LIVE002_35', itemIndex: 35, productName: '薇诺娜 舒缓速修胶原冻干面膜', brand: '薇诺娜', startTime: 25440, endTime: 26945, keywords: ['III型胶原+专研3重速修植萃+专研多层涂布导液技术', '薇诺娜', '护肤'] },
+    { itemCode: 'LIVE002_36', itemIndex: 36, productName: '瑷尔博士 益生精研平衡修护面膜2.0', brand: '瑷尔博士', startTime: 26160, endTime: 27700, keywords: ['积雪草精粹+硅烷化玻尿酸衍生物', '瑷尔博士', '护肤'] },
+    { itemCode: 'LIVE002_37', itemIndex: 37, productName: '薇诺娜 舒缓保湿特护面膜', brand: '薇诺娜', startTime: 26880, endTime: 28455, keywords: ['专利马齿苋修护膜布+青刺果PRO MAX', '薇诺娜', '护肤'] },
+    { itemCode: 'LIVE002_38', itemIndex: 38, productName: '珀莱雅「源力」面膜2.0', brand: '珀莱雅', startTime: 27600, endTime: 29210, keywords: ['纤连蛋白+五味子果提取物', '珀莱雅', '护肤'] },
+    { itemCode: 'LIVE002_39', itemIndex: 39, productName: '理肤泉 B5面膜PRO', brand: '理肤泉', startTime: 28320, endTime: 29965, keywords: ['高浓原B5+红没药醇', '理肤泉', '护肤'] },
+    { itemCode: 'LIVE002_40', itemIndex: 40, productName: '欧莱雅 第四代安瓶面膜', brand: '欧莱雅', startTime: 29040, endTime: 30720, keywords: ['玻色因Pro+积雪草超苷元', '欧莱雅', '护肤'] },
+    { itemCode: 'LIVE002_41', itemIndex: 41, productName: 'FAN BEAUTY DIARY 海葡萄凝水保湿面膜', brand: 'FAN BEAUTY DIARY', startTime: 29760, endTime: 31475, keywords: ['海葡萄提取物+维生素B12+透明质酸钠', 'FAN BEAUTY DIARY', '护肤'] },
+    { itemCode: 'LIVE002_42', itemIndex: 42, productName: '自然堂 紧致淡纹油敷面膜', brand: '自然堂', startTime: 30480, endTime: 32230, keywords: ['极地雪松精华油+极地酵母喜默因+胶原焕活肽', '自然堂', '护肤'] },
+    { itemCode: 'LIVE002_43', itemIndex: 43, productName: '可丽金 重组胶原蛋白蕴活光塑紧致驻颜面膜', brand: '可丽金', startTime: 31200, endTime: 32985, keywords: ['专研成分C5HA重组胶原蛋白仿生组合', '可丽金', '护肤'] },
+    { itemCode: 'LIVE002_44', itemIndex: 44, productName: '馥蕾诗 红茶紧致睡眠面膜', brand: '馥蕾诗', startTime: 31920, endTime: 33740, keywords: ['毛里求斯红茶精萃', '植萃高密度肽', '馥蕾诗', '护肤'] },
+    { itemCode: 'LIVE002_45', itemIndex: 45, productName: '补水/修护+美白/提亮', brand: '补水/修护+美白/提亮', startTime: 32640, endTime: 34495, keywords: ['4%烟酰胺+VC衍生物+高纯度原B5', '补水/修护+美白/提亮', '护肤'] },
+    { itemCode: 'LIVE002_46', itemIndex: 46, productName: '抗皱/紧致+美白/提亮', brand: '抗皱/紧致+美白/提亮', startTime: 33360, endTime: 35250, keywords: ['- 光感精华油：18种植萃精华', '抗皱/紧致+美白/提亮', '护肤'] },
+    { itemCode: 'LIVE002_47', itemIndex: 47, productName: '抗皱/紧致+补水/修护+美白/提亮', brand: '抗皱/紧致+补水/修护+美白/提亮', startTime: 34080, endTime: 36005, keywords: ['毛里求斯红茶精萃', '三刺皂荚籽提取物（含植萃多糖）', '抗皱/紧致+补水/修护+美白/提亮', '护肤'] },
+    { itemCode: 'LIVE002_48', itemIndex: 48, productName: '抗皱/紧致+补水/修护', brand: '抗皱/紧致+补水/修护', startTime: 34800, endTime: 36760, keywords: ['III型重组胶原蛋白+极地酵母喜默因', '抗皱/紧致+补水/修护', '护肤'] },
+    { itemCode: 'LIVE002_49', itemIndex: 49, productName: 'CNP希恩派 净爽鼻贴膜', brand: 'CNP希恩派', startTime: 35520, endTime: 37515, keywords: ['- 1号鼻膜贴：北美金缕梅叶水+药鼠尾草叶提取物', 'CNP希恩派', '护肤'] },
+    { itemCode: 'LIVE002_50', itemIndex: 50, productName: '全新科颜氏 亚马逊白泥面膜', brand: '科颜氏', startTime: 36240, endTime: 38270, keywords: ['亚马逊白泥', '库拉索芦荟叶汁粉', '科颜氏', '护肤'] },
+    { itemCode: 'LIVE002_51', itemIndex: 51, productName: '芙芙 日夜组合痘痘贴', brand: '芙芙', startTime: 36960, endTime: 39025, keywords: ['- 日贴：超微水杨酸', '复配植提舒缓沁安精华', '芙芙', '护肤'] },
+  ],
+  'LIVE003': [
+    { itemCode: 'LIVE003_0', itemIndex: 0, productName: '伊丽莎白雅顿时空焕活淡纹紧致「粉胶面霜」', brand: '伊丽莎白雅顿', startTime: 240, endTime: 520, keywords: ['双A+双肽', '伊丽莎白雅顿', '护肤'] },
+    { itemCode: 'LIVE003_1', itemIndex: 1, productName: '薇诺娜凝时塑颜丰盈精华霜（银核霜）', brand: '薇诺娜', startTime: 960, endTime: 1275, keywords: ['AI优选超塑肽＋专研青刺果黄酮', '薇诺娜', '护肤'] },
+    { itemCode: 'LIVE003_2', itemIndex: 2, productName: '韩束「X肽」赋活丰盈紧塑轻润霜/轻盈霜', brand: '韩束', startTime: 1680, endTime: 2030, keywords: ['三大专利加持专研「X肽」（环六肽+胶原肽+阻隔肽）+依克多因', '韩束', '护肤'] },
+    { itemCode: 'LIVE003_3', itemIndex: 3, productName: '优时颜第二代「黑引力」面霜', brand: '优时颜', startTime: 2400, endTime: 2785, keywords: ['三角肽PRO＋超分子技术PRO', '优时颜', '护肤'] },
+    { itemCode: 'LIVE003_4', itemIndex: 4, productName: '珀莱雅「红宝石」面霜3.0（轻盈版/轻润版/滋润版）', brand: '珀莱雅', startTime: 3120, endTime: 3540, keywords: ['专研双环肽（环肽-161＋亚麻籽环肽）＋五重经典信号肽', '珀莱雅', '护肤'] },
+    { itemCode: 'LIVE003_5', itemIndex: 5, productName: 'OLAY全新第5代超红瓶轻润霜/滋润霜', brand: 'OLAY', startTime: 3840, endTime: 4295, keywords: ['专研超导紧致肽＋新升级白钻松露PLUS＋七重胜肽复配', 'OLAY', '护肤'] },
+    { itemCode: 'LIVE003_6', itemIndex: 6, productName: '雅诗兰黛胶原霜', brand: '雅诗兰黛', startTime: 4560, endTime: 5050, keywords: ['胶原紧致肽＋木芙蓉花提取物＋辣木籽精粹', '雅诗兰黛', '护肤'] },
+    { itemCode: 'LIVE003_7', itemIndex: 7, productName: '雅诗兰黛夜胶原霜', brand: '雅诗兰黛', startTime: 5280, endTime: 5805, keywords: ['胶原紧致肽+木芙蓉花提取物+深海巨藻复配精粹', '雅诗兰黛', '护肤'] },
+    { itemCode: 'LIVE003_8', itemIndex: 8, productName: '欧莱雅「20霜」', brand: '欧莱雅', startTime: 6000, endTime: 6560, keywords: ['20%浓缩玻色因PRO溶液＋红没药醇', '欧莱雅', '护肤'] },
+    { itemCode: 'LIVE003_9', itemIndex: 9, productName: '理肤泉 新赋活修护面霜', brand: '理肤泉', startTime: 6720, endTime: 7315, keywords: ['- 光塑抗皱科技', '理肤泉', '护肤'] },
+    { itemCode: 'LIVE003_10', itemIndex: 10, productName: '羽西「鎏金」面霜', brand: '羽西', startTime: 7440, endTime: 8070, keywords: ['- 21%玻色因溶液+', '羽西', '护肤'] },
+    { itemCode: 'LIVE003_11', itemIndex: 11, productName: '全新升级 修丽可A.G.E.面霜', brand: '修丽可', startTime: 8160, endTime: 8825, keywords: ['- 30%玻色因溶液+', '修丽可', '护肤'] },
+    { itemCode: 'LIVE003_12', itemIndex: 12, productName: 'HR赫莲娜 全新「黑绷带」50面霜', brand: 'HR赫莲娜', startTime: 8880, endTime: 9580, keywords: ['- 50%玻色因溶液+', 'HR赫莲娜', '护肤'] },
+    { itemCode: 'LIVE003_13', itemIndex: 13, productName: '百雀羚灵玉面霜', brand: '百雀羚', startTime: 9600, endTime: 10335, keywords: ['- 金槐异槲皮素+', '百雀羚', '护肤'] },
+    { itemCode: 'LIVE003_14', itemIndex: 14, productName: '娇韵诗 焕颜紧塑弹力面霜', brand: '娇韵诗', startTime: 10320, endTime: 11090, keywords: ['- 粗糙帽果精萃+', '娇韵诗', '护肤'] },
+    { itemCode: 'LIVE003_15', itemIndex: 15, productName: '兰蔻全新菁纯面霜（轻盈）/ 兰蔻菁纯面霜（滋润）', brand: '兰蔻', startTime: 11040, endTime: 11845, keywords: ['- 轻盈款：玫瑰凝萃 + 水解亚麻', '兰蔻', '护肤'] },
+    { itemCode: 'LIVE003_16', itemIndex: 16, productName: '娇兰 全新兰花御龄面霜', brand: '娇兰', startTime: 11760, endTime: 12600, keywords: ['- 甄选万代兰 +', '娇兰', '护肤'] },
+    { itemCode: 'LIVE003_17', itemIndex: 17, productName: '夸迪CT50超弹霜（经典版/滋润版）', brand: '夸迪', startTime: 12480, endTime: 13355, keywords: ['- CT50（专利抗皱成分）+', '夸迪', '护肤'] },
+    { itemCode: 'LIVE003_18', itemIndex: 18, productName: '瑷科缦 绿安缦面霜', brand: '瑷科缦', startTime: 13200, endTime: 14110, keywords: ['- 专利「美雅安缇」配方科技：', '瑷科缦', '护肤'] },
+    { itemCode: 'LIVE003_19', itemIndex: 19, productName: '珀莱雅「源力」面霜2.0【盈润版/轻盈版】', brand: '珀莱雅', startTime: 13920, endTime: 14865, keywords: ['- 专研重组XVII型胶原蛋白+专研ProECM', '珀莱雅', '护肤'] },
+    { itemCode: 'LIVE003_20', itemIndex: 20, productName: '欧莱雅全新第四代 胶原小蜜罐面霜 滋润版/轻盈版', brand: '欧莱雅', startTime: 14640, endTime: 15620, keywords: ['- 「超分子重组胶原」+四重胜肽', '欧莱雅', '护肤'] },
+    { itemCode: 'LIVE003_21', itemIndex: 21, productName: '双妹玉容霜（第三代）', brand: '双妹', startTime: 15360, endTime: 16375, keywords: ['- 南法松露精粹+麦角硫因+肌肽', '双妹', '护肤'] },
+    { itemCode: 'LIVE003_22', itemIndex: 22, productName: '资生堂盼丽风姿面霜（清爽型/滋润型）', brand: '资生堂', startTime: 16080, endTime: 17130, keywords: ['- 专研淡纹技术+无患子果皮提取物', '资生堂', '护肤'] },
+    { itemCode: 'LIVE003_23', itemIndex: 23, productName: '兰蔻塑颜紧致霜', brand: '兰蔻', startTime: 16800, endTime: 17885, keywords: ['- 水解透明质酸+烟酰胺', '兰蔻', '护肤'] },
+    { itemCode: 'LIVE003_24', itemIndex: 24, productName: 'SK-II全新大红瓶面霜', brand: 'SK-II', startTime: 17520, endTime: 18640, keywords: ['- PITERA™+致臻芍药凝粹+专研豆香酸精粹', 'SK-II', '护肤'] },
+    { itemCode: 'LIVE003_25', itemIndex: 25, productName: '科兰黎雪藻面霜（轻盈版/滋润版）', brand: '科兰黎', startTime: 18240, endTime: 19395, keywords: ['- 专利抗皱成分「艾洛素™」+雪藻精萃', '科兰黎', '护肤'] },
+    { itemCode: 'LIVE003_26', itemIndex: 26, productName: '海蓝之谜 奇迹面霜/云绒霜/冷凝霜', brand: '海蓝之谜', startTime: 18960, endTime: 20150, keywords: ['- 神奇活性精萃+橙光精萃', '海蓝之谜', '护肤'] },
+    { itemCode: 'LIVE003_27', itemIndex: 27, productName: '海蓝之谜奇迹日夜霜套组（奇迹晚霜+云绒霜）', brand: '海蓝之谜', startTime: 19680, endTime: 20905, keywords: ['**【晚霜】**', '海蓝之谜', '护肤'] },
+    { itemCode: 'LIVE003_28', itemIndex: 28, productName: '法国娇兰 蜜护日晚霜', brand: '法国娇兰', startTime: 20400, endTime: 21660, keywords: ['**【日霜】**', '法国娇兰', '护肤'] },
+    { itemCode: 'LIVE003_29', itemIndex: 29, productName: '瑷科缦白月光面霜', brand: '瑷科缦', startTime: 21120, endTime: 22415, keywords: ['专利「美雅安缦」胶原自PRO复配体系：花榈木精粹 + 传明酸 + 烟酰胺 + VC乙基醚', '瑷科缦', '护肤'] },
+    { itemCode: 'LIVE003_30', itemIndex: 30, productName: '资生堂悦薇智感紧弹亮乳霜', brand: '资生堂', startTime: 21840, endTime: 23170, keywords: ['专研美白成分4MSK + 植物胶原酮（红花花提取物 + 阿尔泰柴胡提取物）', '资生堂', '护肤'] },
+    { itemCode: 'LIVE003_31', itemIndex: 31, productName: 'CPB肌肤之钥「钻光」夜霜', brand: 'CPB肌肤之钥', startTime: 22560, endTime: 23925, keywords: ['专研美白成分4MSK + 合欢树精粹 + 依克多因', 'CPB肌肤之钥', '护肤'] },
+    { itemCode: 'LIVE003_32', itemIndex: 32, productName: '雅诗兰黛白金黑钻面霜', brand: '雅诗兰黛', startTime: 23280, endTime: 24680, keywords: ['专研「色提因」科技 + 南法钻级黑松露', '雅诗兰黛', '护肤'] },
+    { itemCode: 'LIVE003_33', itemIndex: 33, productName: 'evereden安唯伊 婴儿高保湿面霜', brand: 'evereden安唯伊', startTime: 24000, endTime: 25435, keywords: ['向日葵籽油 + 椰子油 + 葡萄籽油', 'evereden安唯伊', '护肤'] },
+    { itemCode: 'LIVE003_34', itemIndex: 34, productName: '薇诺娜 舒缓特护滋润霜', brand: '薇诺娜', startTime: 24720, endTime: 26190, keywords: ['青刺果油 + 马齿苋精粹', '薇诺娜', '护肤'] },
+    { itemCode: 'LIVE003_35', itemIndex: 35, productName: 'Curél珂润 润浸保湿乳霜', brand: 'Curél珂润', startTime: 25440, endTime: 26945, keywords: ['类神经酰胺功能物质 + 蓝桉叶植萃', 'Curél珂润', '护肤'] },
+    { itemCode: 'LIVE003_36', itemIndex: 36, productName: 'onTop 润养修护油霜', brand: 'onTop', startTime: 26160, endTime: 27700, keywords: ['葡萄籽油 + 牛油果树果脂', 'onTop', '护肤'] },
+    { itemCode: 'LIVE003_37', itemIndex: 37, productName: 'my CLARINS小娇韵诗 O椰高保湿焕亮水光霜', brand: '娇韵诗', startTime: 26880, endTime: 28455, keywords: ['专研[H.P.C.]复合植萃配方 + "针叶樱桃籽"提取物', '娇韵诗', '护肤'] },
+    { itemCode: 'LIVE003_38', itemIndex: 38, productName: '完美日记仿生膜精华面霜（滋润版 / 轻润版）', brand: '完美日记', startTime: 27600, endTime: 29210, keywords: ['- Biotec仿生膜科技+', '完美日记', '护肤'] },
+    { itemCode: 'LIVE003_39', itemIndex: 39, productName: '倩碧黄油', brand: '倩碧', startTime: 28320, endTime: 29965, keywords: ['- NMF天然保湿因子+', '倩碧', '护肤'] },
+    { itemCode: 'LIVE003_40', itemIndex: 40, productName: '欧珀莱 恒久肌活修护面霜', brand: '欧珀莱', startTime: 29040, endTime: 30720, keywords: ['- 新肌酮+三重植物精萃（温州蜜柑果皮提取物', '倒捻子树皮提取物', '欧珀莱', '护肤'] },
+    { itemCode: 'LIVE003_41', itemIndex: 41, productName: '可复美重组胶原蛋白 光奕律时修护精华霜', brand: '可复美', startTime: 29760, endTime: 31475, keywords: ['- 4重胶原蛋白', '可复美', '护肤'] },
+    { itemCode: 'LIVE003_42', itemIndex: 42, productName: '科颜氏第三代高保湿面霜 / 科颜氏高保湿面霜（清爽版）', brand: '科颜氏', startTime: 30480, endTime: 32230, keywords: ['**【高保湿面霜】**', '科颜氏', '护肤'] },
+    { itemCode: 'LIVE003_43', itemIndex: 43, productName: '馥蕾诗 古源密集滋养面乳霜', brand: '馥蕾诗', startTime: 31200, endTime: 32985, keywords: ['- 高浓白芒花籽油+', '馥蕾诗', '护肤'] },
+    { itemCode: 'LIVE003_44', itemIndex: 44, productName: '希思黎全能乳液（升级版）', brand: '希思黎', startTime: 31920, endTime: 33740, keywords: ['- 积雪草精粹', '希思黎', '护肤'] },
+    { itemCode: 'LIVE003_45', itemIndex: 45, productName: '丝塔芙「四维」面霜', brand: '丝塔芙', startTime: 32640, endTime: 34495, keywords: ['- 神经酰胺+', '丝塔芙', '护肤'] },
+    { itemCode: 'LIVE003_46', itemIndex: 46, productName: '优色林舒安霜', brand: '优色林', startTime: 33360, endTime: 35250, keywords: ['- 专利成分馨肤怡+', '优色林', '护肤'] },
+    { itemCode: 'LIVE003_47', itemIndex: 47, productName: '理肤泉「新B5修护霜」', brand: '理肤泉', startTime: 34080, endTime: 36005, keywords: ['- 5%维生素原B5', '理肤泉', '护肤'] },
+    { itemCode: 'LIVE003_48', itemIndex: 48, productName: '薇诺娜 舒缓保湿特护霜第二代', brand: '薇诺娜', startTime: 34800, endTime: 36760, keywords: ['- 青刺果PRO MAX', '薇诺娜', '护肤'] },
+    { itemCode: 'LIVE003_49', itemIndex: 49, productName: '相宜本草 青刺果油舒润修护霜', brand: '相宜本草', startTime: 35520, endTime: 37515, keywords: ['- 香格里拉青刺果油+', '相宜本草', '护肤'] },
+    { itemCode: 'LIVE003_50', itemIndex: 50, productName: '凡士林特润修护精华霜（有香/无香）', brand: '凡士林', startTime: 36240, endTime: 38270, keywords: ['- 神经酰胺+', '凡士林', '护肤'] },
+    { itemCode: 'LIVE003_51', itemIndex: 51, productName: '适乐肤神经酰胺屏障修护润肤乳「C乳」', brand: '适乐肤', startTime: 36960, endTime: 39025, keywords: ['- 3重神经酰胺+', '适乐肤', '护肤'] },
+    { itemCode: 'LIVE003_52', itemIndex: 52, productName: '丝塔芙舒润保湿霜（大白罐）', brand: '丝塔芙', startTime: 37680, endTime: 39780, keywords: ['- 甜扁桃油+', '丝塔芙', '护肤'] },
+    { itemCode: 'LIVE003_53', itemIndex: 53, productName: '可丽金 重组胶原蛋白紧致淡纹精华眼霜【昵称：「胶卷」眼霜】', brand: '可丽金', startTime: 38400, endTime: 40535, keywords: ['- C5HA重组胶原蛋白仿生组合+双重A醇', '可丽金', '护肤'] },
+    { itemCode: 'LIVE003_54', itemIndex: 54, productName: '珀莱雅「红宝石」眼霜2.0', brand: '珀莱雅', startTime: 39120, endTime: 41290, keywords: ['- 专利超分子A醇+', '珀莱雅', '护肤'] },
+    { itemCode: 'LIVE003_55', itemIndex: 55, productName: '资生堂 盼丽风姿智感抚纹眼霜', brand: '资生堂', startTime: 39840, endTime: 42045, keywords: ['- 金刚肽（棕榈酰三肽-1', '棕榈酰四肽-7）', '资生堂', '护肤'] },
+    { itemCode: 'LIVE003_56', itemIndex: 56, productName: '怡丽丝尔 优悦活颜眼唇抚纹紧致精华霜', brand: '怡丽丝尔', startTime: 40560, endTime: 42800, keywords: ['- 纯A醇+纯A醇超导因子（蓖麻籽油', '甘牛至叶提取物等复合物）', '怡丽丝尔', '护肤'] },
+    { itemCode: 'LIVE003_57', itemIndex: 57, productName: '优时颜 第4代「微笑」眼霜', brand: '优时颜', startTime: 41280, endTime: 43555, keywords: ['- PDRN(DNA钠)+3重组合肽+拉帕乔植萃', '优时颜', '护肤'] },
+    { itemCode: 'LIVE003_58', itemIndex: 58, productName: '兰蔻 全新「超修小黑瓶」眼霜', brand: '兰蔻', startTime: 42000, endTime: 44310, keywords: ['- 添加小黑瓶系列同成分（羧甲基 β-葡聚糖钠）', '兰蔻', '护肤'] },
+    { itemCode: 'LIVE003_59', itemIndex: 59, productName: '雅诗兰黛 全新白金「6D黑钻眼霜」', brand: '雅诗兰黛', startTime: 42720, endTime: 45065, keywords: ['- 专研色提因科技+南法黑钻松露', '雅诗兰黛', '护肤'] },
+    { itemCode: 'LIVE003_60', itemIndex: 60, productName: '娇韵诗 双萃焕活眼部精华', brand: '娇韵诗', startTime: 43440, endTime: 45820, keywords: ['- 姜黄根提取物+峨参精萃', '娇韵诗', '护肤'] },
+    { itemCode: 'LIVE003_61', itemIndex: 61, productName: '海蓝之谜「浓修瓶」眼霜', brand: '海蓝之谜', startTime: 44160, endTime: 46575, keywords: ['- 浓缩神奇活性精萃+多肽淡纹矩阵+海洋精萃', '海蓝之谜', '护肤'] },
+    { itemCode: 'LIVE003_62', itemIndex: 62, productName: '「升级版」兰蔻菁纯眼霜', brand: '兰蔻', startTime: 44880, endTime: 47330, keywords: ['- 【T12L】+菁纯玫瑰凝萃+玻色因+牛油果树果脂', '兰蔻', '护肤'] },
+    { itemCode: 'LIVE003_63', itemIndex: 63, productName: '莱珀妮 鱼子精华琼贵紧致眼霜', brand: '莱珀妮', startTime: 45600, endTime: 48085, keywords: ['- 鱼子精纯精华+焕活复合精粹', '莱珀妮', '护肤'] },
+    { itemCode: 'LIVE003_64', itemIndex: 64, productName: '珀莱雅「双抗」眼霜3.0', brand: '珀莱雅', startTime: 46320, endTime: 48840, keywords: ['- 三大微循环焕亮因子+专研NOX-AGE®', '珀莱雅', '护肤'] },
+    { itemCode: 'LIVE003_65', itemIndex: 65, productName: '欧莱雅「紫熨斗」眼霜 熊猫限量款', brand: '欧莱雅', startTime: 47040, endTime: 49595, keywords: ['- 添加「玻色因放大器」+玻色因PRO+咖啡因', '欧莱雅', '护肤'] },
+    { itemCode: 'LIVE003_66', itemIndex: 66, productName: 'DAISY SKY 雏菊的天空 琥珀时光眼部精华油', brand: 'DAISY', startTime: 47760, endTime: 50350, keywords: ['- 灵芝+人参+当归+五味子+枸杞', 'DAISY', '护肤'] },
+    { itemCode: 'LIVE003_67', itemIndex: 67, productName: 'AromeManpo馥郁满铺 晚香玉光感发酵精华眼油', brand: 'AromeManpo馥郁满铺', startTime: 48480, endTime: 51105, keywords: ['- 高比例天然植物油脂+', 'AromeManpo馥郁满铺', '护肤'] },
+    { itemCode: 'LIVE003_68', itemIndex: 68, productName: '瑷科缦「5D」眼霜', brand: '瑷科缦', startTime: 49200, endTime: 51860, keywords: ['- 「超导三重肽」+', '瑷科缦', '护肤'] },
+    { itemCode: 'LIVE003_69', itemIndex: 69, productName: '丸美「小红笔」眼霜3.0', brand: '丸美', startTime: 49920, endTime: 52615, keywords: ['- 胜肽复配溶液+', '丸美', '护肤'] },
+    { itemCode: 'LIVE003_70', itemIndex: 70, productName: '资生堂 悦薇智感视黄醇抗皱霜', brand: '资生堂', startTime: 50640, endTime: 53370, keywords: ['- 纯A醇+植物胶原酮', '资生堂', '护肤'] },
+    { itemCode: 'LIVE003_71', itemIndex: 71, productName: '雅诗兰黛 小棕瓶眼霜', brand: '雅诗兰黛', startTime: 51360, endTime: 54125, keywords: ['- 「自由基智感防御科技」+', '雅诗兰黛', '护肤'] },
+    { itemCode: 'LIVE003_72', itemIndex: 72, productName: 'CPB肌肤之钥「4D」精雕眼霜', brand: 'CPB肌肤之钥', startTime: 52080, endTime: 54880, keywords: ['- 白尾鸢尾花提取物+', 'CPB肌肤之钥', '护肤'] },
+  ],
+  'LIVE004': [
+    { itemCode: 'LIVE004_0', itemIndex: 0, productName: '佰草集 太极肌源修护紧塑精华水（第二代啵啵水）', brand: '佰草集', startTime: 240, endTime: 520, keywords: ['- 赤灵芝+黑乌药', '佰草集', '护肤'] },
+    { itemCode: 'LIVE004_1', itemIndex: 1, productName: '自然堂极地精华露', brand: '自然堂', startTime: 960, endTime: 1275, keywords: ['- 93%极地酵母喜默因®', '自然堂', '护肤'] },
+    { itemCode: 'LIVE004_2', itemIndex: 2, productName: 'AromeManpo馥郁满铺 晚香玉光感发酵精萃水2.0', brand: 'AromeManpo馥郁满铺', startTime: 1680, endTime: 2030, keywords: ['- 高比例发酵精萃复合溶液', 'AromeManpo馥郁满铺', '护肤'] },
+    { itemCode: 'LIVE004_3', itemIndex: 3, productName: '娇韵诗分龄精华水（紧致焕颜弹力精华水）', brand: '娇韵诗', startTime: 2400, endTime: 2785, keywords: ['- 袋鼠花精萃', '娇韵诗', '护肤'] },
+    { itemCode: 'LIVE004_4', itemIndex: 4, productName: '兰蔻 全新菁纯精华水', brand: '兰蔻', startTime: 3120, endTime: 3540, keywords: ['- 菁纯玫瑰凝萃', '兰蔻', '护肤'] },
+    { itemCode: 'LIVE004_5', itemIndex: 5, productName: 'HR赫莲娜「小露珠」饱满水', brand: 'HR赫莲娜', startTime: 3840, endTime: 4295, keywords: ['- 专研露珠微囊科技', 'HR赫莲娜', '护肤'] },
+    { itemCode: 'LIVE004_6', itemIndex: 6, productName: '颐莲 玻尿酸深层补水喷雾', brand: '颐莲', startTime: 4560, endTime: 5050, keywords: ['- 玻尿酸钠保湿配方', '颐莲', '护肤'] },
+    { itemCode: 'LIVE004_7', itemIndex: 7, productName: '雅漾舒泉喷雾', brand: '雅漾舒泉喷雾', startTime: 5280, endTime: 5805, keywords: ['- 雅漾泉水', '雅漾舒泉喷雾', '护肤'] },
+    { itemCode: 'LIVE004_8', itemIndex: 8, productName: '可复美 焕能舒润柔肤水3.0', brand: '可复美', startTime: 6000, endTime: 6560, keywords: ['- 积雪草提取物', '可复美', '护肤'] },
+    { itemCode: 'LIVE004_9', itemIndex: 9, productName: '雅诗兰黛 第二代粉水', brand: '雅诗兰黛', startTime: 6720, endTime: 7315, keywords: ['- 多种氨基酸+睡莲精粹', '雅诗兰黛', '护肤'] },
+    { itemCode: 'LIVE004_10', itemIndex: 10, productName: '兰蔻 全新大粉水', brand: '兰蔻', startTime: 7440, endTime: 8070, keywords: ['- 欧锦葵精粹', '兰蔻', '护肤'] },
+    { itemCode: 'LIVE004_11', itemIndex: 11, productName: '法国娇兰 蜜润精粹液', brand: '法国娇兰', startTime: 8160, endTime: 8825, keywords: ['- 珍贵蜂王浆', '法国娇兰', '护肤'] },
+    { itemCode: 'LIVE004_12', itemIndex: 12, productName: '馥蕾诗 红茶酵母酵萃精华', brand: '馥蕾诗', startTime: 8880, endTime: 9580, keywords: ['- 黄金双酵+专研肌醇', '馥蕾诗', '护肤'] },
+    { itemCode: 'LIVE004_13', itemIndex: 13, productName: '雅诗兰黛 白金精华水', brand: '雅诗兰黛', startTime: 9600, endTime: 10335, keywords: ['- 专研「色提因」科技', '雅诗兰黛', '护肤'] },
+    { itemCode: 'LIVE004_14', itemIndex: 14, productName: '海蓝之谜 修护焕新精萃水', brand: '海蓝之谜', startTime: 10320, endTime: 11090, keywords: ['- 神奇活性精萃', '海蓝之谜', '护肤'] },
+    { itemCode: 'LIVE004_15', itemIndex: 15, productName: 'HBN α-熊果苷焕颜精萃水（发光水2.0）', brand: 'HBN', startTime: 11040, endTime: 11845, keywords: ['- α-熊果苷+麦角硫因', 'HBN', '护肤'] },
+    { itemCode: 'LIVE004_16', itemIndex: 16, productName: 'IPSA茵芙莎 流金岁月凝润美肤水', brand: 'IPSA茵芙莎', startTime: 11760, endTime: 12600, keywords: ['- 独特智慧锁水保湿因子 (AQUA PRESENTER III)', 'IPSA茵芙莎', '护肤'] },
+    { itemCode: 'LIVE004_17', itemIndex: 17, productName: '兰蔻 第二代「极光」水', brand: '兰蔻', startTime: 12480, endTime: 13355, keywords: ['- 四重酸+榉木芽精粹', '兰蔻', '护肤'] },
+    { itemCode: 'LIVE004_18', itemIndex: 18, productName: 'HomeFacialPro 果酸毛孔净透精华水', brand: 'HomeFacialPro', startTime: 13200, endTime: 14110, keywords: ['- 三代果酸复配 + 高比例修护精粹', 'HomeFacialPro', '护肤'] },
+    { itemCode: 'LIVE004_19', itemIndex: 19, productName: '全新科颜氏 金盏花精华水', brand: '科颜氏', startTime: 13920, endTime: 14865, keywords: ['- 金盏花精萃+舒润因子', '科颜氏', '护肤'] },
+    { itemCode: 'LIVE004_20', itemIndex: 20, productName: '悦木之源 灵芝修护水', brand: '悦木之源', startTime: 14640, endTime: 15620, keywords: ['- 灵芝成分 + 发酵白桦茸提取物 + 壳糖胺', '悦木之源', '护肤'] },
+    { itemCode: 'LIVE004_21', itemIndex: 21, productName: '娇韵诗分龄精华水（青春赋活透亮精华水）', brand: '娇韵诗', startTime: 15360, endTime: 16375, keywords: ['- 起绒草精萃 + 绣线菊精萃', '娇韵诗', '护肤'] },
+    { itemCode: 'LIVE004_22', itemIndex: 22, productName: '欧珀莱 时光锁紧致弹润精华水乳（清爽型/滋润型）', brand: '欧珀莱', startTime: 16080, endTime: 17130, keywords: ['- 水：红花酵母精粹 + 可溶性胶原', '欧珀莱', '护肤'] },
+    { itemCode: 'LIVE004_23', itemIndex: 23, productName: '欧莱雅 复颜水乳两件套', brand: '欧莱雅', startTime: 16800, endTime: 17885, keywords: ['- 视黄醇PRO +胜肽+VC衍生物精粹', '欧莱雅', '护肤'] },
+    { itemCode: 'LIVE004_24', itemIndex: 24, productName: 'OLAY第2代 大红瓶水乳/水霜', brand: 'OLAY', startTime: 17520, endTime: 18640, keywords: ['- 水乳：胜肽 + 多种保湿成分', 'OLAY', '护肤'] },
+    { itemCode: 'LIVE004_25', itemIndex: 25, productName: '欧莱雅 小蜜罐水乳套装', brand: '欧莱雅', startTime: 18240, endTime: 19395, keywords: ['- 重组胶原蛋白 + 四大胜肽', '欧莱雅', '护肤'] },
+    { itemCode: 'LIVE004_26', itemIndex: 26, productName: 'SK-II明星抗皱套组（「神仙水」精华露+全新大红瓶面霜）', brand: 'SK-II', startTime: 18960, endTime: 20150, keywords: ['- 神仙水：含超90%PITERA™精华', 'SK-II', '护肤'] },
+    { itemCode: 'LIVE004_27', itemIndex: 27, productName: '海蓝之谜 精萃水乳套', brand: '海蓝之谜', startTime: 19680, endTime: 20905, keywords: ['- 神奇活性精萃+橙光精萃 + 深海充盈精萃 + 海洋抗皱肽', '海蓝之谜', '护肤'] },
+    { itemCode: 'LIVE004_28', itemIndex: 28, productName: '兰蔻菁纯小水面套组/大水面套组（全新菁纯精华水+全新菁纯面霜轻盈版）', brand: '兰蔻', startTime: 20400, endTime: 21660, keywords: ['- 水解亚麻（仅面霜添加）+ 菁纯玫瑰花提取物 + 玻色因', '兰蔻', '护肤'] },
+    { itemCode: 'LIVE004_29', itemIndex: 29, productName: '怡丽丝尔 优悦活颜弹润保湿水乳（清爽型/滋润型）', brand: '怡丽丝尔', startTime: 21120, endTime: 22415, keywords: ['- 胶原焕新精粹 + 东洋草肌醇复合物', '怡丽丝尔', '护肤'] },
+    { itemCode: 'LIVE004_30', itemIndex: 30, productName: '全新第二代资生堂 悦薇智感紧颜亮肤水乳套组（清爽型/滋润型）', brand: '资生堂', startTime: 21840, endTime: 23170, keywords: ['- 专研4MSK + 植物胶原酮（红花提取物+柴胡提取物）', '资生堂', '护肤'] },
+    { itemCode: 'LIVE004_31', itemIndex: 31, productName: '雅诗兰黛胶原水乳（胶原水+新版白胶原乳）', brand: '雅诗兰黛', startTime: 22560, endTime: 23925, keywords: ['- 胶原抗皱紧致复配肽（含乙酰基六肽-8，辣木籽提取物等复合成分）', '雅诗兰黛', '护肤'] },
+    { itemCode: 'LIVE004_32', itemIndex: 32, productName: 'CPB肌肤之钥「钻光」精华水+夜乳修护套装（湿润型/清爽型）', brand: 'CPB肌肤之钥', startTime: 23280, endTime: 24680, keywords: ['- 精华水：酵萃焕肤精粹 + 南法圣母百合精粹', 'CPB肌肤之钥', '护肤'] },
+    { itemCode: 'LIVE004_33', itemIndex: 33, productName: '欧莱雅 注光水乳两件套', brand: '欧莱雅', startTime: 24000, endTime: 25435, keywords: ['- 乳液：烟酰胺 + 依克多因', '欧莱雅', '护肤'] },
+    { itemCode: 'LIVE004_34', itemIndex: 34, productName: '全新第2代OLAY 美白水乳', brand: 'OLAY', startTime: 24720, endTime: 26190, keywords: ['- 烟酰胺 + 革糖素pro + 控羰素（水光小白瓶精华同款成分）', 'OLAY', '护肤'] },
+    { itemCode: 'LIVE004_35', itemIndex: 35, productName: '娇韵诗焕白透亮淡斑乳液+焕白透亮淡斑柔肤水（清爽型）', brand: '娇韵诗', startTime: 25440, endTime: 26945, keywords: ['- 针叶樱桃籽提取物 + 桃金娘精萃', '娇韵诗', '护肤'] },
+    { itemCode: 'LIVE004_36', itemIndex: 36, productName: '兰蔻「极光」水乳（第二代极光水+极光乳）', brand: '兰蔻', startTime: 26160, endTime: 27700, keywords: ['- 水：四重酸+榉木芽精粹', '兰蔻', '护肤'] },
+    { itemCode: 'LIVE004_37', itemIndex: 37, productName: '润百颜 屏障修护精华水乳2.0套组', brand: '润百颜', startTime: 26880, endTime: 28455, keywords: ['- 六肽-9+REVERSKIN', '润百颜', '护肤'] },
+    { itemCode: 'LIVE004_38', itemIndex: 38, productName: '黛珂植萃水乳套组（草本植萃精华水+牛油果植萃乳液）', brand: '黛珂植萃水乳套组（草本植萃精华水+牛油果植萃乳液）', startTime: 27600, endTime: 29210, keywords: ['- 精华水：紫苏叶提取物+欧百里香精萃', '黛珂植萃水乳套组（草本植萃精华水+牛油果植萃乳液）', '护肤'] },
+    { itemCode: 'LIVE004_39', itemIndex: 39, productName: '悦木之源 灵芝修护水乳', brand: '悦木之源', startTime: 28320, endTime: 29965, keywords: ['- 珍贵灵芝提取物+甘草根精粹', '悦木之源', '护肤'] },
+    { itemCode: 'LIVE004_40', itemIndex: 40, productName: '听研建构套组（建构洁面+建构精粹水2.0+建构面霜+嘭嘭眼油+瓷肌面膜）', brand: '听研', startTime: 29040, endTime: 30720, keywords: ['- 精粹水2.0：麒麟竭提取物+白鸢尾根提取物', '听研', '护肤'] },
+    { itemCode: 'LIVE004_41', itemIndex: 41, productName: '欧珀莱臻源凝时水乳面霜3件套（水+乳+面霜，清爽型/滋润型）', brand: '欧珀莱', startTime: 29760, endTime: 31475, keywords: ['- 水乳：三重凝时精粹（迷迭香叶提取物', '肌醇', '欧珀莱', '护肤'] },
+    { itemCode: 'LIVE004_42', itemIndex: 42, productName: '欧莱雅小蜜罐水乳霜3件套（小蜜罐水+乳液+面霜滋润款/轻盈款）', brand: '欧莱雅', startTime: 30480, endTime: 32230, keywords: ['- 水乳：重组胶原蛋白+四大胜肽+麦卢卡花蜜精粹', '欧莱雅', '护肤'] },
+    { itemCode: 'LIVE004_43', itemIndex: 43, productName: '珀莱雅「红宝石」套组（水2.0+乳2.0两件套/水2.0+乳2.0+精华3.0三件套）', brand: '珀莱雅', startTime: 31200, endTime: 32985, keywords: ['- 水乳：五重胜肽+六胜肽-1pro', '珀莱雅', '护肤'] },
+    { itemCode: 'LIVE004_44', itemIndex: 44, productName: '珀莱雅「能量」护肤2.0套组（水2.0+精华+面霜2.0经典版/丰润版）', brand: '珀莱雅', startTime: 31920, endTime: 33740, keywords: ['- 橉能因：「Cellergy Pro」', '珀莱雅', '护肤'] },
+    { itemCode: 'LIVE004_45', itemIndex: 45, productName: '修丽可（抗皱精华或A.G.E.精华+全新升级A.G.E.面霜）', brand: '修丽可', startTime: 32640, endTime: 34495, keywords: ['- 抗皱精华：烟酰胺+PHA葡糖酸内酯+藻类提取物+六胜肽PRO+类蛇毒肽', '修丽可', '护肤'] },
+    { itemCode: 'LIVE004_46', itemIndex: 46, productName: 'AromeManpo馥郁满铺 晚香玉面部护肤套组（洁颜蜜+精萃水2.0+精华乳）', brand: 'AromeManpo馥郁满铺', startTime: 33360, endTime: 35250, keywords: ['- 洁颜蜜：高比例发酵精萃复合溶液+氨基酸表活+APG表活', 'AromeManpo馥郁满铺', '护肤'] },
+    { itemCode: 'LIVE004_47', itemIndex: 47, productName: '优时颜「黑引力」套组（精华2.0+面霜+微晶水+云柔洁面+乳+分区面膜）', brand: '优时颜', startTime: 34080, endTime: 36005, keywords: ['- 黑引力面霜：三角肽PRO+三重蛋白', '优时颜', '护肤'] },
+    { itemCode: 'LIVE004_48', itemIndex: 48, productName: '自然堂小紫瓶CP套组（小紫瓶精华+精华霜/小紫瓶精华+精华乳）', brand: '自然堂', startTime: 34800, endTime: 36760, keywords: ['- 小紫瓶精华+精华霜：极地酵母喜默因®+乙酰基六肽-8', '自然堂', '护肤'] },
+    { itemCode: 'LIVE004_49', itemIndex: 49, productName: '雪花秀 滋盈琉光润颜水乳礼盒', brand: '雪花秀', startTime: 35520, endTime: 37515, keywords: ['- 专研成分雪御梅花精萃（梅花提取物）', '雪花秀', '护肤'] },
+    { itemCode: 'LIVE004_50', itemIndex: 50, productName: '欧莱雅玻色因套装（玻色因水+玻色因乳液+欧莱雅「紫熨斗」）', brand: '欧莱雅', startTime: 36240, endTime: 38270, keywords: ['- 水乳：玻色因PRO', '欧莱雅', '护肤'] },
+    { itemCode: 'LIVE004_51', itemIndex: 51, productName: '后天气丹 光耀焕活紧颜系列7件套', brand: '后天气丹', startTime: 36960, endTime: 39025, keywords: ['- 天气精萃12α', '后天气丹', '护肤'] },
+    { itemCode: 'LIVE004_52', itemIndex: 52, productName: '伊丽莎白雅顿 橘灿「重塑」精华+橘灿「重塑」面霜套组', brand: '伊丽莎白雅顿', startTime: 37680, endTime: 39780, keywords: ['- 专研艾地苯+胜肽', '伊丽莎白雅顿', '护肤'] },
+    { itemCode: 'LIVE004_53', itemIndex: 53, productName: '雅诗兰黛修护两件套（小棕瓶精华+胶原霜乳霜款）', brand: '雅诗兰黛', startTime: 38400, endTime: 40535, keywords: ['- 小棕瓶精华：专研成分「律波肽」', '雅诗兰黛', '护肤'] },
+    { itemCode: 'LIVE004_54', itemIndex: 54, productName: 'The Ginza御银座 粉晶修护紧致套装（粉晶精华+紧致乳）', brand: 'The Ginza御银座', startTime: 39120, endTime: 41290, keywords: ['- 全新感知复合臻粹3.0（滨海当归叶', '银杏叶提取物等）', 'The Ginza御银座', '护肤'] },
+    { itemCode: 'LIVE004_55', itemIndex: 55, productName: '谷雨光感水乳+奶罐（水+乳+霜）', brand: '谷雨光感水乳+奶罐（水+乳+霜）', startTime: 39840, endTime: 42045, keywords: ['- 极光甘草', '谷雨光感水乳+奶罐（水+乳+霜）', '护肤'] },
+    { itemCode: 'LIVE004_56', itemIndex: 56, productName: '珀莱雅「双抗」套组（美白特证版，水+乳两件套/水+精华+乳三件套）', brand: '珀莱雅', startTime: 40560, endTime: 42800, keywords: ['- NOX-AGE', '珀莱雅', '护肤'] },
+    { itemCode: 'LIVE004_57', itemIndex: 57, productName: '百雀羚 新经典系列套组', brand: '百雀羚', startTime: 41280, endTime: 43555, keywords: ['- 青花瓷小蓝罐：亲肤磷脂', '百雀羚', '护肤'] },
+    { itemCode: 'LIVE004_58', itemIndex: 58, productName: '百雀羚 水嫩高保湿套装2.0', brand: '百雀羚', startTime: 42000, endTime: 44310, keywords: ['- 洁面：氨基酸表活', '百雀羚', '护肤'] },
+    { itemCode: 'LIVE004_59', itemIndex: 59, productName: '薇诺娜舒缓特护三件套（特护精华水+第二代特护霜+特护洁面）', brand: '薇诺娜', startTime: 42720, endTime: 45065, keywords: ['- 青刺果PRO MAX', '薇诺娜', '护肤'] },
+    { itemCode: 'LIVE004_60', itemIndex: 60, productName: '珀莱雅「源力」套组（水+乳两件套/水+精华3.0+乳三件套）', brand: '珀莱雅', startTime: 43440, endTime: 45820, keywords: ['- 水乳：专研重组XVII型胶原蛋白+律修素', '珀莱雅', '护肤'] },
+    { itemCode: 'LIVE004_61', itemIndex: 61, productName: '韩束「红蛮腰」繁花礼盒 /「白蛮腰」繁花礼盒', brand: '韩束', startTime: 44160, endTime: 46575, keywords: ['- 【红蛮腰】自研环六肽-9+专研活肤因', '韩束', '护肤'] },
+    { itemCode: 'LIVE004_62', itemIndex: 62, productName: '黛珂AQ舒活凝光/耀白水乳洁面三件套（化妆水+乳液+洁面）', brand: '黛珂AQ舒活凝光/耀白水乳洁面三件套（化妆水+乳液+洁面）', startTime: 44880, endTime: 47330, keywords: ['- 黄兰花提取物+白花油麻藤茎提取物', '黛珂AQ舒活凝光/耀白水乳洁面三件套（化妆水+乳液+洁面）', '护肤'] },
+    { itemCode: 'LIVE004_63', itemIndex: 63, productName: '科兰黎「焕亮」护肤箱', brand: '科兰黎', startTime: 45600, endTime: 48085, keywords: ['- 雪藻系列：专利抗皱成分艾洛素', '科兰黎', '护肤'] },
+  ],
+  'LIVE005': [
+    { itemCode: 'LIVE005_0', itemIndex: 0, productName: '彩棠「大师」妆前乳(01保湿款)', brand: '彩棠', startTime: 240, endTime: 520, keywords: ['彩棠', '护肤'] },
+    { itemCode: 'LIVE005_1', itemIndex: 1, productName: 'MAOGEPING BEAUTY毛戈平养肤焕颜黑霜', brand: 'MAOGEPING', startTime: 960, endTime: 1275, keywords: ['MAOGEPING', '护肤'] },
+    { itemCode: 'LIVE005_2', itemIndex: 2, productName: '彩棠「大师」妆前乳（03控油款）', brand: '彩棠', startTime: 1680, endTime: 2030, keywords: ['彩棠', '护肤'] },
+    { itemCode: 'LIVE005_3', itemIndex: 3, productName: '芭比波朗新妆前柔润底霜 / 爱丽丝限定版橘子霜', brand: '芭比波朗新妆前柔润底霜', startTime: 2400, endTime: 2785, keywords: ['芭比波朗新妆前柔润底霜', '护肤'] },
+    { itemCode: 'LIVE005_4', itemIndex: 4, productName: 'MAOGEPING毛戈平 凝脂柔肌妆前霜 801【皮肤衣】', brand: 'MAOGEPING毛戈平', startTime: 3120, endTime: 3540, keywords: ['MAOGEPING毛戈平', '护肤'] },
+    { itemCode: 'LIVE005_5', itemIndex: 5, productName: '娇兰金钻修颜润采妆前乳', brand: '娇兰', startTime: 3840, endTime: 4295, keywords: ['娇兰', '护肤'] },
+    { itemCode: 'LIVE005_6', itemIndex: 6, productName: 'CPB肌肤之钥 光凝润采妆前霜', brand: 'CPB肌肤之钥', startTime: 4560, endTime: 5050, keywords: ['CPB肌肤之钥', '护肤'] },
+    { itemCode: 'LIVE005_7', itemIndex: 7, productName: '德妃紫苏隔离霜 / 德妃防晒隔离霜绿色 / 德妃防晒隔离霜粉色', brand: '德妃紫苏隔离霜', startTime: 5280, endTime: 5805, keywords: ['德妃紫苏隔离霜', '护肤'] },
+    { itemCode: 'LIVE005_8', itemIndex: 8, productName: 'Za姬芮隔离霜', brand: 'Za姬芮隔离霜', startTime: 6000, endTime: 6560, keywords: ['Za姬芮隔离霜', '护肤'] },
+    { itemCode: 'LIVE005_9', itemIndex: 9, productName: '完美日记 精华水润素颜霜', brand: '完美日记', startTime: 6720, endTime: 7315, keywords: ['完美日记', '护肤'] },
+    { itemCode: 'LIVE005_10', itemIndex: 10, productName: '彩棠 云缎无瑕修颜液', brand: '彩棠', startTime: 7440, endTime: 8070, keywords: ['彩棠', '护肤'] },
+    { itemCode: 'LIVE005_11', itemIndex: 11, productName: 'HOURGLASS 柔焦饰颜遮瑕液', brand: 'HOURGLASS', startTime: 8160, endTime: 8825, keywords: ['HOURGLASS', '护肤'] },
+    { itemCode: 'LIVE005_12', itemIndex: 12, productName: '彩棠 润玉无瑕三色遮瑕膏', brand: '彩棠', startTime: 8880, endTime: 9580, keywords: ['彩棠', '护肤'] },
+    { itemCode: 'LIVE005_13', itemIndex: 13, productName: '郑瑄茉 遮瑕裸肤气垫（水光款）', brand: '郑瑄茉', startTime: 9600, endTime: 10335, keywords: ['郑瑄茉', '护肤'] },
+    { itemCode: 'LIVE005_14', itemIndex: 14, productName: '韩束 「红运」气垫（奶光款）', brand: '韩束', startTime: 10320, endTime: 11090, keywords: ['韩束', '护肤'] },
+    { itemCode: 'LIVE005_15', itemIndex: 15, productName: 'PASSIONAL LOVER 恋火「看不见」 气垫涂鸦限定', brand: 'PASSIONAL', startTime: 11040, endTime: 11845, keywords: ['PASSIONAL', '护肤'] },
+    { itemCode: 'LIVE005_16', itemIndex: 16, productName: 'MISTINE SPA气垫', brand: 'MISTINE', startTime: 11760, endTime: 12600, keywords: ['MISTINE', '护肤'] },
+    { itemCode: 'LIVE005_17', itemIndex: 17, productName: '彩棠 双生气垫', brand: '彩棠', startTime: 12480, endTime: 13355, keywords: ['彩棠', '护肤'] },
+    { itemCode: 'LIVE005_18', itemIndex: 18, productName: 'MAOGEPING BEAUTY 毛戈平 白羽翼气垫', brand: 'MAOGEPING', startTime: 13200, endTime: 14110, keywords: ['MAOGEPING', '护肤'] },
+    { itemCode: 'LIVE005_19', itemIndex: 19, productName: '阿玛尼 全新「黑奢」气垫', brand: '阿玛尼', startTime: 13920, endTime: 14865, keywords: ['阿玛尼', '护肤'] },
+    { itemCode: 'LIVE005_20', itemIndex: 20, productName: 'YSL 粉气垫套组', brand: 'YSL', startTime: 14640, endTime: 15620, keywords: ['YSL', '护肤'] },
+    { itemCode: 'LIVE005_21', itemIndex: 21, productName: '华伦天奴 水光气垫套组', brand: '华伦天奴', startTime: 15360, endTime: 16375, keywords: ['华伦天奴', '护肤'] },
+    { itemCode: 'LIVE005_22', itemIndex: 22, productName: '郑瑄茉 轻薄裸肤气垫（哑光款）', brand: '郑瑄茉', startTime: 16080, endTime: 17130, keywords: ['郑瑄茉', '护肤'] },
+    { itemCode: 'LIVE005_23', itemIndex: 23, productName: '韩束 「红运」气垫（雾光款）', brand: '韩束', startTime: 16800, endTime: 17885, keywords: ['韩束', '护肤'] },
+    { itemCode: 'LIVE005_24', itemIndex: 24, productName: 'PASSIONAL LOVER恋火 「蹭不掉」气垫涂鸦限定', brand: 'PASSIONAL', startTime: 17520, endTime: 18640, keywords: ['PASSIONAL', '护肤'] },
+    { itemCode: 'LIVE005_25', itemIndex: 25, productName: 'MISTINE 桃花粉气垫', brand: 'MISTINE', startTime: 18240, endTime: 19395, keywords: ['MISTINE', '护肤'] },
+    { itemCode: 'LIVE005_26', itemIndex: 26, productName: '完美日记 剔透无瑕持妆气垫粉霜', brand: '完美日记', startTime: 18960, endTime: 20150, keywords: ['完美日记', '护肤'] },
+    { itemCode: 'LIVE005_27', itemIndex: 27, productName: '彩棠 小圆管气垫', brand: '彩棠', startTime: 19680, endTime: 20905, keywords: ['彩棠', '护肤'] },
+    { itemCode: 'LIVE005_28', itemIndex: 28, productName: '欧莱雅「黑胖子」气垫替换芯套组', brand: '欧莱雅', startTime: 20400, endTime: 21660, keywords: ['欧莱雅', '护肤'] },
+    { itemCode: 'LIVE005_29', itemIndex: 29, productName: 'MAOGEPING BEAUTY 毛戈平 黑羽翼气垫', brand: 'MAOGEPING', startTime: 21120, endTime: 22415, keywords: ['MAOGEPING', '护肤'] },
+    { itemCode: 'LIVE005_30', itemIndex: 30, productName: 'NARS 持妆「方气垫」', brand: 'NARS', startTime: 21840, endTime: 23170, keywords: ['NARS', '护肤'] },
+    { itemCode: 'LIVE005_31', itemIndex: 31, productName: 'YSL 全新皮气垫套组', brand: 'YSL', startTime: 22560, endTime: 23925, keywords: ['YSL', '护肤'] },
+    { itemCode: 'LIVE005_32', itemIndex: 32, productName: 'MAC 无瑕气垫', brand: 'MAC', startTime: 23280, endTime: 24680, keywords: ['MAC', '护肤'] },
+    { itemCode: 'LIVE005_33', itemIndex: 33, productName: '欧莱雅 「黑金」气垫套组', brand: '欧莱雅', startTime: 24000, endTime: 25435, keywords: ['欧莱雅', '护肤'] },
+    { itemCode: 'LIVE005_34', itemIndex: 34, productName: 'TOM FORD全新持妆 T气垫 / 禁忌香草限定T气垫', brand: 'TOM', startTime: 24720, endTime: 26190, keywords: ['TOM', '护肤'] },
+    { itemCode: 'LIVE005_35', itemIndex: 35, productName: 'PASSIONAL LOVER 恋火「看不见」粉底液3.0涂鸦限定', brand: 'PASSIONAL', startTime: 25440, endTime: 26945, keywords: ['PASSIONAL', '护肤'] },
+    { itemCode: 'LIVE005_36', itemIndex: 36, productName: 'NARS', brand: 'NARS', startTime: 26160, endTime: 27700, keywords: ['NARS', '护肤'] },
+    { itemCode: 'LIVE005_37', itemIndex: 37, productName: '雅诗兰黛 沁水粉底液', brand: '雅诗兰黛', startTime: 26880, endTime: 28455, keywords: ['雅诗兰黛', '护肤'] },
+    { itemCode: 'LIVE005_38', itemIndex: 38, productName: '法国娇兰金钻修颜粉底液（光泽透亮款）', brand: '法国娇兰', startTime: 27600, endTime: 29210, keywords: ['法国娇兰', '护肤'] },
+    { itemCode: 'LIVE005_39', itemIndex: 39, productName: '兰蔻 全新菁纯粉底液', brand: '兰蔻', startTime: 28320, endTime: 29965, keywords: ['兰蔻', '护肤'] },
+    { itemCode: 'LIVE005_40', itemIndex: 40, productName: 'PASSIONAL LOVER恋火「蹭不掉」粉底液4.0涂鸦限定', brand: 'PASSIONAL', startTime: 29040, endTime: 30720, keywords: ['PASSIONAL', '护肤'] },
+    { itemCode: 'LIVE005_41', itemIndex: 41, productName: '雅诗兰黛DW粉底液', brand: '雅诗兰黛', startTime: 29760, endTime: 31475, keywords: ['雅诗兰黛', '护肤'] },
+    { itemCode: 'LIVE005_42', itemIndex: 42, productName: '植村秀「第二代」持色小方瓶粉底液', brand: '植村秀', startTime: 30480, endTime: 32230, keywords: ['植村秀', '护肤'] },
+    { itemCode: 'LIVE005_43', itemIndex: 43, productName: 'YSL恒久粉底液', brand: 'YSL', startTime: 31200, endTime: 32985, keywords: ['YSL', '护肤'] },
+    { itemCode: 'LIVE005_44', itemIndex: 44, productName: '法国娇兰金钻修颜粉底液（柔雾哑光款）', brand: '法国娇兰', startTime: 31920, endTime: 33740, keywords: ['法国娇兰', '护肤'] },
+    { itemCode: 'LIVE005_45', itemIndex: 45, productName: 'MAC无瑕粉底液2.0', brand: 'MAC无瑕粉底液2.0', startTime: 32640, endTime: 34495, keywords: ['MAC无瑕粉底液2.0', '护肤'] },
+    { itemCode: 'LIVE005_46', itemIndex: 46, productName: '兰蔻第二代持妆粉底液', brand: '兰蔻', startTime: 33360, endTime: 35250, keywords: ['兰蔻', '护肤'] },
+    { itemCode: 'LIVE005_47', itemIndex: 47, productName: '花西子好气色蜜粉组合', brand: '花西子好气色蜜粉组合', startTime: 34080, endTime: 36005, keywords: ['花西子好气色蜜粉组合', '护肤'] },
+    { itemCode: 'LIVE005_48', itemIndex: 48, productName: 'MAC绝绝紫散粉', brand: 'MAC绝绝紫散粉', startTime: 34800, endTime: 36760, keywords: ['MAC绝绝紫散粉', '护肤'] },
+    { itemCode: 'LIVE005_49', itemIndex: 49, productName: '玫珂菲新版轻烟蜜粉', brand: '玫珂菲新版轻烟蜜粉', startTime: 35520, endTime: 37515, keywords: ['玫珂菲新版轻烟蜜粉', '护肤'] },
+    { itemCode: 'LIVE005_50', itemIndex: 50, productName: '黛珂心悦容光幻纱蜜粉', brand: '黛珂心悦容光幻纱蜜粉', startTime: 36240, endTime: 38270, keywords: ['黛珂心悦容光幻纱蜜粉', '护肤'] },
+    { itemCode: 'LIVE005_51', itemIndex: 51, productName: '韩束「红运」无痕锁妆蜜粉饼', brand: '韩束', startTime: 36960, endTime: 39025, keywords: ['韩束', '护肤'] },
+    { itemCode: 'LIVE005_52', itemIndex: 52, productName: '花西子好气色蜜粉饼', brand: '花西子好气色蜜粉饼', startTime: 37680, endTime: 39780, keywords: ['花西子好气色蜜粉饼', '护肤'] },
+    { itemCode: 'LIVE005_53', itemIndex: 53, productName: 'MAOGEPING毛戈平光感柔纱凝颜粉饼', brand: 'MAOGEPING毛戈平', startTime: 38400, endTime: 40535, keywords: ['MAOGEPING毛戈平', '护肤'] },
+    { itemCode: 'LIVE005_54', itemIndex: 54, productName: 'NARS 定妆「大白饼」', brand: 'NARS', startTime: 39120, endTime: 41290, keywords: ['NARS', '护肤'] },
+    { itemCode: 'LIVE005_55', itemIndex: 55, productName: 'CT夏洛特蒂铂丽恒雾蜜粉饼', brand: 'CT夏洛特蒂铂丽恒雾蜜粉饼', startTime: 39840, endTime: 42045, keywords: ['CT夏洛特蒂铂丽恒雾蜜粉饼', '护肤'] },
+    { itemCode: 'LIVE005_56', itemIndex: 56, productName: '玫珂菲「仿真肌」丝绒粉饼', brand: '玫珂菲', startTime: 40560, endTime: 42800, keywords: ['玫珂菲', '护肤'] },
+    { itemCode: 'LIVE005_57', itemIndex: 57, productName: '诺薇雅精纯蜜粉饼', brand: '诺薇雅精纯蜜粉饼', startTime: 41280, endTime: 43555, keywords: ['诺薇雅精纯蜜粉饼', '护肤'] },
+    { itemCode: 'LIVE005_58', itemIndex: 58, productName: '柏瑞美后台保湿定妆喷雾', brand: '柏瑞美后台保湿定妆喷雾', startTime: 42000, endTime: 44310, keywords: ['柏瑞美后台保湿定妆喷雾', '护肤'] },
+    { itemCode: 'LIVE005_59', itemIndex: 59, productName: 'URBAN DECAY长效定妆喷雾', brand: 'URBAN', startTime: 42720, endTime: 45065, keywords: ['URBAN', '护肤'] },
+    { itemCode: 'LIVE005_60', itemIndex: 60, productName: '玫珂菲定妆喷雾', brand: '玫珂菲定妆喷雾', startTime: 43440, endTime: 45820, keywords: ['玫珂菲定妆喷雾', '护肤'] },
+    { itemCode: 'LIVE005_61', itemIndex: 61, productName: '3CE 九宫格眼影', brand: '3CE', startTime: 44160, endTime: 46575, keywords: ['3CE', '护肤'] },
+    { itemCode: 'LIVE005_62', itemIndex: 62, productName: '花知晓甜心小熊/贝壳/天鹅系列', brand: '花知晓甜心小熊/贝壳/天鹅系列', startTime: 44880, endTime: 47330, keywords: ['花知晓甜心小熊/贝壳/天鹅系列', '护肤'] },
+    { itemCode: 'LIVE005_63', itemIndex: 63, productName: '3CE 单色腮红', brand: '3CE', startTime: 45600, endTime: 48085, keywords: ['3CE', '护肤'] },
+    { itemCode: 'LIVE005_64', itemIndex: 64, productName: '彩棠争青流玉三色腮红盘', brand: '彩棠争青流玉三色腮红盘', startTime: 46320, endTime: 48840, keywords: ['彩棠争青流玉三色腮红盘', '护肤'] },
+    { itemCode: 'LIVE005_65', itemIndex: 65, productName: '彩棠浮光掠影修容盘【4.0】', brand: '彩棠浮光掠影修容盘【4.0】', startTime: 47040, endTime: 49595, keywords: ['彩棠浮光掠影修容盘【4.0】', '护肤'] },
+    { itemCode: 'LIVE005_66', itemIndex: 66, productName: '植村秀经典「砍刀」眉笔', brand: '植村秀经典', startTime: 47760, endTime: 50350, keywords: ['植村秀经典', '护肤'] },
+    { itemCode: 'LIVE005_67', itemIndex: 67, productName: '美宝莲冲天翘睫毛膏/睫毛「撑」得膏/极细防晕眼线液', brand: '美宝莲冲天翘睫毛膏/睫毛', startTime: 48480, endTime: 51105, keywords: ['美宝莲冲天翘睫毛膏/睫毛', '护肤'] },
+    { itemCode: 'LIVE005_68', itemIndex: 68, productName: '彩棠修容+遮瑕套组', brand: '彩棠修容+遮瑕套组', startTime: 49200, endTime: 51860, keywords: ['彩棠修容+遮瑕套组', '护肤'] },
+    { itemCode: 'LIVE005_69', itemIndex: 69, productName: '皮可熊润唇蜜/贴贴唇泥/多用腮红膏/综合眼影盘', brand: '皮可熊润唇蜜/贴贴唇泥/多用腮红膏/综合眼影盘', startTime: 49920, endTime: 52615, keywords: ['皮可熊润唇蜜/贴贴唇泥/多用腮红膏/综合眼影盘', '护肤'] },
+    { itemCode: 'LIVE005_70', itemIndex: 70, productName: '花知晓甜心小熊系列', brand: '花知晓甜心小熊系列', startTime: 50640, endTime: 53370, keywords: ['花知晓甜心小熊系列', '护肤'] },
+    { itemCode: 'LIVE005_71', itemIndex: 71, productName: '彩棠全明星彩妆套组', brand: '彩棠全明星彩妆套组', startTime: 51360, endTime: 54125, keywords: ['彩棠全明星彩妆套组', '护肤'] },
+    { itemCode: 'LIVE005_72', itemIndex: 72, productName: '3CE水雾唇露/釉光唇膏/腮红膏', brand: '3CE水雾唇露/釉光唇膏/腮红膏', startTime: 52080, endTime: 54880, keywords: ['3CE水雾唇露/釉光唇膏/腮红膏', '护肤'] },
+    { itemCode: 'LIVE005_73', itemIndex: 73, productName: '3CE 丝绒唇釉 升级版', brand: '3CE', startTime: 52800, endTime: 55635, keywords: ['3CE', '护肤'] },
+    { itemCode: 'LIVE005_74', itemIndex: 74, productName: 'MAC节日限定唇部套组三支装', brand: 'MAC节日限定唇部套组三支装', startTime: 53520, endTime: 56390, keywords: ['MAC节日限定唇部套组三支装', '护肤'] },
+    { itemCode: 'LIVE005_75', itemIndex: 75, productName: '纪梵希高定唇膏组合', brand: '纪梵希高定唇膏组合', startTime: 54240, endTime: 57145, keywords: ['纪梵希高定唇膏组合', '护肤'] },
+    { itemCode: 'LIVE005_76', itemIndex: 76, productName: '娇兰臻彩宝石唇膏', brand: '娇兰', startTime: 54960, endTime: 57900, keywords: ['娇兰', '护肤'] },
+    { itemCode: 'LIVE005_77', itemIndex: 77, productName: '娇韵诗植萃盈润护唇油', brand: '娇韵诗', startTime: 55680, endTime: 58655, keywords: ['娇韵诗', '护肤'] },
+    { itemCode: 'LIVE005_78', itemIndex: 78, productName: '完美日记第三代仿生膜精华口红', brand: '完美日记', startTime: 56400, endTime: 59410, keywords: ['完美日记', '护肤'] },
+    { itemCode: 'LIVE005_79', itemIndex: 79, productName: 'MISTINE 奶咖唇釉/腮红液/面综盘组合', brand: 'MISTINE', startTime: 57120, endTime: 60165, keywords: ['MISTINE', '护肤'] },
+    { itemCode: 'LIVE005_80', itemIndex: 80, productName: '尔木葡便利店系列粉扑套盒', brand: '尔木葡便利店系列粉扑套盒', startTime: 57840, endTime: 60920, keywords: ['尔木葡便利店系列粉扑套盒', '护肤'] },
+    { itemCode: 'LIVE005_81', itemIndex: 81, productName: '毛吉吉文具系列/动物系列粉扑', brand: '毛吉吉文具系列/动物系列粉扑', startTime: 58560, endTime: 61675, keywords: ['毛吉吉文具系列/动物系列粉扑', '护肤'] },
+  ],
+  'LIVE006': [
+    { itemCode: 'LIVE006_0', itemIndex: 0, productName: 'bixdo 倍至 蓝光智能电动牙刷 / 蓝光智能电动牙刷+M30冲牙器', brand: 'bixdo', startTime: 240, endTime: 520, keywords: ['bixdo', '护肤'] },
+    { itemCode: 'LIVE006_1', itemIndex: 1, productName: '花至「肌提」美容仪 / 补给美容装', brand: '花至', startTime: 960, endTime: 1275, keywords: ['花至', '护肤'] },
+    { itemCode: 'LIVE006_2', itemIndex: 2, productName: '极萌大熨斗pro美容仪', brand: '极萌大熨斗pro美容仪', startTime: 1680, endTime: 2030, keywords: ['极萌大熨斗pro美容仪', '护肤'] },
+    { itemCode: 'LIVE006_3', itemIndex: 3, productName: 'AMIRO觅光胶原炮 第二代·大师版', brand: 'AMIRO觅光胶原炮', startTime: 2400, endTime: 2785, keywords: ['AMIRO觅光胶原炮', '护肤'] },
+    { itemCode: 'LIVE006_4', itemIndex: 4, productName: '雅萌LIFT美容仪', brand: '雅萌LIFT美容仪', startTime: 3120, endTime: 3540, keywords: ['雅萌LIFT美容仪', '护肤'] },
+    { itemCode: 'LIVE006_5', itemIndex: 5, productName: 'SEAYEO大排灯 MAX / Pro / 经典S / 经典版', brand: 'SEAYEO大排灯', startTime: 3840, endTime: 4295, keywords: ['SEAYEO大排灯', '护肤'] },
+    { itemCode: 'LIVE006_6', itemIndex: 6, productName: '雅萌SPA Pro美容仪', brand: '雅萌SPA', startTime: 4560, endTime: 5050, keywords: ['雅萌SPA', '护肤'] },
+    { itemCode: 'LIVE006_7', itemIndex: 7, productName: '理肤泉「大哥大」400防晒 经典版/控油版', brand: '理肤泉', startTime: 5280, endTime: 5805, keywords: ['理肤泉', '护肤'] },
+    { itemCode: 'LIVE006_8', itemIndex: 8, productName: 'MISTINE「小黄帽」防晒霜组合 /「小黄帽」防晒「摇摇乐」防晒组合', brand: 'MISTINE', startTime: 6000, endTime: 6560, keywords: ['MISTINE', '护肤'] },
+    { itemCode: 'LIVE006_9', itemIndex: 9, productName: '黛珂多重防晒乳（耐水型）', brand: '黛珂多重防晒乳（耐水型）', startTime: 6720, endTime: 7315, keywords: ['黛珂多重防晒乳（耐水型）', '护肤'] },
+    { itemCode: 'LIVE006_10', itemIndex: 10, productName: '安热沙智感倍护防晒乳液60ml（新小金瓶）', brand: '安热沙智感倍护防晒乳液60ml（新小金瓶）', startTime: 7440, endTime: 8070, keywords: ['安热沙智感倍护防晒乳液60ml（新小金瓶）', '护肤'] },
+    { itemCode: 'LIVE006_11', itemIndex: 11, productName: '珀莱雅「超膜」防晒（银管防晒）', brand: '珀莱雅', startTime: 8160, endTime: 8825, keywords: ['珀莱雅', '护肤'] },
+    { itemCode: 'LIVE006_12', itemIndex: 12, productName: '花西子第二代「小黛伞」防晒霜', brand: '花西子第二代', startTime: 8880, endTime: 9580, keywords: ['花西子第二代', '护肤'] },
+    { itemCode: 'LIVE006_13', itemIndex: 13, productName: '黛珂多重防晒乳（舒润型）', brand: '黛珂多重防晒乳（舒润型）', startTime: 9600, endTime: 10335, keywords: ['黛珂多重防晒乳（舒润型）', '护肤'] },
+    { itemCode: 'LIVE006_14', itemIndex: 14, productName: '娇韵诗轻透防晒乳（润粉色）', brand: '娇韵诗', startTime: 10320, endTime: 11090, keywords: ['娇韵诗', '护肤'] },
+    { itemCode: 'LIVE006_15', itemIndex: 15, productName: '兰蔻「小白管」防晒乳', brand: '兰蔻', startTime: 11040, endTime: 11845, keywords: ['兰蔻', '护肤'] },
+    { itemCode: 'LIVE006_16', itemIndex: 16, productName: '黛珂多重防晒乳（轻润型）', brand: '黛珂多重防晒乳（轻润型）', startTime: 11760, endTime: 12600, keywords: ['黛珂多重防晒乳（轻润型）', '护肤'] },
+    { itemCode: 'LIVE006_17', itemIndex: 17, productName: '薇诺娜清透防晒乳', brand: '薇诺娜', startTime: 12480, endTime: 13355, keywords: ['薇诺娜', '护肤'] },
+    { itemCode: 'LIVE006_18', itemIndex: 18, productName: '欧莱雅金致防晒', brand: '欧莱雅', startTime: 13200, endTime: 14110, keywords: ['欧莱雅', '护肤'] },
+    { itemCode: 'LIVE006_19', itemIndex: 19, productName: '欧莱雅「小金管」防晒 / 欧莱雅「小银管」防晒', brand: '欧莱雅', startTime: 13920, endTime: 14865, keywords: ['欧莱雅', '护肤'] },
+    { itemCode: 'LIVE006_20', itemIndex: 20, productName: '修丽可防晒「小银伞」', brand: '修丽可', startTime: 14640, endTime: 15620, keywords: ['修丽可', '护肤'] },
+    { itemCode: 'LIVE006_21', itemIndex: 21, productName: 'MISTINE 防晒次抛组合（多组合可选）', brand: 'MISTINE', startTime: 15360, endTime: 16375, keywords: ['MISTINE', '护肤'] },
+    { itemCode: 'LIVE006_22', itemIndex: 22, productName: '柳丝木黑茶水感洁颜油', brand: '柳丝木黑茶水感洁颜油', startTime: 16080, endTime: 17130, keywords: ['柳丝木黑茶水感洁颜油', '护肤'] },
+    { itemCode: 'LIVE006_23', itemIndex: 23, productName: '逐本云檀卸妆油', brand: '逐本云檀卸妆油', startTime: 16800, endTime: 17885, keywords: ['逐本云檀卸妆油', '护肤'] },
+    { itemCode: 'LIVE006_24', itemIndex: 24, productName: '艾天然净颜亮肤卸妆油（多香型可选）', brand: '艾天然净颜亮肤卸妆油（多香型可选）', startTime: 17520, endTime: 18640, keywords: ['艾天然净颜亮肤卸妆油（多香型可选）', '护肤'] },
+    { itemCode: 'LIVE006_25', itemIndex: 25, productName: 'MAC卸妆油', brand: 'MAC卸妆油', startTime: 18240, endTime: 19395, keywords: ['MAC卸妆油', '护肤'] },
+    { itemCode: 'LIVE006_26', itemIndex: 26, productName: 'EVE LOM 伊芙珑 净透臻养洁颜油', brand: 'EVE', startTime: 18960, endTime: 20150, keywords: ['EVE', '护肤'] },
+    { itemCode: 'LIVE006_27', itemIndex: 27, productName: '芭比波朗清透舒盈洁肤油/爱丽丝限定版', brand: '芭比波朗清透舒盈洁肤油/爱丽丝限定版', startTime: 19680, endTime: 20905, keywords: ['芭比波朗清透舒盈洁肤油/爱丽丝限定版', '护肤'] },
+    { itemCode: 'LIVE006_28', itemIndex: 28, productName: '植村秀新臻萃洁颜油', brand: '植村秀新臻萃洁颜油', startTime: 20400, endTime: 21660, keywords: ['植村秀新臻萃洁颜油', '护肤'] },
+    { itemCode: 'LIVE006_29', itemIndex: 29, productName: '逐本云檀卸妆膏', brand: '逐本云檀卸妆膏', startTime: 21120, endTime: 22415, keywords: ['逐本云檀卸妆膏', '护肤'] },
+    { itemCode: 'LIVE006_30', itemIndex: 30, productName: '柳丝木黑茶植萃小棕罐/净彻小黑罐', brand: '柳丝木黑茶植萃小棕罐/净彻小黑罐', startTime: 21840, endTime: 23170, keywords: ['柳丝木黑茶植萃小棕罐/净彻小黑罐', '护肤'] },
+    { itemCode: 'LIVE006_31', itemIndex: 31, productName: '且初第四代卸妆膏（太阳红梨款/无花果款/土豆泥款）', brand: '且初第四代卸妆膏（太阳红梨款/无花果款/土豆泥款）', startTime: 22560, endTime: 23925, keywords: ['且初第四代卸妆膏（太阳红梨款/无花果款/土豆泥款）', '护肤'] },
+    { itemCode: 'LIVE006_32', itemIndex: 32, productName: '倩碧「黑化紫胖子」卸妆膏', brand: '倩碧', startTime: 23280, endTime: 24680, keywords: ['倩碧', '护肤'] },
+    { itemCode: 'LIVE006_33', itemIndex: 33, productName: '倩碧「紫胖子」卸妆膏', brand: '倩碧', startTime: 24000, endTime: 25435, keywords: ['倩碧', '护肤'] },
+    { itemCode: 'LIVE006_34', itemIndex: 34, productName: 'Farmacy法沫溪 经典清洁卸妆膏', brand: 'Farmacy法沫溪', startTime: 24720, endTime: 26190, keywords: ['Farmacy法沫溪', '护肤'] },
+    { itemCode: 'LIVE006_35', itemIndex: 35, productName: 'EVE LOM 伊芙珑 经典洁颜霜', brand: 'EVE', startTime: 25440, endTime: 26945, keywords: ['EVE', '护肤'] },
+    { itemCode: 'LIVE006_36', itemIndex: 36, productName: 'Maybelline 美宝莲眼唇卸', brand: 'Maybelline', startTime: 26160, endTime: 27700, keywords: ['Maybelline', '护肤'] },
+    { itemCode: 'LIVE006_37', itemIndex: 37, productName: '优时颜009至简洁面（多组合可选）', brand: '优时颜', startTime: 26880, endTime: 28455, keywords: ['优时颜', '护肤'] },
+    { itemCode: 'LIVE006_38', itemIndex: 38, productName: 'CPB肌肤之钥 净采洁面膏（湿润型）', brand: 'CPB肌肤之钥', startTime: 27600, endTime: 29210, keywords: ['CPB肌肤之钥', '护肤'] },
+    { itemCode: 'LIVE006_39', itemIndex: 39, productName: '优时颜010至简白泥洁面乳（多组合可选）', brand: '优时颜', startTime: 28320, endTime: 29965, keywords: ['优时颜', '护肤'] },
+    { itemCode: 'LIVE006_40', itemIndex: 40, productName: 'Curl珂润 控油洁颜泡沫', brand: 'Curl珂润', startTime: 29040, endTime: 30720, keywords: ['Curl珂润', '护肤'] },
+    { itemCode: 'LIVE006_41', itemIndex: 41, productName: '适乐肤 水杨酸洁面', brand: '适乐肤', startTime: 29760, endTime: 31475, keywords: ['适乐肤', '护肤'] },
+    { itemCode: 'LIVE006_42', itemIndex: 42, productName: '雅诗兰黛 红石榴洁面', brand: '雅诗兰黛', startTime: 30480, endTime: 32230, keywords: ['雅诗兰黛', '护肤'] },
+    { itemCode: 'LIVE006_43', itemIndex: 43, productName: 'CPB肌肤之钥 净采洁面膏（清爽型）', brand: 'CPB肌肤之钥', startTime: 31200, endTime: 32985, keywords: ['CPB肌肤之钥', '护肤'] },
+    { itemCode: 'LIVE006_44', itemIndex: 44, productName: '薇诺娜 特护洁面', brand: '薇诺娜', startTime: 31920, endTime: 33740, keywords: ['薇诺娜', '护肤'] },
+    { itemCode: 'LIVE006_45', itemIndex: 45, productName: '丝塔芙 小云朵洁面', brand: '丝塔芙', startTime: 32640, endTime: 34495, keywords: ['丝塔芙', '护肤'] },
+    { itemCode: 'LIVE006_46', itemIndex: 46, productName: 'Curl珂润 润浸保湿洁颜泡沫', brand: 'Curl珂润', startTime: 33360, endTime: 35250, keywords: ['Curl珂润', '护肤'] },
+    { itemCode: 'LIVE006_47', itemIndex: 47, productName: '且初洁面乳（「无花果」/「土豆泥」/「小青瓜」）', brand: '且初洁面乳（', startTime: 34080, endTime: 36005, keywords: ['且初洁面乳（', '护肤'] },
+    { itemCode: 'LIVE006_48', itemIndex: 48, productName: 'HBN 臻透安颜 云感洁面乳', brand: 'HBN', startTime: 34800, endTime: 36760, keywords: ['HBN', '护肤'] },
+    { itemCode: 'LIVE006_49', itemIndex: 49, productName: '芙丽芳丝净润洗面霜 / 芙丽芳丝净澈控油洗面霜 + 净润洗面霜', brand: '芙丽芳丝净润洗面霜', startTime: 35520, endTime: 37515, keywords: ['芙丽芳丝净润洗面霜', '护肤'] },
+    { itemCode: 'LIVE006_50', itemIndex: 50, productName: '适乐肤舒缓净颜 泡沫洁面啫喱', brand: '适乐肤', startTime: 36240, endTime: 38270, keywords: ['适乐肤', '护肤'] },
+    { itemCode: 'LIVE006_51', itemIndex: 51, productName: '优时颜「黑引力」云柔洁面乳', brand: '优时颜', startTime: 36960, endTime: 39025, keywords: ['优时颜', '护肤'] },
+    { itemCode: 'LIVE006_52', itemIndex: 52, productName: 'EltaMD 泡沫洁面乳', brand: 'EltaMD', startTime: 37680, endTime: 39780, keywords: ['EltaMD', '护肤'] },
+    { itemCode: 'LIVE006_53', itemIndex: 53, productName: 'POLA洁面膏', brand: 'POLA洁面膏', startTime: 38400, endTime: 40535, keywords: ['POLA洁面膏', '护肤'] },
+    { itemCode: 'LIVE006_54', itemIndex: 54, productName: 'The Ginza 御银座柔澈洁面乳', brand: 'The', startTime: 39120, endTime: 41290, keywords: ['The', '护肤'] },
+  ],
+  'LIVE007': [
+    { itemCode: 'LIVE007_0', itemIndex: 0, productName: '修丽可 色修精华', brand: '修丽可', startTime: 240, endTime: 520, keywords: ['修丽可', '护肤'] },
+    { itemCode: 'LIVE007_1', itemIndex: 1, productName: '海蓝之谜「浓缩瓶」精华', brand: '海蓝之谜', startTime: 960, endTime: 1275, keywords: ['海蓝之谜', '护肤'] },
+    { itemCode: 'LIVE007_2', itemIndex: 2, productName: '理肤泉新B5 多效修护精华', brand: '理肤泉', startTime: 1680, endTime: 2030, keywords: ['理肤泉', '护肤'] },
+    { itemCode: 'LIVE007_3', itemIndex: 3, productName: '珀莱雅「源力」精华3.0 / 珀莱雅「源力」CP组合', brand: '珀莱雅', startTime: 2400, endTime: 2785, keywords: ['珀莱雅', '护肤'] },
+    { itemCode: 'LIVE007_4', itemIndex: 4, productName: '兰蔻「超修小黑瓶」精华', brand: '兰蔻', startTime: 3120, endTime: 3540, keywords: ['兰蔻', '护肤'] },
+    { itemCode: 'LIVE007_5', itemIndex: 5, productName: 'HR赫莲娜「绿宝瓶」精华露', brand: 'HR赫莲娜', startTime: 3840, endTime: 4295, keywords: ['HR赫莲娜', '护肤'] },
+    { itemCode: 'LIVE007_6', itemIndex: 6, productName: '达尔肤杏仁酸 精准净痘精华乳', brand: '达尔肤', startTime: 4560, endTime: 5050, keywords: ['达尔肤', '护肤'] },
+    { itemCode: 'LIVE007_7', itemIndex: 7, productName: '达尔肤杏仁酸 精华液组合', brand: '达尔肤', startTime: 5280, endTime: 5805, keywords: ['达尔肤', '护肤'] },
+    { itemCode: 'LIVE007_8', itemIndex: 8, productName: '欧玛 橄榄精华', brand: '欧玛', startTime: 6000, endTime: 6560, keywords: ['欧玛', '护肤'] },
+    { itemCode: 'LIVE007_9', itemIndex: 9, productName: 'TAKAMI 角质护理精华液', brand: 'TAKAMI', startTime: 6720, endTime: 7315, keywords: ['TAKAMI', '护肤'] },
+    { itemCode: 'LIVE007_10', itemIndex: 10, productName: '科颜氏 嫩肤溜溜瓶精华', brand: '科颜氏', startTime: 7440, endTime: 8070, keywords: ['科颜氏', '护肤'] },
+    { itemCode: 'LIVE007_11', itemIndex: 11, productName: 'YSL 夜皇后精华', brand: 'YSL', startTime: 8160, endTime: 8825, keywords: ['YSL', '护肤'] },
+    { itemCode: 'LIVE007_12', itemIndex: 12, productName: '妮维雅 630淡斑精华', brand: '妮维雅', startTime: 8880, endTime: 9580, keywords: ['妮维雅', '护肤'] },
+    { itemCode: 'LIVE007_13', itemIndex: 13, productName: '传皙诺 美白焕颜精华', brand: '传皙诺', startTime: 9600, endTime: 10335, keywords: ['传皙诺', '护肤'] },
+    { itemCode: 'LIVE007_14', itemIndex: 14, productName: 'OLAY 第四代淡斑「小白瓶」精华液 / 淡斑「小白瓶」+冷凝胶次抛组合', brand: 'OLAY', startTime: 10320, endTime: 11090, keywords: ['OLAY', '护肤'] },
+    { itemCode: 'LIVE007_15', itemIndex: 15, productName: '倩碧新302「光子镭射瓶」', brand: '倩碧', startTime: 11040, endTime: 11845, keywords: ['倩碧', '护肤'] },
+    { itemCode: 'LIVE007_16', itemIndex: 16, productName: '修丽可淡斑发光瓶精华液', brand: '修丽可', startTime: 11760, endTime: 12600, keywords: ['修丽可', '护肤'] },
+    { itemCode: 'LIVE007_17', itemIndex: 17, productName: '科颜氏「安白瓶」淡斑精华', brand: '科颜氏', startTime: 12480, endTime: 13355, keywords: ['科颜氏', '护肤'] },
+    { itemCode: 'LIVE007_18', itemIndex: 18, productName: '相宜本草红景天 焕白精华液', brand: '相宜本草', startTime: 13200, endTime: 14110, keywords: ['相宜本草', '护肤'] },
+    { itemCode: 'LIVE007_19', itemIndex: 19, productName: 'DAISY SKY雏菊的天空 光耀焕白精华油', brand: 'DAISY SKY雏菊的天空', startTime: 13920, endTime: 14865, keywords: ['DAISY SKY雏菊的天空', '护肤'] },
+    { itemCode: 'LIVE007_20', itemIndex: 20, productName: '达尔肤光透焕亮精华油', brand: '达尔肤', startTime: 14640, endTime: 15620, keywords: ['达尔肤', '护肤'] },
+    { itemCode: 'LIVE007_21', itemIndex: 21, productName: 'OLAY水光小白瓶精华', brand: 'OLAY', startTime: 15360, endTime: 16375, keywords: ['OLAY', '护肤'] },
+    { itemCode: 'LIVE007_22', itemIndex: 22, productName: '馥郁满铺晚香玉光感发酵精华油 / 双萃精华油', brand: '馥郁满铺晚香玉光感发酵精华油', startTime: 16080, endTime: 17130, keywords: ['馥郁满铺晚香玉光感发酵精华油', '护肤'] },
+    { itemCode: 'LIVE007_23', itemIndex: 23, productName: '妮维雅630双能精华', brand: '妮维雅', startTime: 16800, endTime: 17885, keywords: ['妮维雅', '护肤'] },
+    { itemCode: 'LIVE007_24', itemIndex: 24, productName: '珀莱雅「双抗」精华（美白特证版）', brand: '珀莱雅', startTime: 17520, endTime: 18640, keywords: ['珀莱雅', '护肤'] },
+    { itemCode: 'LIVE007_25', itemIndex: 25, productName: '欧莱雅 超水光精华', brand: '欧莱雅', startTime: 18240, endTime: 19395, keywords: ['欧莱雅', '护肤'] },
+    { itemCode: 'LIVE007_26', itemIndex: 26, productName: '欧莱雅 第四代黑精华', brand: '欧莱雅', startTime: 18960, endTime: 20150, keywords: ['欧莱雅', '护肤'] },
+    { itemCode: 'LIVE007_27', itemIndex: 27, productName: '韩束 「X肽」赋活丰盈光透精华液', brand: '韩束', startTime: 19680, endTime: 20905, keywords: ['韩束', '护肤'] },
+    { itemCode: 'LIVE007_28', itemIndex: 28, productName: '佰草集 修源五行淡纹精华油（仙草油）', brand: '佰草集', startTime: 20400, endTime: 21660, keywords: ['佰草集', '护肤'] },
+    { itemCode: 'LIVE007_29', itemIndex: 29, productName: '珀莱雅 「红宝石」精华3.0', brand: '珀莱雅', startTime: 21120, endTime: 22415, keywords: ['珀莱雅', '护肤'] },
+    { itemCode: 'LIVE007_30', itemIndex: 30, productName: '自然堂 小紫瓶精华液第六代', brand: '自然堂', startTime: 21840, endTime: 23170, keywords: ['自然堂', '护肤'] },
+    { itemCode: 'LIVE007_31', itemIndex: 31, productName: '珀莱雅 「早C晚A」精华组合（「双抗」精华（美白特证版）30ml + 「红宝石」精华3.0）', brand: '珀莱雅', startTime: 22560, endTime: 23925, keywords: ['珀莱雅', '护肤'] },
+    { itemCode: 'LIVE007_32', itemIndex: 32, productName: '双妹玉容松露臻萃精华油（联名款）/ 双妹玉容松露臻萃油露精华蜜', brand: '双妹', startTime: 23280, endTime: 24680, keywords: ['双妹', '护肤'] },
+    { itemCode: 'LIVE007_33', itemIndex: 33, productName: '伊丽莎白雅顿 橘灿「重塑」精华', brand: '伊丽莎白雅顿', startTime: 24000, endTime: 25435, keywords: ['伊丽莎白雅顿', '护肤'] },
+    { itemCode: 'LIVE007_34', itemIndex: 34, productName: '资生堂 新红妍肌活精华露「4.0版」', brand: '资生堂', startTime: 24720, endTime: 26190, keywords: ['资生堂', '护肤'] },
+    { itemCode: 'LIVE007_35', itemIndex: 35, productName: 'DARPHIN（朵梵） 双生精华', brand: 'DARPHIN（朵梵）', startTime: 25440, endTime: 26945, keywords: ['DARPHIN（朵梵）', '护肤'] },
+    { itemCode: 'LIVE007_36', itemIndex: 36, productName: 'Murad（慕拉得） 超升A醇', brand: 'Murad（慕拉得）', startTime: 26160, endTime: 27700, keywords: ['Murad（慕拉得）', '护肤'] },
+    { itemCode: 'LIVE007_37', itemIndex: 37, productName: '修丽可 A.G.E.精华', brand: '修丽可', startTime: 26880, endTime: 28455, keywords: ['修丽可', '护肤'] },
+    { itemCode: 'LIVE007_38', itemIndex: 38, productName: 'Murad（慕拉得） 早C晚A组合', brand: 'Murad（慕拉得）', startTime: 27600, endTime: 29210, keywords: ['Murad（慕拉得）', '护肤'] },
+    { itemCode: 'LIVE007_39', itemIndex: 39, productName: '雅诗兰黛 小棕瓶精华', brand: '雅诗兰黛', startTime: 28320, endTime: 29965, keywords: ['雅诗兰黛', '护肤'] },
+    { itemCode: 'LIVE007_40', itemIndex: 40, productName: '娇韵诗 油皮双萃精华', brand: '娇韵诗', startTime: 29040, endTime: 30720, keywords: ['娇韵诗', '护肤'] },
+    { itemCode: 'LIVE007_41', itemIndex: 41, productName: '娇韵诗 双萃焕活修护精华', brand: '娇韵诗', startTime: 29760, endTime: 31475, keywords: ['娇韵诗', '护肤'] },
+    { itemCode: 'LIVE007_42', itemIndex: 42, productName: '修丽可 抗皱精华', brand: '修丽可', startTime: 30480, endTime: 32230, keywords: ['修丽可', '护肤'] },
+    { itemCode: 'LIVE007_43', itemIndex: 43, productName: '百雀羚 灵玉精华油', brand: '百雀羚', startTime: 31200, endTime: 32985, keywords: ['百雀羚', '护肤'] },
+    { itemCode: 'LIVE007_44', itemIndex: 44, productName: '珀莱雅 全新「红宝石」微珠精华', brand: '珀莱雅', startTime: 31920, endTime: 33740, keywords: ['珀莱雅', '护肤'] },
+    { itemCode: 'LIVE007_45', itemIndex: 45, productName: 'OLAY 紧颜淡纹精华露', brand: 'OLAY', startTime: 32640, endTime: 34495, keywords: ['OLAY', '护肤'] },
+    { itemCode: 'LIVE007_46', itemIndex: 46, productName: '羽西 「鎏金瓶精华」', brand: '羽西', startTime: 33360, endTime: 35250, keywords: ['羽西', '护肤'] },
+    { itemCode: 'LIVE007_47', itemIndex: 47, productName: '天露芬 抗皱精华油', brand: '天露芬', startTime: 34080, endTime: 36005, keywords: ['天露芬', '护肤'] },
+    { itemCode: 'LIVE007_48', itemIndex: 48, productName: '修丽可 「紫米」精华（全新升级版）', brand: '修丽可', startTime: 34800, endTime: 36760, keywords: ['修丽可', '护肤'] },
+    { itemCode: 'LIVE007_49', itemIndex: 49, productName: '娇兰 双效焕新修护紧塑精华露', brand: '娇兰', startTime: 35520, endTime: 37515, keywords: ['娇兰', '护肤'] },
+    { itemCode: 'LIVE007_50', itemIndex: 50, productName: '法国娇兰 第四代复原蜜精华', brand: '法国娇兰', startTime: 36240, endTime: 38270, keywords: ['法国娇兰', '护肤'] },
+    { itemCode: 'LIVE007_51', itemIndex: 51, productName: 'The Ginza（御银座） 粉晶按摩精华露', brand: 'The', startTime: 36960, endTime: 39025, keywords: ['The', '护肤'] },
+    { itemCode: 'LIVE007_52', itemIndex: 52, productName: '莱珀妮 鱼子精华琼贵新升紧颜液', brand: '莱珀妮', startTime: 37680, endTime: 39780, keywords: ['莱珀妮', '护肤'] },
+    { itemCode: 'LIVE007_53', itemIndex: 53, productName: '绽媄娅 控油祛痘次抛精华液', brand: '绽媄娅', startTime: 38400, endTime: 40535, keywords: ['绽媄娅', '护肤'] },
+    { itemCode: 'LIVE007_54', itemIndex: 54, productName: '同频 多重胶原澄净次抛精华', brand: '同频', startTime: 39120, endTime: 41290, keywords: ['同频', '护肤'] },
+    { itemCode: 'LIVE007_55', itemIndex: 55, productName: '可复美 稀有人参皂苷净痘次抛精华液', brand: '可复美', startTime: 39840, endTime: 42045, keywords: ['可复美', '护肤'] },
+    { itemCode: 'LIVE007_56', itemIndex: 56, productName: '敷尔佳 透明质酸钠次抛修护液', brand: '敷尔佳', startTime: 40560, endTime: 42800, keywords: ['敷尔佳', '护肤'] },
+    { itemCode: 'LIVE007_57', itemIndex: 57, productName: '润百颜 INFIHA 全能次抛修护精华液', brand: '润百颜', startTime: 41280, endTime: 43555, keywords: ['润百颜', '护肤'] },
+    { itemCode: 'LIVE007_58', itemIndex: 58, productName: '可复美 透明质酸钠藻萃盈润保湿次抛精华液（吨吨次抛）', brand: '可复美', startTime: 42000, endTime: 44310, keywords: ['可复美', '护肤'] },
+    { itemCode: 'LIVE007_59', itemIndex: 59, productName: '润百颜 屏障修护次抛精华液 3.0', brand: '润百颜', startTime: 42720, endTime: 45065, keywords: ['润百颜', '护肤'] },
+    { itemCode: 'LIVE007_60', itemIndex: 60, productName: '同频 多重胶原修护次抛精华', brand: '同频', startTime: 43440, endTime: 45820, keywords: ['同频', '护肤'] },
+    { itemCode: 'LIVE007_61', itemIndex: 61, productName: '伊丽莎白雅顿 经典「金胶」/「轻感金胶」精华', brand: '伊丽莎白雅顿', startTime: 44160, endTime: 46575, keywords: ['伊丽莎白雅顿', '护肤'] },
+    { itemCode: 'LIVE007_62', itemIndex: 62, productName: '可复美 重组胶原蛋白修护次抛精华', brand: '可复美', startTime: 44880, endTime: 47330, keywords: ['可复美', '护肤'] },
+    { itemCode: 'LIVE007_63', itemIndex: 63, productName: '欧诗漫胶原紧弹修护精华液（胶原小金管）', brand: '欧诗漫', startTime: 45600, endTime: 48085, keywords: ['欧诗漫', '护肤'] },
+    { itemCode: 'LIVE007_64', itemIndex: 64, productName: '可丽金「嘭嘭」紧致次抛精华', brand: '可丽金', startTime: 46320, endTime: 48840, keywords: ['可丽金', '护肤'] },
+    { itemCode: 'LIVE007_65', itemIndex: 65, productName: '听研「黄油」次抛', brand: '听研', startTime: 47040, endTime: 49595, keywords: ['听研', '护肤'] },
+    { itemCode: 'LIVE007_66', itemIndex: 66, productName: '绽媄娅 PDRN「能量棒」', brand: '绽媄娅', startTime: 47760, endTime: 50350, keywords: ['绽媄娅', '护肤'] },
+    { itemCode: 'LIVE007_67', itemIndex: 67, productName: '夸迪淡纹蓝铜胜肽次抛精华液', brand: '夸迪', startTime: 48480, endTime: 51105, keywords: ['夸迪', '护肤'] },
+    { itemCode: 'LIVE007_68', itemIndex: 68, productName: '夸迪CT50稳肌轻龄基油次抛精华液2.0', brand: '夸迪', startTime: 49200, endTime: 51860, keywords: ['夸迪', '护肤'] },
+    { itemCode: 'LIVE007_69', itemIndex: 69, productName: '听研胶原紧弹次抛', brand: '听研', startTime: 49920, endTime: 52615, keywords: ['听研', '护肤'] },
+    { itemCode: 'LIVE007_70', itemIndex: 70, productName: '科兰黎2号VA精华', brand: '科兰黎', startTime: 50640, endTime: 53370, keywords: ['科兰黎', '护肤'] },
+    { itemCode: 'LIVE007_71', itemIndex: 71, productName: '阿芙极光美白淡斑精华油（紫丸子）', brand: '阿芙极光美白淡斑精华油（紫丸子）', startTime: 51360, endTime: 54125, keywords: ['阿芙极光美白淡斑精华油（紫丸子）', '护肤'] },
+    { itemCode: 'LIVE007_72', itemIndex: 72, productName: '薇诺娜光透皙白淡斑精华液【昵称：修白瓶】', brand: '薇诺娜', startTime: 52080, endTime: 54880, keywords: ['薇诺娜', '护肤'] },
+    { itemCode: 'LIVE007_73', itemIndex: 73, productName: '科兰黎VC精华', brand: '科兰黎', startTime: 52800, endTime: 55635, keywords: ['科兰黎', '护肤'] },
+    { itemCode: 'LIVE007_74', itemIndex: 74, productName: '颐莲 保湿深润面膜 (1.95元/片)', brand: '颐莲', startTime: 53520, endTime: 56390, keywords: ['颐莲', '护肤'] },
+    { itemCode: 'LIVE007_75', itemIndex: 75, productName: '自然堂喜马拉雅植物补水面膜组', brand: '自然堂', startTime: 54240, endTime: 57145, keywords: ['自然堂', '护肤'] },
+    { itemCode: 'LIVE007_76', itemIndex: 76, productName: '蒂佳婷 补水蓝丸面膜2.0', brand: '蒂佳婷', startTime: 54960, endTime: 57900, keywords: ['蒂佳婷', '护肤'] },
+    { itemCode: 'LIVE007_77', itemIndex: 77, productName: 'FAN BEAUTY DIARY 海葡萄凝水保湿面膜 （11.42元/片）', brand: 'FAN BEAUTY DIARY', startTime: 55680, endTime: 58655, keywords: ['FAN BEAUTY DIARY', '护肤'] },
+    { itemCode: 'LIVE007_78', itemIndex: 78, productName: '敷尔佳酵能水盈理敷膜（补水绿胖子）（64.5元/盒）', brand: '敷尔佳', startTime: 56400, endTime: 59410, keywords: ['敷尔佳', '护肤'] },
+    { itemCode: 'LIVE007_79', itemIndex: 79, productName: '达肤妍 臻研舒缓修护面膜（4.39元/片）', brand: '达肤妍', startTime: 57120, endTime: 60165, keywords: ['达肤妍', '护肤'] },
+    { itemCode: 'LIVE007_80', itemIndex: 80, productName: '敷尔佳B5舒缓修护贴 / 敷尔佳积雪草舒缓修护贴（B5舒缓修复贴：9.05元/片）（积雪草舒缓修复贴：11.71元/片）', brand: '敷尔佳', startTime: 57840, endTime: 60920, keywords: ['敷尔佳', '护肤'] },
+    { itemCode: 'LIVE007_81', itemIndex: 81, productName: '瑷尔博士益生精研平衡修护面膜2.0（3.72元/片）', brand: '瑷尔博士', startTime: 58560, endTime: 61675, keywords: ['瑷尔博士', '护肤'] },
+    { itemCode: 'LIVE007_82', itemIndex: 82, productName: 'FAN BEAUTY DIARY 麒麟竭菌菇丝 发酵修护面膜（11.24元/片）', brand: 'FAN BEAUTY DIARY', startTime: 59280, endTime: 62430, keywords: ['FAN BEAUTY DIARY', '护肤'] },
+    { itemCode: 'LIVE007_83', itemIndex: 83, productName: '蒂佳婷 舒缓绿丸面膜2.0', brand: '蒂佳婷', startTime: 60000, endTime: 63185, keywords: ['蒂佳婷', '护肤'] },
+    { itemCode: 'LIVE007_84', itemIndex: 84, productName: '薇诺娜舒缓保湿特护冻干面膜组合·冻干面膜+溶媒液（12.46元/片）', brand: '薇诺娜', startTime: 60720, endTime: 63940, keywords: ['薇诺娜', '护肤'] },
+    { itemCode: 'LIVE007_85', itemIndex: 85, productName: '珀莱雅「源力」面膜2.0（7.38元/片）', brand: '珀莱雅', startTime: 61440, endTime: 64695, keywords: ['珀莱雅', '护肤'] },
+    { itemCode: 'LIVE007_86', itemIndex: 86, productName: '自然堂极地补水修护等渗面膜（3.52元/片）', brand: '自然堂', startTime: 62160, endTime: 65450, keywords: ['自然堂', '护肤'] },
+    { itemCode: 'LIVE007_87', itemIndex: 87, productName: '可复美 重组胶原蛋白修护贴（19.72元/片）', brand: '可复美', startTime: 62880, endTime: 66205, keywords: ['可复美', '护肤'] },
+    { itemCode: 'LIVE007_88', itemIndex: 88, productName: '同频 多重胶原修护面膜（9.97元/片）', brand: '同频', startTime: 63600, endTime: 66960, keywords: ['同频', '护肤'] },
+    { itemCode: 'LIVE007_89', itemIndex: 89, productName: '理肤泉 B5面膜PRO（7.86元/片）', brand: '理肤泉', startTime: 64320, endTime: 67715, keywords: ['理肤泉', '护肤'] },
+    { itemCode: 'LIVE007_90', itemIndex: 90, productName: '欧莱雅 第四代安瓶面膜（7.67元/片）', brand: '欧莱雅', startTime: 65040, endTime: 68470, keywords: ['欧莱雅', '护肤'] },
+    { itemCode: 'LIVE007_91', itemIndex: 91, productName: '敷尔佳酵能醒肤湿敷膜（熬夜黄胖子）（64.5元/盒）', brand: '敷尔佳', startTime: 65760, endTime: 69225, keywords: ['敷尔佳', '护肤'] },
+    { itemCode: 'LIVE007_92', itemIndex: 92, productName: 'FAN BEAUTY DIARY 瓷透光感淡斑美白双舱面膜（14.2元/片）', brand: 'FAN BEAUTY DIARY', startTime: 66480, endTime: 69980, keywords: ['FAN BEAUTY DIARY', '护肤'] },
+    { itemCode: 'LIVE007_93', itemIndex: 93, productName: '兰凤凰姜萃光感精萃油面膜（9.04元/片）', brand: '兰凤凰姜萃光感精萃油面膜（9.04元/片）', startTime: 67200, endTime: 70735, keywords: ['兰凤凰姜萃光感精萃油面膜（9.04元/片）', '护肤'] },
+    { itemCode: 'LIVE007_94', itemIndex: 94, productName: '珀莱雅「双抗」面膜（美白特证版）（7.38元/片）', brand: '珀莱雅', startTime: 67920, endTime: 71490, keywords: ['珀莱雅', '护肤'] },
+    { itemCode: 'LIVE007_95', itemIndex: 95, productName: '敷尔佳酵能紧致湿敷膜（弹力紫胖子）（64.5元/盒）', brand: '敷尔佳', startTime: 68640, endTime: 72245, keywords: ['敷尔佳', '护肤'] },
+    { itemCode: 'LIVE007_96', itemIndex: 96, productName: '百雀羚 玉龄琮光鲜萃油敷面膜（7.56元/片）', brand: '百雀羚', startTime: 69360, endTime: 73000, keywords: ['百雀羚', '护肤'] },
+    { itemCode: 'LIVE007_97', itemIndex: 97, productName: '自然堂 紧致淡纹油敷面膜（7.12元/片）', brand: '自然堂', startTime: 70080, endTime: 73755, keywords: ['自然堂', '护肤'] },
+    { itemCode: 'LIVE007_98', itemIndex: 98, productName: '可丽金 重组胶原蛋白蕴活光塑紧致驻颜面膜（4.65元/颗）', brand: '可丽金', startTime: 70800, endTime: 74510, keywords: ['可丽金', '护肤'] },
+    { itemCode: 'LIVE007_99', itemIndex: 99, productName: '兰时光 兰花凝驻精萃油面膜（9.04元/片）', brand: '兰时光', startTime: 71520, endTime: 75265, keywords: ['兰时光', '护肤'] },
+    { itemCode: 'LIVE007_100', itemIndex: 100, productName: '馥蕾诗 红茶紧致睡眠面膜', brand: '馥蕾诗', startTime: 72240, endTime: 76020, keywords: ['馥蕾诗', '护肤'] },
+    { itemCode: 'LIVE007_101', itemIndex: 101, productName: '自然堂III型重组胶原蛋白修护冻干面膜（3.96元/片）', brand: '自然堂', startTime: 72960, endTime: 76775, keywords: ['自然堂', '护肤'] },
+    { itemCode: 'LIVE007_102', itemIndex: 102, productName: '瑷科缦PDRN三文鱼面膜（12.73元/片）', brand: '瑷科缦', startTime: 73680, endTime: 77530, keywords: ['瑷科缦', '护肤'] },
+    { itemCode: 'LIVE007_103', itemIndex: 103, productName: 'codemint纨素之肤 冰美式面膜钻标版（7.4元/片）', brand: 'codemint纨素之肤', startTime: 74400, endTime: 78285, keywords: ['codemint纨素之肤', '护肤'] },
+    { itemCode: 'LIVE007_104', itemIndex: 104, productName: '欧莱雅第四代黑精华面膜（7.67元/片）', brand: '欧莱雅', startTime: 75120, endTime: 79040, keywords: ['欧莱雅', '护肤'] },
+    { itemCode: 'LIVE007_105', itemIndex: 105, productName: '馥蕾诗红茶凝时焕颜面膜', brand: '馥蕾诗', startTime: 75840, endTime: 79795, keywords: ['馥蕾诗', '护肤'] },
+    { itemCode: 'LIVE007_106', itemIndex: 106, productName: 'MAOGEPING BEAUTY 毛戈平 鱼子面膜', brand: 'MAOGEPING', startTime: 76560, endTime: 80550, keywords: ['MAOGEPING', '护肤'] },
+    { itemCode: 'LIVE007_107', itemIndex: 107, productName: '听研 「红毯」面膜（17.45元/片）', brand: '听研', startTime: 77280, endTime: 81305, keywords: ['听研', '护肤'] },
+    { itemCode: 'LIVE007_108', itemIndex: 108, productName: 'FAN BEAUTY DIARY 面膜套组', brand: 'FAN BEAUTY DIARY', startTime: 78000, endTime: 82060, keywords: ['FAN BEAUTY DIARY', '护肤'] },
+    { itemCode: 'LIVE007_109', itemIndex: 109, productName: '理肤泉 水光乳敷面膜（10.55元/片）', brand: '理肤泉', startTime: 78720, endTime: 82815, keywords: ['理肤泉', '护肤'] },
+    { itemCode: 'LIVE007_110', itemIndex: 110, productName: '全新OLAY水光小白瓶面膜+ 细腻涂抹面膜 / 全新OLAY水光小白瓶面膜 （7.84元/片）', brand: 'OLAY', startTime: 79440, endTime: 83570, keywords: ['OLAY', '护肤'] },
+    { itemCode: 'LIVE007_111', itemIndex: 111, productName: 'cellcosmet瑞妍 焕颜臻萃面膜', brand: 'cellcosmet瑞妍', startTime: 80160, endTime: 84325, keywords: ['cellcosmet瑞妍', '护肤'] },
+    { itemCode: 'LIVE007_112', itemIndex: 112, productName: '敷尔佳祛痘净颜湿敷膜（祛痘蓝胖子）（64.5元/盒）', brand: '敷尔佳', startTime: 80880, endTime: 85080, keywords: ['敷尔佳', '护肤'] },
+    { itemCode: 'LIVE007_113', itemIndex: 113, productName: '全新科颜氏 亚马逊白泥面膜', brand: '科颜氏', startTime: 81600, endTime: 85835, keywords: ['科颜氏', '护肤'] },
+    { itemCode: 'LIVE007_114', itemIndex: 114, productName: '同频胶原修护保湿随行棒', brand: '同频', startTime: 82320, endTime: 86590, keywords: ['同频', '护肤'] },
+    { itemCode: 'LIVE007_115', itemIndex: 115, productName: '百雀羚瓷肌恒韧蛋白修护霜', brand: '百雀羚', startTime: 83040, endTime: 87345, keywords: ['百雀羚', '护肤'] },
+    { itemCode: 'LIVE007_116', itemIndex: 116, productName: '理肤泉B5水光乳', brand: '理肤泉', startTime: 83760, endTime: 88100, keywords: ['理肤泉', '护肤'] },
+    { itemCode: 'LIVE007_117', itemIndex: 117, productName: 'my CLARINS 小娇韵诗O椰水光霜', brand: '娇韵诗', startTime: 84480, endTime: 88855, keywords: ['娇韵诗', '护肤'] },
+    { itemCode: 'LIVE007_118', itemIndex: 118, productName: '可复美重组胶原蛋白光奕律时修护精华霜', brand: '可复美', startTime: 85200, endTime: 89610, keywords: ['可复美', '护肤'] },
+    { itemCode: 'LIVE007_119', itemIndex: 119, productName: '倩碧黄油', brand: '倩碧', startTime: 85920, endTime: 90365, keywords: ['倩碧', '护肤'] },
+    { itemCode: 'LIVE007_120', itemIndex: 120, productName: '馥蕾诗古源密集滋养面霜 / 古源修护套组', brand: '馥蕾诗', startTime: 86640, endTime: 91120, keywords: ['馥蕾诗', '护肤'] },
+    { itemCode: 'LIVE007_121', itemIndex: 121, productName: '希思黎全能乳液（升级版）', brand: '希思黎', startTime: 87360, endTime: 91875, keywords: ['希思黎', '护肤'] },
+    { itemCode: 'LIVE007_122', itemIndex: 122, productName: '修丽可「242」面霜', brand: '修丽可', startTime: 88080, endTime: 92630, keywords: ['修丽可', '护肤'] },
+    { itemCode: 'LIVE007_123', itemIndex: 123, productName: 'my CLARINS小娇韵诗0椰「吸油霜」', brand: '娇韵诗', startTime: 88800, endTime: 93385, keywords: ['娇韵诗', '护肤'] },
+    { itemCode: 'LIVE007_124', itemIndex: 124, productName: '科颜氏高保湿面霜 (清爽版)', brand: '科颜氏', startTime: 89520, endTime: 94140, keywords: ['科颜氏', '护肤'] },
+    { itemCode: 'LIVE007_125', itemIndex: 125, productName: '理肤泉新B5修护霜', brand: '理肤泉', startTime: 90240, endTime: 94895, keywords: ['理肤泉', '护肤'] },
+    { itemCode: 'LIVE007_126', itemIndex: 126, productName: '丝塔芙「四维」面霜', brand: '丝塔芙', startTime: 90960, endTime: 95650, keywords: ['丝塔芙', '护肤'] },
+    { itemCode: 'LIVE007_127', itemIndex: 127, productName: '科颜氏高保湿修护霜', brand: '科颜氏', startTime: 91680, endTime: 96405, keywords: ['科颜氏', '护肤'] },
+    { itemCode: 'LIVE007_128', itemIndex: 128, productName: '相宜本草青刺果油舒润修护霜', brand: '相宜本草', startTime: 92400, endTime: 97160, keywords: ['相宜本草', '护肤'] },
+    { itemCode: 'LIVE007_129', itemIndex: 129, productName: '凡士林特润修护精华霜 (有香/无香)', brand: '凡士林', startTime: 93120, endTime: 97915, keywords: ['凡士林', '护肤'] },
+    { itemCode: 'LIVE007_130', itemIndex: 130, productName: '欧珀莱恒久肌活修护面霜', brand: '欧珀莱', startTime: 93840, endTime: 98670, keywords: ['欧珀莱', '护肤'] },
+    { itemCode: 'LIVE007_131', itemIndex: 131, productName: '理肤泉新赋活修护面霜', brand: '理肤泉', startTime: 94560, endTime: 99425, keywords: ['理肤泉', '护肤'] },
+    { itemCode: 'LIVE007_132', itemIndex: 132, productName: '娇韵诗焕颜紧塑弹力面霜', brand: '娇韵诗', startTime: 95280, endTime: 100180, keywords: ['娇韵诗', '护肤'] },
+    { itemCode: 'LIVE007_133', itemIndex: 133, productName: '瑷科缦绿安缦5GA超修面霜', brand: '瑷科缦', startTime: 96000, endTime: 100935, keywords: ['瑷科缦', '护肤'] },
+    { itemCode: 'LIVE007_134', itemIndex: 134, productName: 'Murad慕拉得A醇晚霜', brand: 'Murad慕拉得', startTime: 96720, endTime: 101690, keywords: ['Murad慕拉得', '护肤'] },
+    { itemCode: 'LIVE007_135', itemIndex: 135, productName: '伊丽莎白雅顿橘灿「重塑」面霜', brand: '伊丽莎白雅顿', startTime: 97440, endTime: 102445, keywords: ['伊丽莎白雅顿', '护肤'] },
+    { itemCode: 'LIVE007_136', itemIndex: 136, productName: '伊丽莎白雅顿时空焕活淡纹紧致「粉胶面霜」', brand: '伊丽莎白雅顿', startTime: 98160, endTime: 103200, keywords: ['伊丽莎白雅顿', '护肤'] },
+    { itemCode: 'LIVE007_137', itemIndex: 137, productName: '希思黎黑玫瑰焕采精华霜', brand: '希思黎', startTime: 98880, endTime: 103955, keywords: ['希思黎', '护肤'] },
+    { itemCode: 'LIVE007_138', itemIndex: 138, productName: '珀莱雅「源力」面霜2.0 【盈润版/轻盈版】', brand: '珀莱雅', startTime: 99600, endTime: 104710, keywords: ['珀莱雅', '护肤'] },
+    { itemCode: 'LIVE007_139', itemIndex: 139, productName: '韩束「X肽」赋活丰盈紧塑轻润霜/轻盈霜', brand: '韩束', startTime: 100320, endTime: 105465, keywords: ['韩束', '护肤'] },
+    { itemCode: 'LIVE007_140', itemIndex: 140, productName: 'OLAY全新第5代超红瓶轻润霜/滋润霜', brand: 'OLAY', startTime: 101040, endTime: 106220, keywords: ['OLAY', '护肤'] },
+    { itemCode: 'LIVE007_141', itemIndex: 141, productName: '欧莱雅第四代胶原小蜜罐面霜滋润版/轻盈版', brand: '欧莱雅', startTime: 101760, endTime: 106975, keywords: ['欧莱雅', '护肤'] },
+    { itemCode: 'LIVE007_142', itemIndex: 142, productName: '珀莱雅「红宝石」面霜3.0 (轻盈版/轻润版/滋润版)', brand: '珀莱雅', startTime: 102480, endTime: 107730, keywords: ['珀莱雅', '护肤'] },
+    { itemCode: 'LIVE007_143', itemIndex: 143, productName: '资生堂盼丽风姿面霜 (清爽型/滋润型)', brand: '资生堂', startTime: 103200, endTime: 108485, keywords: ['资生堂', '护肤'] },
+    { itemCode: 'LIVE007_144', itemIndex: 144, productName: '兰蔻塑颜「精雕」面霜', brand: '兰蔻', startTime: 103920, endTime: 109240, keywords: ['兰蔻', '护肤'] },
+    { itemCode: 'LIVE007_145', itemIndex: 145, productName: '雅诗兰黛胶原霜/白胶原霜/夜胶原霜', brand: '雅诗兰黛', startTime: 104640, endTime: 109995, keywords: ['雅诗兰黛', '护肤'] },
+    { itemCode: 'LIVE007_146', itemIndex: 146, productName: '科兰黎雪藻面霜 轻盈版/滋润版', brand: '科兰黎', startTime: 105360, endTime: 110750, keywords: ['科兰黎', '护肤'] },
+    { itemCode: 'LIVE007_147', itemIndex: 147, productName: '全新升级修丽可A.G.E.面霜', brand: '修丽可', startTime: 106080, endTime: 111505, keywords: ['修丽可', '护肤'] },
+    { itemCode: 'LIVE007_148', itemIndex: 148, productName: '海蓝之谜奇迹面霜/云绒霜/冷凝霜', brand: '海蓝之谜', startTime: 106800, endTime: 112260, keywords: ['海蓝之谜', '护肤'] },
+    { itemCode: 'LIVE007_149', itemIndex: 149, productName: 'HR赫莲娜全新「黑绷带」50面霜', brand: 'HR赫莲娜', startTime: 107520, endTime: 113015, keywords: ['HR赫莲娜', '护肤'] },
+    { itemCode: 'LIVE007_150', itemIndex: 150, productName: 'HR赫莲娜新一代「白绷带」面霜', brand: 'HR赫莲娜', startTime: 108240, endTime: 113770, keywords: ['HR赫莲娜', '护肤'] },
+    { itemCode: 'LIVE007_151', itemIndex: 151, productName: 'OLAY超红瓶油霜', brand: 'OLAY', startTime: 108960, endTime: 114525, keywords: ['OLAY', '护肤'] },
+    { itemCode: 'LIVE007_152', itemIndex: 152, productName: '羽西新升级鎏金面霜3.0', brand: '羽西', startTime: 109680, endTime: 115280, keywords: ['羽西', '护肤'] },
+    { itemCode: 'LIVE007_153', itemIndex: 153, productName: '瑷科缦白月光面霜 (美白特证)', brand: '瑷科缦', startTime: 110400, endTime: 116035, keywords: ['瑷科缦', '护肤'] },
+    { itemCode: 'LIVE007_154', itemIndex: 154, productName: '资生堂悦薇智感紧弹亮乳霜 (美白特证)', brand: '资生堂', startTime: 111120, endTime: 116790, keywords: ['资生堂', '护肤'] },
+    { itemCode: 'LIVE007_155', itemIndex: 155, productName: '法国娇兰蜜护日晚霜', brand: '法国娇兰', startTime: 111840, endTime: 117545, keywords: ['法国娇兰', '护肤'] },
+    { itemCode: 'LIVE007_156', itemIndex: 156, productName: '娇兰全新兰花御龄面霜', brand: '娇兰', startTime: 112560, endTime: 118300, keywords: ['娇兰', '护肤'] },
+    { itemCode: 'LIVE007_157', itemIndex: 157, productName: '优时颜微笑面霜', brand: '优时颜', startTime: 113280, endTime: 119055, keywords: ['优时颜', '护肤'] },
+    { itemCode: 'LIVE007_158', itemIndex: 158, productName: '百雀羚灵玉面霜 (轻盈型/滋润型)', brand: '百雀羚', startTime: 114000, endTime: 119810, keywords: ['百雀羚', '护肤'] },
+    { itemCode: 'LIVE007_159', itemIndex: 159, productName: '海蓝之谜奇迹日夜霜套组 (奇迹晚霜+云绒霜)', brand: '海蓝之谜', startTime: 114720, endTime: 120565, keywords: ['海蓝之谜', '护肤'] },
+    { itemCode: 'LIVE007_160', itemIndex: 160, productName: '兰蔻全新菁纯面霜 (轻盈)/兰蔻全新菁纯奢护霜', brand: '兰蔻', startTime: 115440, endTime: 121320, keywords: ['兰蔻', '护肤'] },
+    { itemCode: 'LIVE007_161', itemIndex: 161, productName: '雅诗兰黛白金黑钻面霜 (美白特证)', brand: '雅诗兰黛', startTime: 116160, endTime: 122075, keywords: ['雅诗兰黛', '护肤'] },
+    { itemCode: 'LIVE007_162', itemIndex: 162, productName: '赫莲娜「黑绷带」50面霜 + 新一代「白绷带」面霜', brand: '赫莲娜', startTime: 116880, endTime: 122830, keywords: ['赫莲娜', '护肤'] },
+    { itemCode: 'LIVE007_163', itemIndex: 163, productName: '欧莱雅 小蜜罐眼凝霜', brand: '欧莱雅', startTime: 117600, endTime: 123585, keywords: ['欧莱雅', '护肤'] },
+    { itemCode: 'LIVE007_164', itemIndex: 164, productName: '雅诗兰黛小棕瓶眼霜（2瓶装）', brand: '雅诗兰黛', startTime: 118320, endTime: 124340, keywords: ['雅诗兰黛', '护肤'] },
+    { itemCode: 'LIVE007_165', itemIndex: 165, productName: '珀莱雅「双抗」眼乳 5.0', brand: '珀莱雅', startTime: 119040, endTime: 125095, keywords: ['珀莱雅', '护肤'] },
+    { itemCode: 'LIVE007_166', itemIndex: 166, productName: '东边野兽灵芝岩茶眼部精华液（滚珠版）', brand: '东边野兽灵芝岩茶眼部精华液（滚珠版）', startTime: 119760, endTime: 125850, keywords: ['东边野兽灵芝岩茶眼部精华液（滚珠版）', '护肤'] },
+    { itemCode: 'LIVE007_167', itemIndex: 167, productName: '林清轩山茶花抚纹眼部精华油', brand: '林清轩山茶花抚纹眼部精华油', startTime: 120480, endTime: 126605, keywords: ['林清轩山茶花抚纹眼部精华油', '护肤'] },
+    { itemCode: 'LIVE007_168', itemIndex: 168, productName: '珀莱雅「红宝石」眼霜 2.0', brand: '珀莱雅', startTime: 121200, endTime: 127360, keywords: ['珀莱雅', '护肤'] },
+    { itemCode: 'LIVE007_169', itemIndex: 169, productName: '瑷科缦「5D」眼霜', brand: '瑷科缦', startTime: 121920, endTime: 128115, keywords: ['瑷科缦', '护肤'] },
+    { itemCode: 'LIVE007_170', itemIndex: 170, productName: 'AromeMampo 馥郁满铺晚香玉光感发酵精华眼油（2瓶装）', brand: 'AromeMampo', startTime: 122640, endTime: 128870, keywords: ['AromeMampo', '护肤'] },
+    { itemCode: 'LIVE007_171', itemIndex: 171, productName: '资生堂盼丽风姿智感抚纹眼霜', brand: '资生堂', startTime: 123360, endTime: 129625, keywords: ['资生堂', '护肤'] },
+    { itemCode: 'LIVE007_172', itemIndex: 172, productName: '怡丽丝尔 悦活颜视黄醇抚纹修护精华霜', brand: '怡丽丝尔', startTime: 124080, endTime: 130380, keywords: ['怡丽丝尔', '护肤'] },
+    { itemCode: 'LIVE007_173', itemIndex: 173, productName: '优时颜第4代「微笑」眼霜（2瓶装）', brand: '优时颜', startTime: 124800, endTime: 131135, keywords: ['优时颜', '护肤'] },
+    { itemCode: 'LIVE007_174', itemIndex: 174, productName: '丸美「S款小红笔」眼霜（2瓶装）', brand: '丸美', startTime: 125520, endTime: 131890, keywords: ['丸美', '护肤'] },
+    { itemCode: 'LIVE007_175', itemIndex: 175, productName: '资生堂悦薇智感视黄醇抗皱霜', brand: '资生堂', startTime: 126240, endTime: 132645, keywords: ['资生堂', '护肤'] },
+    { itemCode: 'LIVE007_176', itemIndex: 176, productName: '兰蔻新款超修小黑瓶眼霜 （2瓶装）', brand: '兰蔻', startTime: 126960, endTime: 133400, keywords: ['兰蔻', '护肤'] },
+    { itemCode: 'LIVE007_177', itemIndex: 177, productName: '娇韵诗双萃焕活眼部精华（2支装）', brand: '娇韵诗', startTime: 127680, endTime: 134155, keywords: ['娇韵诗', '护肤'] },
+    { itemCode: 'LIVE007_178', itemIndex: 178, productName: '海蓝之谜「浓修瓶」眼霜', brand: '海蓝之谜', startTime: 128400, endTime: 134910, keywords: ['海蓝之谜', '护肤'] },
+    { itemCode: 'LIVE007_179', itemIndex: 179, productName: '可丽金重组胶原蛋白紧致淡纹精华眼霜', brand: '可丽金', startTime: 129120, endTime: 135665, keywords: ['可丽金', '护肤'] },
+    { itemCode: 'LIVE007_180', itemIndex: 180, productName: 'DAISY SKY雏菊的天空琥珀时光眼部精华油（2瓶装）', brand: 'DAISY SKY雏菊的天空', startTime: 129840, endTime: 136420, keywords: ['DAISY SKY雏菊的天空', '护肤'] },
+    { itemCode: 'LIVE007_181', itemIndex: 181, productName: '雅诗兰黛全新白金「6D」紧致眼霜', brand: '雅诗兰黛', startTime: 130560, endTime: 137175, keywords: ['雅诗兰黛', '护肤'] },
+    { itemCode: 'LIVE007_182', itemIndex: 182, productName: '「升级版」兰蔻菁纯眼霜', brand: '兰蔻', startTime: 131280, endTime: 137930, keywords: ['兰蔻', '护肤'] },
+    { itemCode: 'LIVE007_183', itemIndex: 183, productName: '莱珀妮鱼子精华琼贵紧致眼霜', brand: '莱珀妮', startTime: 132000, endTime: 138685, keywords: ['莱珀妮', '护肤'] },
+    { itemCode: 'LIVE007_184', itemIndex: 184, productName: '听研建构精粹水', brand: '听研', startTime: 132720, endTime: 139440, keywords: ['听研', '护肤'] },
+    { itemCode: 'LIVE007_185', itemIndex: 185, productName: '东边野兽灵芝酵萃精华水', brand: '东边野兽灵芝酵萃精华水', startTime: 133440, endTime: 140195, keywords: ['东边野兽灵芝酵萃精华水', '护肤'] },
+    { itemCode: 'LIVE007_186', itemIndex: 186, productName: '自然堂极地精华露', brand: '自然堂', startTime: 134160, endTime: 140950, keywords: ['自然堂', '护肤'] },
+    { itemCode: 'LIVE007_187', itemIndex: 187, productName: '娇韵诗分龄精华水（紧致焕颜弹力精华水）', brand: '娇韵诗', startTime: 134880, endTime: 141705, keywords: ['娇韵诗', '护肤'] },
+    { itemCode: 'LIVE007_188', itemIndex: 188, productName: '馥蕾诗红茶酵母酵萃精华', brand: '馥蕾诗', startTime: 135600, endTime: 142460, keywords: ['馥蕾诗', '护肤'] },
+    { itemCode: 'LIVE007_189', itemIndex: 189, productName: '兰蔻全新菁纯精华水', brand: '兰蔻', startTime: 136320, endTime: 143215, keywords: ['兰蔻', '护肤'] },
+    { itemCode: 'LIVE007_190', itemIndex: 190, productName: '颐莲玻尿酸深层补水喷雾', brand: '颐莲', startTime: 137040, endTime: 143970, keywords: ['颐莲', '护肤'] },
+    { itemCode: 'LIVE007_191', itemIndex: 191, productName: '雅漾舒泉喷雾', brand: '雅漾舒泉喷雾', startTime: 137760, endTime: 144725, keywords: ['雅漾舒泉喷雾', '护肤'] },
+    { itemCode: 'LIVE007_192', itemIndex: 192, productName: '珀莱雅「源力」修护水光喷', brand: '珀莱雅', startTime: 138480, endTime: 145480, keywords: ['珀莱雅', '护肤'] },
+    { itemCode: 'LIVE007_193', itemIndex: 193, productName: '可复美焕能舒润柔肤水[3.0]', brand: '可复美', startTime: 139200, endTime: 146235, keywords: ['可复美', '护肤'] },
+    { itemCode: 'LIVE007_194', itemIndex: 194, productName: '兰蔻全新大粉水', brand: '兰蔻', startTime: 139920, endTime: 146990, keywords: ['兰蔻', '护肤'] },
+    { itemCode: 'LIVE007_195', itemIndex: 195, productName: '雅诗兰黛白金精华水', brand: '雅诗兰黛', startTime: 140640, endTime: 147745, keywords: ['雅诗兰黛', '护肤'] },
+    { itemCode: 'LIVE007_196', itemIndex: 196, productName: '法国娇兰蜜润精粹液', brand: '法国娇兰', startTime: 141360, endTime: 148500, keywords: ['法国娇兰', '护肤'] },
+    { itemCode: 'LIVE007_197', itemIndex: 197, productName: '海蓝之谜修护焕新精萃水', brand: '海蓝之谜', startTime: 142080, endTime: 149255, keywords: ['海蓝之谜', '护肤'] },
+    { itemCode: 'LIVE007_198', itemIndex: 198, productName: 'HR赫莲娜「小露珠」饱满水', brand: 'HR赫莲娜', startTime: 142800, endTime: 150010, keywords: ['HR赫莲娜', '护肤'] },
+    { itemCode: 'LIVE007_199', itemIndex: 199, productName: '达尔肤杏仁酸抛光水', brand: '达尔肤', startTime: 143520, endTime: 150765, keywords: ['达尔肤', '护肤'] },
+    { itemCode: 'LIVE007_200', itemIndex: 200, productName: 'HBN α-熊果苷焕颜精华水（发光水2.0）', brand: 'HBN', startTime: 144240, endTime: 151520, keywords: ['HBN', '护肤'] },
+    { itemCode: 'LIVE007_201', itemIndex: 201, productName: '兰蔻小黑瓶「滤镜水」', brand: '兰蔻', startTime: 144960, endTime: 152275, keywords: ['兰蔻', '护肤'] },
+    { itemCode: 'LIVE007_202', itemIndex: 202, productName: 'HomeFacialPro果酸毛孔净透精华水', brand: 'HomeFacialPro果酸毛孔净透精华水', startTime: 145680, endTime: 153030, keywords: ['HomeFacialPro果酸毛孔净透精华水', '护肤'] },
+    { itemCode: 'LIVE007_203', itemIndex: 203, productName: '全新科颜氏金盏花精华水', brand: '科颜氏', startTime: 146400, endTime: 153785, keywords: ['科颜氏', '护肤'] },
+    { itemCode: 'LIVE007_204', itemIndex: 204, productName: '娇韵诗分龄精华水（青春赋活透亮精华水）', brand: '娇韵诗', startTime: 147120, endTime: 154540, keywords: ['娇韵诗', '护肤'] },
+    { itemCode: 'LIVE007_205', itemIndex: 205, productName: 'OLAY 第2代大红瓶水乳 / 水霜', brand: 'OLAY', startTime: 147840, endTime: 155295, keywords: ['OLAY', '护肤'] },
+    { itemCode: 'LIVE007_206', itemIndex: 206, productName: '欧珀莱时光锁紧致弹润精华水乳（清爽型/滋润型）', brand: '欧珀莱', startTime: 148560, endTime: 156050, keywords: ['欧珀莱', '护肤'] },
+    { itemCode: 'LIVE007_207', itemIndex: 207, productName: '欧莱雅小蜜罐水乳套装', brand: '欧莱雅', startTime: 149280, endTime: 156805, keywords: ['欧莱雅', '护肤'] },
+    { itemCode: 'LIVE007_208', itemIndex: 208, productName: '欧莱雅松露水乳两件套', brand: '欧莱雅', startTime: 150000, endTime: 157560, keywords: ['欧莱雅', '护肤'] },
+    { itemCode: 'LIVE007_209', itemIndex: 209, productName: '兰蔻菁纯小水面套组/大水面套组（全新菁纯精华水+兰蔻全新菁纯面霜（轻盈版））', brand: '兰蔻', startTime: 150720, endTime: 158315, keywords: ['兰蔻', '护肤'] },
+    { itemCode: 'LIVE007_210', itemIndex: 210, productName: '雅诗兰黛胶原水乳（胶原水+新版白胶原乳）', brand: '雅诗兰黛', startTime: 151440, endTime: 159070, keywords: ['雅诗兰黛', '护肤'] },
+    { itemCode: 'LIVE007_211', itemIndex: 211, productName: '科兰黎雪藻水霜套组', brand: '科兰黎', startTime: 152160, endTime: 159825, keywords: ['科兰黎', '护肤'] },
+    { itemCode: 'LIVE007_212', itemIndex: 212, productName: '欧莱雅注光水乳两件套', brand: '欧莱雅', startTime: 152880, endTime: 160580, keywords: ['欧莱雅', '护肤'] },
+    { itemCode: 'LIVE007_213', itemIndex: 213, productName: '第2代OLAY美白水乳（美白特证）', brand: 'OLAY', startTime: 153600, endTime: 161335, keywords: ['OLAY', '护肤'] },
+    { itemCode: 'LIVE007_214', itemIndex: 214, productName: '娇韵诗全新「牛奶水乳」（美白特证）', brand: '娇韵诗', startTime: 154320, endTime: 162090, keywords: ['娇韵诗', '护肤'] },
+    { itemCode: 'LIVE007_215', itemIndex: 215, productName: '可复美稀有人参皂苷致研净痘控油精华水+控油舒缓精华乳', brand: '可复美', startTime: 155040, endTime: 162845, keywords: ['可复美', '护肤'] },
+    { itemCode: 'LIVE007_216', itemIndex: 216, productName: '黛珂植萃水乳套组（草本植萃精华水+牛油果植萃乳液）', brand: '黛珂植萃水乳套组（草本植萃精华水+牛油果植萃乳液）', startTime: 155760, endTime: 163600, keywords: ['黛珂植萃水乳套组（草本植萃精华水+牛油果植萃乳液）', '护肤'] },
+    { itemCode: 'LIVE007_217', itemIndex: 217, productName: '欧莱雅葡萄籽水乳套装', brand: '欧莱雅', startTime: 156480, endTime: 164355, keywords: ['欧莱雅', '护肤'] },
+    { itemCode: 'LIVE007_218', itemIndex: 218, productName: '润百颜屏障修护精华水乳2.0套组', brand: '润百颜', startTime: 157200, endTime: 165110, keywords: ['润百颜', '护肤'] },
+    { itemCode: 'LIVE007_219', itemIndex: 219, productName: '可复美重组胶原蛋白肌御赋活修护精粹水+凝乳', brand: '可复美', startTime: 157920, endTime: 165865, keywords: ['可复美', '护肤'] },
+    { itemCode: 'LIVE007_220', itemIndex: 220, productName: '欧莱雅复颜洁水乳三件套（洁面+水+乳）', brand: '欧莱雅', startTime: 158640, endTime: 166620, keywords: ['欧莱雅', '护肤'] },
+    { itemCode: 'LIVE007_221', itemIndex: 221, productName: '韩束「红蛮腰」金马礼盒', brand: '韩束', startTime: 159360, endTime: 167375, keywords: ['韩束', '护肤'] },
+    { itemCode: 'LIVE007_222', itemIndex: 222, productName: '自然堂小紫瓶CP套组', brand: '自然堂', startTime: 160080, endTime: 168130, keywords: ['自然堂', '护肤'] },
+    { itemCode: 'LIVE007_223', itemIndex: 223, productName: '珀莱雅「红宝石」套组【水2.0+乳2.0两件套/水2.0+乳2.0+精华3.0三件套】', brand: '珀莱雅', startTime: 160800, endTime: 168885, keywords: ['珀莱雅', '护肤'] },
+    { itemCode: 'LIVE007_224', itemIndex: 224, productName: '珀莱雅「能量」护肤2.0套组【水2.0+精华+面霜2.0(经典版/丰润版)】', brand: '珀莱雅', startTime: 161520, endTime: 169640, keywords: ['珀莱雅', '护肤'] },
+    { itemCode: 'LIVE007_225', itemIndex: 225, productName: '修丽可抗皱精华或A.G.E.精华+全新升级A.G.E.面霜', brand: '修丽可', startTime: 162240, endTime: 170395, keywords: ['修丽可', '护肤'] },
+    { itemCode: 'LIVE007_226', itemIndex: 226, productName: '珀莱雅「双抗」套组（美白特证）【水+乳两件套/水+精华+乳三件套】', brand: '珀莱雅', startTime: 162960, endTime: 171150, keywords: ['珀莱雅', '护肤'] },
+    { itemCode: 'LIVE007_227', itemIndex: 227, productName: '珀莱雅「源力」套组【水+乳两件套/水+精华3.0+乳三件套】', brand: '珀莱雅', startTime: 163680, endTime: 171905, keywords: ['珀莱雅', '护肤'] },
+    { itemCode: 'LIVE007_228', itemIndex: 228, productName: '德妃紫苏隔离霜 / 德妃防晒隔离霜绿色 / 德妃防晒隔离霜粉色', brand: '德妃紫苏隔离霜', startTime: 164400, endTime: 172660, keywords: ['德妃紫苏隔离霜', '护肤'] },
+    { itemCode: 'LIVE007_229', itemIndex: 229, productName: '欧莱雅黑金妆前乳', brand: '欧莱雅', startTime: 165120, endTime: 173415, keywords: ['欧莱雅', '护肤'] },
+    { itemCode: 'LIVE007_230', itemIndex: 230, productName: '完美日记 精华水润素颜霜', brand: '完美日记', startTime: 165840, endTime: 174170, keywords: ['完美日记', '护肤'] },
+    { itemCode: 'LIVE007_231', itemIndex: 231, productName: 'MAOGEPING BEAUTY毛戈平 柔肌盈采妆前霜811 / 瑰丽柔肌妆前霜801', brand: 'MAOGEPING', startTime: 166560, endTime: 174925, keywords: ['MAOGEPING', '护肤'] },
+    { itemCode: 'LIVE007_232', itemIndex: 232, productName: '欧莱雅黑金气垫', brand: '欧莱雅', startTime: 167280, endTime: 175680, keywords: ['欧莱雅', '护肤'] },
+    { itemCode: 'LIVE007_233', itemIndex: 233, productName: '华伦天奴 「水光」气垫套组', brand: '华伦天奴', startTime: 168000, endTime: 176435, keywords: ['华伦天奴', '护肤'] },
+    { itemCode: 'LIVE007_234', itemIndex: 234, productName: 'MAC 无瑕粉底液2.0', brand: 'MAC', startTime: 168720, endTime: 177190, keywords: ['MAC', '护肤'] },
+    { itemCode: 'LIVE007_235', itemIndex: 235, productName: '兰蔻持妆粉底液', brand: '兰蔻', startTime: 169440, endTime: 177945, keywords: ['兰蔻', '护肤'] },
+    { itemCode: 'LIVE007_236', itemIndex: 236, productName: 'MAOGEPING BEAUTY 毛戈平养肤焕颜黑霜', brand: 'MAOGEPING', startTime: 170160, endTime: 178700, keywords: ['MAOGEPING', '护肤'] },
+    { itemCode: 'LIVE007_237', itemIndex: 237, productName: 'PASSIONAL LOVER恋火 「看不见」防晒气垫 花意限定', brand: 'PASSIONAL', startTime: 170880, endTime: 179455, keywords: ['PASSIONAL', '护肤'] },
+    { itemCode: 'LIVE007_238', itemIndex: 238, productName: 'MAOGEPING BEAUTY 毛戈平白羽翼气垫', brand: 'MAOGEPING', startTime: 171600, endTime: 180210, keywords: ['MAOGEPING', '护肤'] },
+    { itemCode: 'LIVE007_239', itemIndex: 239, productName: 'CT夏洛特蒂铂丽 枕边话晶丝梦颜气垫粉底液', brand: 'CT夏洛特蒂铂丽', startTime: 172320, endTime: 180965, keywords: ['CT夏洛特蒂铂丽', '护肤'] },
+    { itemCode: 'LIVE007_240', itemIndex: 240, productName: 'YSL 粉气垫套组', brand: 'YSL', startTime: 173040, endTime: 181720, keywords: ['YSL', '护肤'] },
+    { itemCode: 'LIVE007_241', itemIndex: 241, productName: 'PASSIONAL LOVER恋火 「看不见」粉底液3.0 花意限定', brand: 'PASSIONAL', startTime: 173760, endTime: 182475, keywords: ['PASSIONAL', '护肤'] },
+    { itemCode: 'LIVE007_242', itemIndex: 242, productName: 'MAOGEPING毛戈平 光感柔润粉底液3.0', brand: 'MAOGEPING毛戈平', startTime: 174480, endTime: 183230, keywords: ['MAOGEPING毛戈平', '护肤'] },
+    { itemCode: 'LIVE007_243', itemIndex: 243, productName: 'NARS 「超方瓶」粉底', brand: 'NARS', startTime: 175200, endTime: 183985, keywords: ['NARS', '护肤'] },
+    { itemCode: 'LIVE007_244', itemIndex: 244, productName: '雅诗兰黛 沁水粉底液', brand: '雅诗兰黛', startTime: 175920, endTime: 184740, keywords: ['雅诗兰黛', '护肤'] },
+    { itemCode: 'LIVE007_245', itemIndex: 245, productName: 'YSL「贴肤衣」粉底液', brand: 'YSL', startTime: 176640, endTime: 185495, keywords: ['YSL', '护肤'] },
+    { itemCode: 'LIVE007_246', itemIndex: 246, productName: '法国娇兰金钻修颜粉底液（光泽透亮款）', brand: '法国娇兰', startTime: 177360, endTime: 186250, keywords: ['法国娇兰', '护肤'] },
+    { itemCode: 'LIVE007_247', itemIndex: 247, productName: '兰蔻全新菁纯粉底液', brand: '兰蔻', startTime: 178080, endTime: 187005, keywords: ['兰蔻', '护肤'] },
+    { itemCode: 'LIVE007_248', itemIndex: 248, productName: '珀莱雅持妆「夜气垫」', brand: '珀莱雅', startTime: 178800, endTime: 187760, keywords: ['珀莱雅', '护肤'] },
+    { itemCode: 'LIVE007_249', itemIndex: 249, productName: '欧莱雅 「黑胖子」气垫', brand: '欧莱雅', startTime: 179520, endTime: 188515, keywords: ['欧莱雅', '护肤'] },
+    { itemCode: 'LIVE007_250', itemIndex: 250, productName: 'MAOGEPING BEAUTY 毛戈平黑羽翼气垫', brand: 'MAOGEPING', startTime: 180240, endTime: 189270, keywords: ['MAOGEPING', '护肤'] },
+    { itemCode: 'LIVE007_251', itemIndex: 251, productName: 'YSL 皮气垫套组', brand: 'YSL', startTime: 180960, endTime: 190025, keywords: ['YSL', '护肤'] },
+    { itemCode: 'LIVE007_252', itemIndex: 252, productName: 'PASSIONAL LOVER 恋火「蹭不掉」粉底液4.0花意限定', brand: 'PASSIONAL', startTime: 181680, endTime: 190780, keywords: ['PASSIONAL', '护肤'] },
+    { itemCode: 'LIVE007_253', itemIndex: 253, productName: '法国娇兰金钻修颜粉底液（柔雾哑光款）', brand: '法国娇兰', startTime: 182400, endTime: 191535, keywords: ['法国娇兰', '护肤'] },
+    { itemCode: 'LIVE007_254', itemIndex: 254, productName: 'YSL恒久粉底液', brand: 'YSL', startTime: 183120, endTime: 192290, keywords: ['YSL', '护肤'] },
+    { itemCode: 'LIVE007_255', itemIndex: 255, productName: '欧莱雅 黑金气垫', brand: '欧莱雅', startTime: 183840, endTime: 193045, keywords: ['欧莱雅', '护肤'] },
+    { itemCode: 'LIVE007_256', itemIndex: 256, productName: '兰蔻 持妆粉底液', brand: '兰蔻', startTime: 184560, endTime: 193800, keywords: ['兰蔻', '护肤'] },
+    { itemCode: 'LIVE007_257', itemIndex: 257, productName: '兰蔻 全新菁纯粉底液', brand: '兰蔻', startTime: 185280, endTime: 194555, keywords: ['兰蔻', '护肤'] },
+    { itemCode: 'LIVE007_258', itemIndex: 258, productName: '柏瑞美后台保湿定妆喷雾', brand: '柏瑞美后台保湿定妆喷雾', startTime: 186000, endTime: 195310, keywords: ['柏瑞美后台保湿定妆喷雾', '护肤'] },
+    { itemCode: 'LIVE007_259', itemIndex: 259, productName: '韩束「红运」无痕锁妆蜜粉饼', brand: '韩束', startTime: 186720, endTime: 196065, keywords: ['韩束', '护肤'] },
+    { itemCode: 'LIVE007_260', itemIndex: 260, productName: 'SONATURAL FIXX 定妆喷雾', brand: 'SONATURAL', startTime: 187440, endTime: 196820, keywords: ['SONATURAL', '护肤'] },
+    { itemCode: 'LIVE007_261', itemIndex: 261, productName: 'URBAN DECAY 全新长效定妆喷雾', brand: 'URBAN', startTime: 188160, endTime: 197575, keywords: ['URBAN', '护肤'] },
+    { itemCode: 'LIVE007_262', itemIndex: 262, productName: '玫珂菲定妆喷雾', brand: '玫珂菲定妆喷雾', startTime: 188880, endTime: 198330, keywords: ['玫珂菲定妆喷雾', '护肤'] },
+    { itemCode: 'LIVE007_263', itemIndex: 263, productName: 'MAOGEPING毛戈平光感柔纱凝颜粉饼', brand: 'MAOGEPING毛戈平', startTime: 189600, endTime: 199085, keywords: ['MAOGEPING毛戈平', '护肤'] },
+    { itemCode: 'LIVE007_264', itemIndex: 264, productName: '毕生之研淡纹唇膏（无色/变色）', brand: '毕生之研淡纹唇膏（无色/变色）', startTime: 190320, endTime: 199840, keywords: ['毕生之研淡纹唇膏（无色/变色）', '护肤'] },
+    { itemCode: 'LIVE007_265', itemIndex: 265, productName: '枫缇金桂唇部盈润修护胶囊精华', brand: '枫缇金桂唇部盈润修护胶囊精华', startTime: 191040, endTime: 200595, keywords: ['枫缇金桂唇部盈润修护胶囊精华', '护肤'] },
+    { itemCode: 'LIVE007_266', itemIndex: 266, productName: '娇韵诗植萃盈润护唇油', brand: '娇韵诗', startTime: 191760, endTime: 201350, keywords: ['娇韵诗', '护肤'] },
+    { itemCode: 'LIVE007_267', itemIndex: 267, productName: '海蓝之谜丰盈唇部精华', brand: '海蓝之谜', startTime: 192480, endTime: 202105, keywords: ['海蓝之谜', '护肤'] },
+    { itemCode: 'LIVE007_268', itemIndex: 268, productName: '3CE 水感唇露 / 丝绒唇釉 / 釉光唇膏', brand: '3CE', startTime: 193200, endTime: 202860, keywords: ['3CE', '护肤'] },
+    { itemCode: 'LIVE007_269', itemIndex: 269, productName: 'FENTY BEAUTY 星尘蜜光润养唇膏', brand: 'FENTY', startTime: 193920, endTime: 203615, keywords: ['FENTY', '护肤'] },
+    { itemCode: 'LIVE007_270', itemIndex: 270, productName: '纪梵希高定唇膏 系列组合', brand: '纪梵希高定唇膏', startTime: 194640, endTime: 204370, keywords: ['纪梵希高定唇膏', '护肤'] },
+    { itemCode: 'LIVE007_271', itemIndex: 271, productName: '兰蔻全新菁纯唇膏 / 兰蔻全新「裸」唇釉 / 兰蔻菁纯镜面唇釉', brand: '兰蔻', startTime: 195360, endTime: 205125, keywords: ['兰蔻', '护肤'] },
+    { itemCode: 'LIVE007_272', itemIndex: 272, productName: 'YSL「小金条」口红 /「粉管」润唇膏', brand: 'YSL', startTime: 196080, endTime: 205880, keywords: ['YSL', '护肤'] },
+    { itemCode: 'LIVE007_273', itemIndex: 273, productName: '彩棠 【遮瑕+修容套组】', brand: '彩棠', startTime: 196800, endTime: 206635, keywords: ['彩棠', '护肤'] },
+  ],
+}
 
-// 根据 liveId 获取直播商品（对齐新结构）
+// 根据 liveId 获取直播商品
 export function getLiveProducts(liveId: string): LiveProductItem[] {
-  const hash = liveId.replace('LIVE', '')
-  const num = parseInt(hash, 10) || 1
+  const products = allLiveProducts[liveId]
+  if (!products) return []
 
-  const count = 6 + (num % 5) * 2
-  const offset = (num * 3) % allLiveProducts.length
-
-  const products: LiveProductItem[] = []
-  for (let i = 0; i < count && i < allLiveProducts.length; i++) {
-    const idx = (offset + i) % allLiveProducts.length
-    const base = allLiveProducts[idx]
-    if (!base) continue
-
-    // 时间用秒数
-    const startTimeSec = 240 + i * 720 + (num * 30) % 180
-    const durationSec = 280 + (num + i) * 15
-    const endTimeSec = startTimeSec + durationSec
-
-    products.push({
-      itemCode: base.itemCode,
-      itemIndex: i,
-      productName: base.productName,
-      productBasicName: base.productName.split(' ')[0],
-      brand: base.brand,
-      startTime: startTimeSec,
-      endTime: endTimeSec,
-      duration: durationSec,
-      mentions: 2 + ((num + i) % 5),
-      keywords: base.keywords
-    })
-  }
-
-  return products
+  return products.map(p => ({
+    itemCode: p.itemCode,
+    itemIndex: p.itemIndex,
+    productName: p.productName,
+    productBasicName: (p.productName || '').split('（')[0]!.split('【')[0]!.substring(0, 15),
+    brand: p.brand,
+    startTime: p.startTime,
+    endTime: p.endTime,
+    duration: p.endTime - p.startTime,
+    mentions: 2 + (p.itemIndex % 5),
+    keywords: p.keywords
+  }))
 }
 
-// 截图描述模板（按产品类型）
-const screenshotDescs: Record<string, string[]> = {
-  default: [
-    '主播手持产品展示正面外观',
-    '近距离展示产品包装细节和成分表',
-    '打开产品展示内部质地和颜色',
-    '主播在手背试用产品展示效果',
-    '展示价格标签和促销信息'
-  ],
-  手表: [
-    '主播展示手表正面表盘和表带',
-    '特写展示功能界面和操作演示',
-    '演示手机端APP配对和远程功能',
-    '展示产品到手价和电量续航卖点',
-    '与旧款型号升级参数对比展板'
-  ],
-  收纳: [
-    '主播展示收纳箱整体外观造型',
-    '展示上下分层结构和分隔栏',
-    '对比不同容量规格大小',
-    '展示PP材质和圆润边角细节',
-    '介绍价格和颜色选择'
-  ]
-}
+// 截图描述模板
+const screenshotDescs = [
+  '主播手持产品展示正面外观',
+  '近距离展示产品包装细节和成分表',
+  '打开产品展示内部质地和颜色',
+  '主播在手背试用产品展示效果',
+  '展示价格标签和促销信息'
+]
 
 // 转录文本模板库
 const transcriptTemplates = [
   (name: string, brand: string) =>
-    `[主播] 好，接下来给大家带来的这款${name}，是${brand}的明星产品。\n[主播] 我自己用了大概三个月，真的能感受到效果。\n[主播] 你看这个质地，非常轻薄，上脸完全不会有负担感。\n[助播] 对，后台数据显示这款已经卖了两千多单了。\n[主播] 成分表大家可以看一下，核心成分浓度都标注得很清楚。\n[助播] 价格链接已经挂好了，大家现在下单还有赠品。`,
+    `[李佳琦] 好，接下来给大家带来的这款${name}，是${brand}的明星产品。\n[李佳琦] 我自己用了大概三个月，真的能感受到效果。\n[李佳琦] 你看这个质地，非常轻薄，上脸完全不会有负担感。\n[助播] 对，后台数据显示这款已经卖了两千多单了。\n[李佳琦] 成分表大家可以看一下，核心成分浓度都标注得很清楚。\n[助播] 价格链接已经挂好了，大家现在下单还有赠品。`,
   (name: string, brand: string) =>
-    `[主播] 来来来，这个${name}必须给大家安利一下。\n[主播] ${brand}不用我多说了吧，大牌品质，用着放心。\n[助播] 我们直播间今天的价格是全网最低的。\n[主播] 你看我今天的状态，就是用了这款产品。\n[主播] 敏感肌的姐妹也完全可以放心使用，非常温和。\n[助播] 库存不多了，想要的姐妹赶紧拍。`,
+    `[李佳琦] 来来来，这个${name}必须给大家安利一下。\n[李佳琦] ${brand}不用我多说了吧，大牌品质，用着放心。\n[助播] 我们直播间今天的价格是全网最低的。\n[李佳琦] 你看我今天的状态，就是用了这款产品。\n[李佳琦] 敏感肌的姐妹也完全可以放心使用，非常温和。\n[助播] 库存不多了，想要的姐妹赶紧拍。`,
   (name: string, brand: string) =>
-    `[主播] 这款${name}我已经回购了不知道多少次了。\n[助播] 对，我们团队的人也都在用，真的好用。\n[主播] ${brand}的研发实力大家是知道的，专利技术。\n[主播] 看一下这个对比图，使用前和使用后差别非常明显。\n[助播] 链接上架了，今天买两件还有额外折扣。\n[主播] 性价比真的太高了，错过今天就恢复原价了。`
+    `[李佳琦] 这款${name}我已经回购了不知道多少次了。\n[助播] 对，我们团队的人也都在用，真的好用。\n[李佳琦] ${brand}的研发实力大家是知道的，专利技术。\n[李佳琦] 看一下这个对比图，使用前和使用后差别非常明显。\n[助播] 链接上架了，今天买两件还有额外折扣。\n[李佳琦] 性价比真的太高了，错过今天就恢复原价了。`
 ]
-
-// 产品亮点模板库
-const highlightTemplates: Record<string, { category: string; description: string }[]> = {
-  default: [
-    { category: '产品相关', description: '核心成分浓度高，效果显著' },
-    { category: '产品相关', description: '质地轻薄易吸收，不黏腻' },
-    { category: '使用相关', description: '适合多种肤质，敏感肌可用' },
-    { category: '使用相关', description: '早晚均可使用，方便日常护理' },
-    { category: '服务相关', description: '支持七天无理由退换货' }
-  ],
-  手表: [
-    { category: '产品相关', description: '升级1.5英寸大屏与4GB内存，存更多' },
-    { category: '产品相关', description: '九重AI定位及7天历史轨迹，守护安全' },
-    { category: '使用相关', description: '500元档高性价比，适合作为首款手表' },
-    { category: '使用相关', description: '功能齐全，支持支付、微聊及震动提醒' },
-    { category: '服务相关', description: '赠一年碎屏保、两年延保及只换不修' }
-  ],
-  收纳: [
-    { category: '产品相关', description: '上下分层结构，分类收纳更整齐' },
-    { category: '产品相关', description: 'PP材质安全环保，圆润边角设计' },
-    { category: '使用相关', description: '多种容量可选，16升/30升满足不同需求' },
-    { category: '使用相关', description: '适合收纳玩具、衣物、文具等物品' },
-    { category: '服务相关', description: '破损包赔，顺丰包邮' }
-  ]
-}
-
-// 产品参数模板库
-const ingredientTemplates: Record<string, { name: string; value: string }[]> = {
-  default: [
-    { name: '产品规格', value: '100ml' },
-    { name: '产品类型', value: '精华液' },
-    { name: '适用肤质', value: '所有肤质' },
-    { name: '保质期', value: '36个月' },
-    { name: '产地', value: '法国' },
-    { name: '核心成分', value: '烟酰胺、透明质酸钠' },
-    { name: '使用方法', value: '洁面后取适量涂抹全脸' }
-  ],
-  手表: [
-    { name: '屏幕尺寸', value: '1.5英寸' },
-    { name: '内存容量', value: '4GB' },
-    { name: '定位方式', value: '九重AI定位' },
-    { name: '电池容量', value: '800mAh' },
-    { name: '续航时间', value: '约5天' },
-    { name: '防水等级', value: 'IPX8' },
-    { name: '充电方式', value: '磁吸充电' },
-    { name: '适用年龄', value: '4-12岁' },
-    { name: '表带材质', value: '食品级硅胶' }
-  ],
-  收纳: [
-    { name: '材质', value: 'PP聚丙烯' },
-    { name: '容量', value: '16L / 30L' },
-    { name: '颜色', value: '透明/奶白/浅蓝' },
-    { name: '承重', value: '15kg' },
-    { name: '是否可叠放', value: '支持' },
-    { name: '适用场景', value: '衣柜、书房、儿童房' }
-  ]
-}
 
 const returnTranscriptTemplates = [
   (name: string) =>
-    `[主播] 再次给大家推荐一下刚才的${name}。\n[主播] 看评论区好多人在问，说明真的是好东西。\n[助播] 对，刚才有姐妹说加购了没付款，赶紧去付。\n[主播] 最后补一波库存，卖完就真的没有了。`,
+    `[李佳琦] 再次给大家推荐一下刚才的${name}。\n[李佳琦] 看评论区好多人在问，说明真的是好东西。\n[助播] 对，刚才有姐妹说加购了没付款，赶紧去付。\n[李佳琦] 最后补一波库存，卖完就真的没有了。`,
   (name: string) =>
-    `[助播] 主播，好多人让你再讲一下${name}。\n[主播] 好的好的，这款真的是今天的爆品。\n[主播] 刚才没听到的姐妹注意了，这个价格今天过后就没了。\n[助播] 我看后台又追加了一批库存。`
+    `[助播] 佳琦，好多人让你再讲一下${name}。\n[李佳琦] 好的好的，这款真的是今天的爆品。\n[李佳琦] 刚才没听到的姐妹注意了，这个价格今天过后就没了。\n[助播] 我看后台又追加了一批库存。`
+]
+
+// 产品亮点模板库
+const highlightTemplates = [
+  { category: '产品相关', description: '核心成分浓度高，效果显著' },
+  { category: '产品相关', description: '质地轻薄易吸收，不黏腻' },
+  { category: '使用相关', description: '适合多种肤质，敏感肌可用' },
+  { category: '使用相关', description: '早晚均可使用，方便日常护理' },
+  { category: '服务相关', description: '支持七天无理由退换货' }
+]
+
+// 产品参数模板库
+const ingredientTemplates = [
+  { name: '产品规格', value: '正装' },
+  { name: '产品类型', value: '精华液' },
+  { name: '适用肤质', value: '所有肤质' },
+  { name: '保质期', value: '36个月' },
+  { name: '产地', value: '中国' }
 ]
 
 // 获取直播商品详情（基于切片结构）
 export function getLiveProductDetail(liveId: string, itemCode: string) {
   const live = mockLives.find(l => l.liveId === liveId)
-  const product = allLiveProducts.find(p => p.itemCode === itemCode)
+  const liveProds = allLiveProducts[liveId] || []
+  const product = liveProds.find(p => p.itemCode === itemCode)
 
-  const anchor = live?.anchor || '李佳琦'
-  const influencerId = live?.influencerId || 'INF001'
-  const liveDate = live ? new Date(live.createdAt) : new Date('2024-01-15')
+  const anchor = '李佳琦'
+  const influencerId = 'INF001'
+  const liveDate = live ? new Date(live.createdAt) : new Date('2025-10-07')
   const totalDuration = live?.totalDuration || 14520
 
   const liveNum = parseInt(liveId.replace('LIVE', ''), 10) || 1
-  const skuNum = parseInt(itemCode.replace('SKU', ''), 10) || 1
+  const skuNum = parseInt(itemCode.split('_')[1] || '0', 10)
   const seed = liveNum * 100 + skuNum
 
-  const productName = product?.productName || '兰蔻小黑瓶精华肌底液 100ml'
-  const productBasicName = productName.split(' ')[0]
-  const brand = product?.brand || '兰蔻'
+  const productName = product?.productName || '精华液'
+  const productBasicName = (productName || '').split('（')[0]!.split('【')[0]!.substring(0, 15)
+  const brand = product?.brand || '品牌'
   const keywords = product?.keywords || ['精华', '护肤', '修护']
-
-  // 判断截图描述类型
-  const descType = productName.includes('手表') ? '手表' : productName.includes('收纳') ? '收纳' : 'default'
-  const descs = screenshotDescs[descType] || screenshotDescs['default']!
-  const highlights = highlightTemplates[descType] || highlightTemplates['default']!
-  const ingredients = ingredientTemplates[descType] || ingredientTemplates['default']!
 
   // 主讲切片
   const seg1Start = 240 + (seed % 20) * 180
@@ -374,11 +973,10 @@ export function getLiveProductDetail(liveId: string, itemCode: string) {
   const seg1Text = seg1Template(productName, brand)
   const seg1Lines = seg1Text.split('\n').length
 
-  // 直播截图（独立于切片）
-  const screenshotCount = 3 + (seed % 4) // 3-6张
+  const screenshotCount = 3 + (seed % 4)
   const screenshots = Array.from({ length: screenshotCount }, (_, i) => ({
     path: `screenshot_${String(i + 1).padStart(3, '0')}.jpg`,
-    description: descs[i % descs.length]!,
+    description: screenshotDescs[i % screenshotDescs.length]!,
     timestamp: seg1Start + Math.floor((seg1Duration / screenshotCount) * i)
   }))
 
@@ -391,7 +989,7 @@ export function getLiveProductDetail(liveId: string, itemCode: string) {
     confidence: (90 + (seed % 11)) / 100,
     mainSpeakerRatio: seg1Ratio1 / 100,
     speakers: [
-      { name: anchor.length > 3 ? anchor.slice(0, 2) : anchor, ratio: seg1Ratio1 },
+      { name: '李佳琦', ratio: seg1Ratio1 },
       { name: '助播', ratio: seg1Ratio2 }
     ],
     transcriptText: seg1Text,
@@ -403,7 +1001,6 @@ export function getLiveProductDetail(liveId: string, itemCode: string) {
   const segments = [segment1]
   let totalSegDuration = seg1Duration
 
-  // 约 60% 的商品有再次提及切片
   const hasReturnMention = seed % 5 !== 0
   if (hasReturnMention) {
     const seg2Start = seg1End + 1800 + (seed % 3600)
@@ -426,7 +1023,7 @@ export function getLiveProductDetail(liveId: string, itemCode: string) {
       confidence: (95 + (seed % 6)) / 100,
       mainSpeakerRatio: seg2Ratio1 / 100,
       speakers: [
-        { name: anchor.length > 3 ? anchor.slice(0, 2) : anchor, ratio: seg2Ratio1 },
+        { name: '李佳琦', ratio: seg2Ratio1 },
         { name: '助播', ratio: seg2Ratio2 }
       ],
       duration: seg2Duration
@@ -441,7 +1038,7 @@ export function getLiveProductDetail(liveId: string, itemCode: string) {
       confidence: returnMention.confidence,
       mainSpeakerRatio: seg2Ratio1 / 100,
       speakers: [
-        { name: anchor.length > 3 ? anchor.slice(0, 2) : anchor, ratio: seg2Ratio1 },
+        { name: '李佳琦', ratio: seg2Ratio1 },
         { name: '助播', ratio: seg2Ratio2 }
       ],
       transcriptText: rmText,
@@ -463,7 +1060,7 @@ export function getLiveProductDetail(liveId: string, itemCode: string) {
     productName,
     productBasicName,
     brand,
-    category: `护肤品 > ${brand === '潘婷' ? '洗护' : '精华'}`,
+    category: `护肤品 > ${brand}`,
     pricing: {
       originalPrice: `¥${500 + (skuNum % 10) * 100}`,
       currentPrice: `¥${400 + (skuNum % 10) * 80}`,
@@ -473,8 +1070,8 @@ export function getLiveProductDetail(liveId: string, itemCode: string) {
     status: 'on_sale' as const,
     totalMentions: segments.length,
     totalSegmentDuration: totalSegDuration,
-    highlights,
-    ingredients,
+    highlights: highlightTemplates,
+    ingredients: ingredientTemplates,
     screenshots,
     videos: [
       { path: '切片1_首次讲解.mp4', duration: seg1Duration },
@@ -485,35 +1082,33 @@ export function getLiveProductDetail(liveId: string, itemCode: string) {
   }
 }
 
-// 商品关联直播（从商品详情页访问）
+// 商品关联直播
 export function getProductRelatedLives(itemCode: string): ProductLiveItem[] {
-  const codeNum = parseInt(itemCode.replace('SKU', ''), 10) || 1
-  const liveCount = 3 + (codeNum % 5)
-
+  // Find which live sessions contain this product
   const lives: ProductLiveItem[] = []
-  for (let i = 0; i < liveCount; i++) {
-    const liveNum = ((codeNum * 3 + i * 7) % 30) + 1
-    const liveId = `LIVE${String(liveNum).padStart(3, '0')}`
-    const live = mockLives.find(l => l.liveId === liveId)
-    const anchor: string = live?.anchor ?? anchors[liveNum % anchors.length] ?? '李佳琦'
-    const influencerId = live?.influencerId ?? `INF${String(liveNum).padStart(3, '0')}`
-
-    // 时间用秒数
-    const startTimeSec = 240 + i * 900
-    const durationSec = 280 + (codeNum + i) * 20
-    const endTimeSec = startTimeSec + durationSec
-
-    lives.push({
-      liveId,
-      influencerId,
-      anchor,
-      startTime: startTimeSec,
-      endTime: endTimeSec,
-      duration: durationSec,
-      mentions: 2 + ((codeNum + i) % 5),
-      keywords: allLiveProducts.find(p => p.itemCode === itemCode)?.keywords || ['产品', '推荐', '优惠']
-    })
+  for (const [liveId, products] of Object.entries(allLiveProducts)) {
+    const product = products.find(p => p.itemCode === itemCode)
+    if (product) {
+      lives.push({
+        liveId,
+        influencerId: 'INF001',
+        anchor: '李佳琦',
+        startTime: product.startTime,
+        endTime: product.endTime,
+        duration: product.endTime - product.startTime,
+        mentions: 2 + (product.itemIndex % 5),
+        keywords: product.keywords
+      })
+    }
   }
-
-  return lives
+  return lives.length > 0 ? lives : [{
+    liveId: 'LIVE001',
+    influencerId: 'INF001',
+    anchor: '李佳琦',
+    startTime: 284,
+    endTime: 599,
+    duration: 315,
+    mentions: 3,
+    keywords: ['护肤', '推荐']
+  }]
 }
